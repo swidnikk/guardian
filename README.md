@@ -38,6 +38,7 @@ cd guardian
 ```dotenv
 OPERATOR_ID=0.0.123456...
 OPERATOR_KEY=302e020100300506032b657004220420....
+GUARDIAN_ENV=develop
 ```
 
 7. Start the environment with:
