@@ -1,0 +1,148 @@
+# Guardian Policy Manifest — DOVU MMCM (Sustainable ELV Scrapping Program)
+# Schema: https://guardian.hedera.com/schemas/policy-manifest/v1.0.0/policy.schema.json
+# Spec:   ../../MANIFEST_SPEC.md
+
+# ── Identity ────────────────────────────────────────────────────────────────
+
+# Globally unique kebab-case slug.
+id: dovu-mmcm
+
+# Human-readable display name.
+name: "DOVU MMCM — Sustainable End-of-Life Vehicle Scrapping Program"
+
+# Semver of this Guardian implementation.
+version: "1.0.0"
+
+# 1–3 sentence plain-English summary.
+description: >
+  A DOVU-developed MRV template for the Sustainable End-of-Life Vehicle (ELV)
+  Scrapping Program that blends UNFCCC CDM methodologies AMS-III.BA (e-waste
+  recovery) and AMS-III.AJ (solid waste recovery) into a novel combined
+  approach for Registered Vehicle Scrapping Facilities (RVSFs) in India.
+  The policy is primarily API-driven via the DOVU Guardian Middleware and
+  generates a Carbon Reduction Token (CRT) backed by government-issued
+  Certificates of Deposit and IIT Bombay methodology sign-off.
+
+# ── Classification ───────────────────────────────────────────────────────────
+
+# mrv-template: a reusable MRV scaffolding designed to be parameterized
+# and extended — DOVU's generic dMRV structure is the base.
+policy_type: mrv-template
+
+# Implementation lifecycle state.
+status: active
+
+license: Apache-2.0
+
+# carbon-offsets — CRTs represent emission reductions from waste diversion.
+category: carbon-offsets
+
+# ── Upstream methodology ─────────────────────────────────────────────────────
+
+# Methodology is DOVU-defined, blending two CDM methodologies.
+# standard_body is intentionally omitted — this is a novel combined approach,
+# not a direct implementation of any single published methodology.
+
+# Internal reference identifier used by MMCM and DOVU.
+methodology_id: MMCM
+
+# ── Token ────────────────────────────────────────────────────────────────────
+
+# Carbon Reduction Token — minted per certified ELV recycling event.
+token_type: CRT
+
+# Hedera token standard: fungible | HIP-412-NFT | none
+token_standard: fungible
+
+# ── Registry ─────────────────────────────────────────────────────────────────
+
+# No external registry has validated this MRV template.
+# Submission to UNFCCC CDM Methodologies Panel is a stated future goal.
+registry_status: none
+
+# ── Authorship ───────────────────────────────────────────────────────────────
+
+# DOVU is the primary implementor; MMCM is the project proponent that
+# developed the ELV recycling methodology. IIT Bombay provided technical review.
+authors:
+  - name: DOVU
+    url: https://dovu.earth
+    type: organization
+    github: dovuofficial
+
+  - name: MMCM
+    type: organization
+
+contributors:
+  - name: IIT Bombay (technical methodology review)
+
+maintainers:
+  - name: DOVU
+    url: https://dovu.earth
+
+# ── Publication ──────────────────────────────────────────────────────────────
+# Testnet IPFS timestamp — full history in publications.json.
+
+ipfs_timestamp: "1714000000.000000000"
+
+# ── Alignment ────────────────────────────────────────────────────────────────
+
+sdg_alignment:
+  - 12   # Responsible Consumption and Production
+  - 13   # Climate Action
+
+# Primary economic sector.
+sector: waste
+
+# ── Workflow roles ───────────────────────────────────────────────────────────
+
+roles:
+  - Standard Registry (DOVU)
+  - Supplier / Project Implementor (MMCM)
+  - Verifier (Certificate of Deposit issuer)
+
+# ── Lineage ──────────────────────────────────────────────────────────────────
+
+supersedes: ~
+
+# ── Tags ─────────────────────────────────────────────────────────────────────
+
+tags:
+  - dovu
+  - agriculture
+  - soil-carbon
+  - mrv-template
+  - template
+  - e-waste
+  - end-of-life-vehicles
+  - south-asia
+  - cdm
+
+# ── External resources ───────────────────────────────────────────────────────
+
+resources:
+  - type: api-docs
+    label: "DOVU Guardian Middleware API (GitHub)"
+    url: https://github.com/dovuofficial/guardian-middleware-api/
+
+  - type: api-docs
+    label: "DOVU Guardian Middleware API Documentation"
+    url: https://middleware.guardian.dovu.market/docs
+
+  - type: methodology
+    label: "IWA Voluntary Ecological Markets (VEM) Specification"
+    url: https://interwork.org/wp-content/uploads/2021/05/Voluntary_Ecological_Markets_Overview_Specification_Eng_Hon_Final_May11.pdf
+
+  - type: methodology
+    label: "DOVU Generic dMRV Project Structure"
+    url: https://docs.google.com/document/d/1micqwUz2-dVQ8VbWf55WBOxMzB_xTqMfxlqFUoHFW-8/edit
+
+  - type: tool
+    label: "DOVU PHP SDK (GitHub)"
+    url: https://github.com/dovuofficial/guardian-php-sdk
+
+# ── Catalog presentation ─────────────────────────────────────────────────────
+
+homepage: https://dovu.earth
+
+support: https://github.com/dovuofficial/guardian-middleware-api/issues

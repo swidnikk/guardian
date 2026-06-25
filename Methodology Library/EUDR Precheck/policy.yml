@@ -1,0 +1,135 @@
+# Guardian Policy Manifest — EUDR Pre-Check Policy
+# Schema: https://guardian.hedera.com/schemas/policy-manifest/v1.0.0/policy.schema.json
+# Spec:   ../MANIFEST_SPEC.md
+
+# ── Identity ────────────────────────────────────────────────────────────────
+
+# Globally unique kebab-case slug.
+id: eudr-precheck
+
+# Human-readable display name.
+name: "EUDR Pre-Check Policy"
+
+# Semver of this Guardian implementation.
+version: "1.0.0"
+
+# 1–3 sentence plain-English summary.
+description: >
+  A multi-party Guardian workflow that enables suppliers to prove — before
+  shipment — that their farmer polygons are geometrically valid and have been
+  benchmarked against public deforestation-risk datasets including Global Forest
+  Watch and the World Database on Protected Areas. Independent analysts and a
+  standards regulator each provide cryptographic attestations; when all parties
+  agree, Guardian mints an EUDR Pre-Check Token (EUDRT) — a HIP-412 NFT whose
+  metadata locks in the polygon hash, validation results, and regulator signature.
+
+# ── Classification ───────────────────────────────────────────────────────────
+
+# novel-methodology: policy originated within Guardian for a use case not yet
+# covered by a single established external standard.
+policy_type: novel-methodology
+
+# Implementation lifecycle state.
+status: active
+
+license: Apache-2.0
+
+# supply-chain — the policy certifies deforestation-risk status of supply-chain polygons.
+category: supply-chain
+
+# ── Upstream methodology ─────────────────────────────────────────────────────
+
+# No external standards body owns this methodology — it is self-developed
+# against the EU Deforestation Regulation (EUDR) requirements.
+# Omitting standard_body, methodology_id, methodology_version.
+
+# ── Token ────────────────────────────────────────────────────────────────────
+
+# EUDR Pre-Check Token — one NFT per validated polygon / supply-chain claim.
+token_type: EUDRT
+
+# Hedera token standard: fungible | HIP-412-NFT | none
+token_standard: HIP-412-NFT
+
+# ── Registry ─────────────────────────────────────────────────────────────────
+
+# No external registry validates this policy type.
+# none | pending | validated | revoked
+registry_status: none
+
+# ── Authorship ───────────────────────────────────────────────────────────────
+
+authors:
+  - name: Hashgraph Association
+    url: https://hedera.com
+    type: organization
+
+maintainers:
+  - name: Hashgraph Association
+    url: https://hedera.com
+
+# ── Publication ──────────────────────────────────────────────────────────────
+# Testnet IPFS timestamp — this policy has not yet been published to mainnet.
+# Absence of a mainnet entry in publications.json is an intentional signal.
+# Full publication history lives in publications.json.
+
+ipfs_timestamp: "1719000000.000000000"
+
+# ── Alignment ────────────────────────────────────────────────────────────────
+
+sdg_alignment:
+  - 15   # Life on Land (deforestation prevention)
+  - 17   # Partnerships for the Goals (multi-party supply-chain trust)
+
+# Primary economic sector.
+sector: land-use
+
+# ── Workflow roles ───────────────────────────────────────────────────────────
+
+roles:
+  - Standards Registry
+  - Supplier / Data Collector
+  - Independent Analyst
+  - Standards Regulator
+
+# ── Lineage ──────────────────────────────────────────────────────────────────
+
+# First version in this lineage — no prior policy superseded.
+supersedes: ~
+
+# ── Tags ─────────────────────────────────────────────────────────────────────
+
+tags:
+  - eudr
+  - deforestation
+  - supply-chain
+  - geospatial
+  - polygon
+  - forest
+  - europe
+  - nft
+
+# ── External resources ───────────────────────────────────────────────────────
+
+resources:
+  - type: regulation
+    label: "EU Deforestation Regulation (EUDR) — Official Text"
+    url: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32023R1115
+
+  - type: tool
+    label: "WISP / Whisp — Polygon deforestation-risk screening tool (GitHub)"
+    url: https://github.com/forestdatapartnership/whisp
+
+  - type: dataset
+    label: "Global Forest Watch — Tree Cover Loss data"
+    url: https://www.globalforestwatch.org/
+
+  - type: dataset
+    label: "World Database on Protected Areas (WDPA)"
+    url: https://www.protectedplanet.net/en/thematic-areas/wdpa
+
+# ── Catalog presentation ─────────────────────────────────────────────────────
+
+homepage: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32023R1115
+
+support: https://github.com/hashgraph/guardian/issues

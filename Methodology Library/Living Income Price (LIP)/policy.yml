@@ -1,0 +1,147 @@
+# Guardian Policy Manifest — Living Income Price (LIP) Policy
+# Schema: https://guardian.hedera.com/schemas/policy-manifest/v1.0.0/policy.schema.json
+# Spec:   ../MANIFEST_SPEC.md
+
+# ── Identity ────────────────────────────────────────────────────────────────
+
+# Globally unique kebab-case slug.
+id: living-income-price
+
+# Human-readable display name.
+name: "Living Income Price (LIP) Policy"
+
+# Semver of this Guardian implementation.
+version: "1.0.0"
+
+# 1–3 sentence plain-English summary.
+description: >
+  Digitises the Living Income Price (LIP) framework — developed by Fairfood
+  and Heifer International — inside the Hedera Guardian platform. The policy
+  calculates and immutably proves the minimum farm-gate, cooperative, and FOB
+  price a smallholder farmer must receive to reach a living income, by
+  collecting yield, cost, and benchmark data from field enumerators, cooperatives,
+  and exporters through a multi-role verifiable-credential workflow. When all
+  submissions are verified, Guardian mints a Living Income Token (LIT) — a
+  HIP-412 NFT whose metadata stores the price floors, Cost-Yield-Efficiency
+  class, dataset hashes, and multi-signature approvals.
+
+# ── Classification ───────────────────────────────────────────────────────────
+
+# novel-methodology: the Guardian implementation follows the Fairfood/Heifer
+# LIP framework, which is not yet a formally codified standard methodology
+# recognized by a single certifying body.
+policy_type: novel-methodology
+
+# Implementation lifecycle state.
+status: active
+
+license: Apache-2.0
+
+# payments — the primary output is a verified living-income price floor
+# used to determine fair farmer payments.
+category: payments
+
+# ── Upstream methodology ─────────────────────────────────────────────────────
+
+# The LIP methodology is a Fairfood + Heifer International framework.
+# No single formal standards body owns it; standard_body is omitted.
+# See the Commodity Living Income Strategy White Paper (Sept 2024).
+
+# ── Token ────────────────────────────────────────────────────────────────────
+
+# Living Income Token — one NFT per validated price-floor determination.
+token_type: LIT
+
+# Hedera token standard: fungible | HIP-412-NFT | none
+token_standard: HIP-412-NFT
+
+# ── Registry ─────────────────────────────────────────────────────────────────
+
+# No external registry validates living-income price-floor certifications
+# in the carbon/environmental registry sense.
+registry_status: none
+
+# ── Authorship ───────────────────────────────────────────────────────────────
+
+# The Guardian implementation was developed by the Hashgraph Association
+# in collaboration with Fairfood and partners piloting the methodology.
+authors:
+  - name: Hashgraph Association
+    url: https://hedera.com
+    type: organization
+
+contributors:
+  - name: Fairfood International
+
+  - name: Heifer International
+
+maintainers:
+  - name: Hashgraph Association
+    url: https://hedera.com
+
+# ── Publication ──────────────────────────────────────────────────────────────
+# Testnet IPFS timestamp — full history in publications.json.
+
+ipfs_timestamp: "1722500000.000000000"
+
+# ── Alignment ────────────────────────────────────────────────────────────────
+
+sdg_alignment:
+  - 1    # No Poverty
+  - 2    # Zero Hunger
+  - 10   # Reduced Inequalities
+  - 17   # Partnerships for the Goals
+
+# Primary economic sector.
+sector: agriculture
+
+# ── Workflow roles ───────────────────────────────────────────────────────────
+
+roles:
+  - Methodology Owner
+  - Partner Company / Implementer
+  - Facilitator
+  - Data Collector
+  - Analyst
+  - Standards Regulator
+
+# ── Lineage ──────────────────────────────────────────────────────────────────
+
+supersedes: ~
+
+# ── Tags ─────────────────────────────────────────────────────────────────────
+
+tags:
+  - living-income
+  - agriculture
+  - supply-chain
+  - fair-trade
+  - farmer-payments
+  - africa
+  - social-impact
+  - nft
+
+# ── External resources ───────────────────────────────────────────────────────
+
+resources:
+  - type: methodology
+    label: "Commodity Living Income Strategy White Paper — Fairfood (Sept 2024)"
+    url: https://fairfood.org/publication/commodity-living-income-strategy/
+
+  - type: methodology
+    label: "Heifer International — Living Income resources"
+    url: https://www.heifer.org/living-income/index.html
+
+  - type: regulation
+    label: "EU CSRD E1-7 Beyond-Value-Chain Mitigation reporting"
+    url: https://www.efrag.org/Assets/Download?assetUrl=%2Fsites%2Fwebpublishing%2FSiteAssets%2FESRS%20E1%20Climate%20change.pdf
+
+  - type: other
+    label: "UNGP Principle 22 — Remedy for living wage/income"
+    url: https://www.ohchr.org/en/business-and-human-rights/un-guiding-principles-business-and-human-rights
+
+# ── Catalog presentation ─────────────────────────────────────────────────────
+
+homepage: https://fairfood.org/publication/commodity-living-income-strategy/
+
+support: https://github.com/hashgraph/guardian/issues

@@ -1,0 +1,151 @@
+# Guardian Policy Manifest — Gold Standard MECD v2.0 (Paris Agreement Aligned)
+# Schema: https://guardian.hedera.com/schemas/policy-manifest/v1.0.0/policy.schema.json
+# Spec:   ../../../../MANIFEST_SPEC.md
+
+# ── Identity ────────────────────────────────────────────────────────────────
+
+# Globally unique kebab-case slug. Never change after first publish.
+id: gold-standard-mecd-v2
+
+# Human-readable display name shown in the catalog.
+name: "Gold Standard MECD v2.0 — Metered & Measured Energy Cooking Devices (Paris Agreement Aligned)"
+
+# Semver of this Guardian implementation.
+version: "2.0.0"
+
+# 1–3 sentence plain-English summary.
+description: >
+  Implements Gold Standard's Metered & Measured Energy Cooking Devices
+  methodology, version 2.0 — the Paris-Agreement-aligned (PAA) revision
+  approved in 2025. The policy covers clean cookstove projects that deploy
+  metered stoves with device-level monitoring (CTEC), walks the project
+  end-to-end from listing through VVB verification, and mints a Verified
+  Emission Reduction (VER) token for each tCO₂e credited. v2.0 supersedes
+  the MECD v1.2 implementation.
+
+# ── Classification ───────────────────────────────────────────────────────────
+
+# standard-implementation: faithfully implements a published standard methodology.
+policy_type: standard-implementation
+
+# Implementation lifecycle state.
+status: active
+
+license: Apache-2.0
+
+# carbon-offsets | emission-reporting | supply-chain | biodiversity | payments | other
+category: carbon-offsets
+
+# ── Upstream methodology ─────────────────────────────────────────────────────
+
+standard_body: Gold Standard
+
+# Upstream methodology identifier as used by Gold Standard.
+methodology_id: MECD
+
+# Upstream version — verbatim as published by Gold Standard Foundation.
+methodology_version: "2.0"
+
+# ── Token ────────────────────────────────────────────────────────────────────
+
+# Token symbol minted by this policy (one VER per tCO₂e).
+token_type: VER
+
+# Hedera token standard: fungible | HIP-412-NFT | none
+token_standard: fungible
+
+# ── Registry ─────────────────────────────────────────────────────────────────
+
+# Status with external registry. none | pending | validated | revoked
+registry_status: validated
+
+registry_body: Gold Standard Foundation
+
+# ── Authorship ───────────────────────────────────────────────────────────────
+
+# Primary authors. ATEC developed the field methodology and device integration;
+# Envision Blockchain developed the Guardian workflow and schema design.
+authors:
+  - name: ATEC
+    url: https://atecproducts.com
+    type: organization
+
+  - name: Envision Blockchain
+    url: https://envisionblockchain.com
+    type: organization
+    github: EnvisionBlockchain
+
+maintainers:
+  - name: Hashgraph Association
+    url: https://hedera.com
+
+# ── Publication ──────────────────────────────────────────────────────────────
+# Most recent mainnet IPFS timestamp — convenience pointer for one-click import.
+# Full publication history lives in publications.json.
+# To append after publishing in Guardian, run:
+#   node scripts/record-publication.js --policy gold-standard-mecd-v2 \
+#     --network mainnet --version 2.0.0 --ipfs-timestamp <timestamp> \
+#     --topic-id 0.0.8826363
+
+ipfs_timestamp: "1722000000.000000000"
+
+# ── Alignment ────────────────────────────────────────────────────────────────
+
+sdg_alignment:
+  - 3    # Good Health and Well-Being (indoor air quality)
+  - 7    # Affordable and Clean Energy
+  - 13   # Climate Action
+
+# Primary economic sector.
+sector: energy
+
+# ── Workflow roles ───────────────────────────────────────────────────────────
+
+roles:
+  - Standard Registry (Gold Standard)
+  - Validation and Verification Body (VVB)
+  - Project Proponent
+
+# ── Lineage ──────────────────────────────────────────────────────────────────
+
+# This implementation supersedes the MECD v1.2 Guardian policy.
+# Existing v1.2 projects may remain on v1.2 until their crediting period ends.
+supersedes: gold-standard-mecd-v1
+
+# ── Tags ─────────────────────────────────────────────────────────────────────
+
+tags:
+  - gold-standard
+  - cookstoves
+  - clean-energy
+  - africa
+  - metered-monitoring
+  - paris-aligned
+  - ver
+  - atec
+  - suppressed-demand
+
+# ── External resources ───────────────────────────────────────────────────────
+
+resources:
+  - type: methodology
+    label: "Gold Standard MECD Methodology"
+    url: https://www.goldstandard.org/resources/metered-measured-energy-cooking-devices-methodology/
+
+  - type: research
+    label: "WHO Household Air Pollution Fact Sheet"
+    url: https://www.who.int/news-room/fact-sheets/detail/household-air-pollution-and-health
+
+  - type: research
+    label: "Berkeley Cookstove Overcrediting Study (Springer Nature, 2023)"
+    url: https://assets.researchsquare.com/files/rs-2606020/v1/c2e6a772-b013-49f9-9fc4-8d7d82d4bebc.pdf
+
+  - type: demo-guide
+    label: "Guardian Demo Guide — Gold Standard MECD"
+    url: https://docs.hedera.com/guardian/guardian/demo-guide/carbon-offsets/gold-standard-mecd
+
+# ── Catalog presentation ─────────────────────────────────────────────────────
+
+homepage: https://www.goldstandard.org/resources/metered-measured-energy-cooking-devices-methodology/
+
+support: https://github.com/hashgraph/guardian/issues

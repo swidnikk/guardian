@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://guardian.hedera.com/schemas/policy-manifest/v1.0.0/publications.schema.json",
+  "title": "Guardian Policy Publication Log",
+  "description": "JSON Schema for publications.json sidecar files. These files are written and appended by the record-publication script — never edited by hand.",
+  "type": "object",
+
+  "required": ["policy_id", "entries"],
+  "additionalProperties": false,
+
+  "properties": {
+
+    "policy_id": {
+      "type": "string",
+      "description": "Must match the id field in the sibling policy.yml.",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "examples": ["verra-vm0007-redd-plus", "gold-standard-mecd-v2"]
+    },
+
+    "entries": {
+      "type": "array",
+      "description": "Append-only list of publication events, oldest first. Each entry is written by record-publication.js immediately after the Guardian publish action completes.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["network", "version", "ipfs_timestamp", "recorded_at"],
+        "additionalProperties": false,
+        "properties": {
+
+          "network": {
+            "type": "string",
+            "description": "Hedera network the policy was published to.",
+            "enum": ["testnet", "mainnet", "previewnet"]
+          },
+
+          "version": {
+            "type": "string",
+            "description": "Policy version (from policy.yml) at the time of publication.",
+            "examples": ["1.1.0", "2.0.0", "3.0.0"]
+          },
+
+          "ipfs_timestamp": {
+            "type": "string",
+            "description": "IPFS timestamp returned by Guardian's publish API. Stored as a string to preserve nanosecond precision.",
+            "pattern": "^[0-9]+\\.[0-9]+$",
+            "examples": ["1707207286.119377003"]
+          },
+
+          "hedera_topic_id": {
+            "type": "string",
+            "description": "Hedera Consensus Service topic ID used to anchor the policy (optional — not always returned by older Guardian versions).",
+            "pattern": "^0\\.0\\.[0-9]+$",
+            "examples": ["0.0.8826363"]
+          },
+
+          "published_by": {
+            "type": "string",
+            "description": "Organization or Guardian account name that performed the publish action.",
+            "examples": ["Envision Blockchain", "Hashgraph Association", "ATEC"]
+          },
+
+          "recorded_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 datetime when record-publication.js wrote this entry (UTC).",
+            "examples": ["2024-02-06T14:32:00Z"]
+          },
+
+          "notes": {
+            "type": "string",
+            "description": "Optional free-text annotation for this publication event (e.g. 'Initial mainnet go-live', 'Hotfix for schema validation bug')."
+          }
+        }
+      }
+    }
+  }
+}
