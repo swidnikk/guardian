@@ -1,0 +1,33 @@
+id: verra-vm0044-v2
+name: "Verra VM0044 — Waste Biomass to Biochar"
+version: "2.0.0"
+description: >
+  Implements Verra's VM0044 methodology for reducing biomass waste through biochar
+  production, quantifying GHG emission reductions from converting waste biomass into
+  biochar under the Verified Carbon Standard (VCS).
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: waste
+authors:
+  - name: Hashgraph
+tags:
+  - verra
+  - biochar
+  - waste
+standard_body: Verra
+methodology_id: VM0044
+methodology_version: "1.2"
+registry_status: none
+sector: waste
+roles:
+  - Standard Registry
+  - Project Proponent
+  - VVB
+resources:
+  - type: methodology
+    label: "Verra VM0044 v1.2"
+    url: "https://verra.org/methodologies/vm0044-biochar-utilization-in-soil-and-non-soil-applications-v1-2/"
+  - type: tool
+    label: "VT0008 Additionality Assessment v1.0"
+    url: "https://verra.org/methodologies/vt0008-additionality-assessment/"
