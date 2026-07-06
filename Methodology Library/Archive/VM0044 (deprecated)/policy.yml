@@ -1,0 +1,20 @@
+id: verra-vm0044-legacy
+name: "Verra VM0044 — Waste Biomass to Biochar (Legacy)"
+version: "1.0.0"
+description: >
+  Legacy implementation of Verra VM0044 for reducing biomass waste through biochar
+  production under the Verified Carbon Standard (VCS). Never formally accepted by
+  the Verra registry. Kept for reference only.
+policy_type: standard-implementation
+status: deprecated
+license: Apache-2.0
+category: waste
+authors:
+  - name: Hashgraph Association
+tags:
+  - verra
+  - biochar
+  - waste
+  - vcu
+superseded_by: verra-vm0044
+hedera_timestamp: "1698754217.516521003"
