@@ -1,0 +1,52 @@
+{
+  "id": "urn:uuid:04706717-3787-4efa-b9cf-7572655d8c4e",
+  "type": [
+    "VerifiableCredential"
+  ],
+  "issuer": "did:hedera:testnet:5bGmDsbvbbMKwJYcEqmzuQjqxgnmED3d9B2KzQehC8NN_0.0.9134386",
+  "issuanceDate": "2026-08-05T04:40:46.672Z",
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "schema:1cefb042-57b9-41d4-b32c-3b41a4f69f98"
+  ],
+  "credentialSubject": [
+    {
+      "ppAccountType": "example",
+      "ppOffsetProject": "Yes",
+      "ppOrgName": "example",
+      "ppAddress1": "example",
+      "ppAddress2": "example",
+      "ppCountryArea": "example",
+      "ppStateProvince": "example",
+      "ppZipPostal": "example",
+      "ppPhone": "example",
+      "ppFax": "example",
+      "ppemail": "example@email.com",
+      "ppWebsite": "https://example.com",
+      "ppAccountManagerTitle": "example",
+      "ppName": "example",
+      "ppContactAddress1": "example",
+      "ppContactAddress2": "example",
+      "ppContactCity": "example",
+      "ppContactCountryArea": "example",
+      "ppContactStateProvince": "example",
+      "ppContactZipPostal": "example",
+      "ppContactPhone": "example",
+      "ppContactEmail": "example@email.com",
+      "policyId": "6a456c16e8ac91d09e3839a3",
+      "guardianVersion": "3.6.0",
+      "@context": [
+        "schema:1cefb042-57b9-41d4-b32c-3b41a4f69f98"
+      ],
+      "id": "did:hedera:testnet:5bGmDsbvbbMKwJYcEqmzuQjqxgnmED3d9B2KzQehC8NN_0.0.9134386",
+      "type": "1cefb042-57b9-41d4-b32c-3b41a4f69f98"
+    }
+  ],
+  "proof": {
+    "type": "Ed25519Signature2018",
+    "created": "2026-08-05T04:40:46Z",
+    "verificationMethod": "did:hedera:testnet:5bGmDsbvbbMKwJYcEqmzuQjqxgnmED3d9B2KzQehC8NN_0.0.9134386#did-root-key",
+    "proofPurpose": "assertionMethod",
+    "jws": "eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..yaov5ZDz-jcWodJV4ANb5cI9pZv-EfLhDQNl7M_Nfz90tePqlimO2Z3lisxNUzqwUeUHV29yPt-vBWQTQxQNCQ"
+  }
+}
