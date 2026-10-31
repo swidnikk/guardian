@@ -1,0 +1,27 @@
+id: dovu-ghg-assessment-guideline-soil-mrv
+name: GHG Assessment Guideline Soil MRV
+version: "1.0.0"
+description: >
+  DOVU MRV template based on the GHG Protocol Assessment Guideline Volume I
+  (Soil). A Registrant submits soil carbon stock measurements, a Verifier
+  approves them, and GHGSOIL fungible tokens are minted.
+policy_type: mrv-template
+status: draft
+license: Apache-2.0
+category: sustainable-agriculture
+authors:
+  - name: DOVU
+    type: organization
+tags:
+  - mrv-template
+  - mrv
+  - agriculture
+standard_body: Dovu
+token_type: GHGSOIL
+token_standard: fungible
+roles:
+  - Registrant
+  - Verifier
+maintainers:
+  - name: DOVU
+sector: agriculture
