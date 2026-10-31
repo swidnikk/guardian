@@ -1,0 +1,23 @@
+id: hackathon-iwcsh
+name: IWCSH
+version: "1.0.0"
+description: >
+  Hackathon Guardian policy for improved waste collection, segregation and
+  handling. Project owners submit a project and waste segregation and handling
+  reports, a verifier approves them, and tokens are minted on approval.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: waste
+sector: waste
+authors:
+  - name: Kephotho Solutions
+    type: organization
+    github: kephothoX
+tags:
+  - hackathon
+roles:
+  - IWCSH_Verifier
+  - IWCSH_Project_Owner
+maintainers:
+  - name: Kephotho Solutions
