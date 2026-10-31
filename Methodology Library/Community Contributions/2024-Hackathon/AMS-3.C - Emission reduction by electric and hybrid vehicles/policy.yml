@@ -1,0 +1,28 @@
+id: hackathon-ams-3-c-emission-reduction-by-electric-and-hybrid-vehicles
+name: AMS-3.C - Emission reduction by electric and hybrid vehicles
+version: "1.0.0"
+description: >
+  Hackathon Guardian implementation of CDM methodology AMS-III.C, emission
+  reductions by electric and hybrid vehicles. A project proponent submits project
+  and monitoring data for VVB review, and carbon reduction credits are issued.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Funda002
+    type: individual
+    github: Funda002
+tags:
+  - hackathon
+  - cdm
+  - transport
+  - carbon-credit
+standard_body: UNFCCC CDM
+methodology_id: AMS-III.C
+roles:
+  - VVB
+  - Project_Proponent
+maintainers:
+  - name: Funda002
+sector: transport
