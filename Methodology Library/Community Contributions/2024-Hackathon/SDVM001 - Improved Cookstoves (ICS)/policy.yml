@@ -1,0 +1,32 @@
+id: hackathon-sdvm001-improved-cookstoves-ics
+name: SDVM001 - Improved Cookstoves (ICS)
+version: "1.0.0"
+description: >
+  Hackathon Guardian policy for the Verra SD VISta SDVM001 methodology, which
+  quantifies household time savings from improved cookstoves. Project developers
+  submit monitoring data, VVBs verify it, and the policy mints fungible Time
+  Savings Unit (TSU) tokens.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: other
+category_note: sustainable development impact credits (time savings)
+standard_body: Verra
+methodology_id: SDVM001
+authors:
+  - name: SDVISTa
+    type: organization
+    github: jadkachmar
+tags:
+  - cookstoves
+  - social-impact
+  - verra
+  - hackathon
+roles:
+  - PROJECT_DEVELOPER
+  - VVB/IEE
+  - VIEWER
+token_type: SDVM-TSU
+token_standard: fungible
+maintainers:
+  - name: SDVISTa
