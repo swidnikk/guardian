@@ -1,0 +1,30 @@
+id: cdm-ams-ii-g
+name: CDM AMS-II.G
+version: "1.0.0"
+description: >
+  Guardian implementation of CDM methodology AMS-II.G, energy efficiency
+  measures in thermal applications of non-renewable biomass, such as
+  high-efficiency cookstoves. Verified emission reductions are minted as CER
+  tokens.
+policy_type: standard-implementation
+status: deprecated
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Envision
+    type: organization
+  - name: UNFCCC
+    type: organization
+tags:
+  - cdm
+  - cookstoves
+  - cer
+standard_body: UNFCCC CDM
+methodology_id: AMS-II.G
+token_type: CER
+token_standard: HIP-412-NFT
+roles:
+  - Project Participant
+  - VVB
+maintainers:
+  - name: Envision
