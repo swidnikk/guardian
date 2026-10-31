@@ -1,0 +1,20 @@
+id: hackathon-greentrace
+name: Greentrace
+version: "1.0.0"
+description: >
+  Product-origin traceability workflow: certifiers submit sustainability
+  practice records for a product barcode, which are stored on Hedera so
+  consumers can look them up by scanning the product.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: supply-chain
+authors:
+  - name: BrianCottrell
+    type: individual
+    github: BrianCottrell
+maintainers:
+  - name: BrianCottrell
+tags:
+  - hackathon
+  - supply-chain
