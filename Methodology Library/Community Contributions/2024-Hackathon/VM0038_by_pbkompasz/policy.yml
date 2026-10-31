@@ -1,0 +1,29 @@
+id: hackathon-vm0038-by-pbkompasz
+name: VM0038_by_pbkompasz
+version: "1.0.0"
+description: >
+  Guardian implementation of Verra VM0038 (Electric Vehicle Charging Systems)
+  where a Project Participant submits a project description and monitoring
+  reports, a VVB validates and verifies them, and the Standard Registry
+  approves the reports. Imported bundle defines no token.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: carbon-credits
+sector: transport
+authors:
+  - name: Peter Kompasz
+    type: individual
+    github: pbkompasz
+maintainers:
+  - name: Peter Kompasz
+standard_body: Verra
+methodology_id: VM0038
+roles:
+  - Project Participant
+  - VVB
+tags:
+  - hackathon
+  - verra
+  - transport
+  - vm0038
