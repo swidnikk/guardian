@@ -4,13 +4,19 @@
 /**
  * Record or verify Hedera publications for one policy folder.
  *
- *   node scripts/record-publication.js --dir <policy folder> --network <mainnet|testnet> --hedera-timestamp <s.n>
- *   node scripts/record-publication.js --dir <policy folder> --check
+ *   node scripts/record-publication.js --dir <policy folder> [--manifest <file>] --network <mainnet|testnet> --hedera-timestamp <s.n>
+ *   node scripts/record-publication.js --dir <policy folder> [--manifest <file>] --check
  *
  * Record: looks the timestamp up on the mirror node for the named network, refuses unless the
  * message exists there and is a Guardian publish-policy message, then appends an entry to
- * <dir>/publications.json (created if absent). Re-recording the same entry is a no-op.
- * Check: re-verifies every entry in <dir>/publications.json and writes nothing.
+ * the policy's publication log in <dir> (created if absent). Re-recording the same entry is a no-op.
+ * Check: re-verifies every entry in the policy's log and writes nothing.
+ *
+ * Manifest and log: --manifest names the manifest file in <dir> (default policy.yml). The log name
+ * follows from it: policy.yml -> publications.json, policy.<slug>.yml -> publications.<slug>.json.
+ * A folder with a single manifest needs no --manifest. A folder with several (policy.yml plus
+ * policy.*.yml, or several policy.*.yml) requires --manifest to record; --check without --manifest
+ * checks the log of every manifest in the folder.
  *
  * Exit codes: 0 ok, 1 refused or verification failed, 2 mirror node unreachable or bad usage.
  * Mirror URLs can be overridden with MIRROR_URL_MAINNET / MIRROR_URL_TESTNET (used by tests).
@@ -25,6 +31,8 @@ const MIRRORS = {
     testnet: process.env.MIRROR_URL_TESTNET || 'https://testnet.mirrornode.hedera.com',
 };
 const TIMESTAMP = /^[0-9]+\.[0-9]+$/;
+const MANIFEST_NAME = /^policy(\.[a-z0-9]+(-[a-z0-9]+)*)?\.yml$/;
+const DEFAULT_MANIFEST = 'policy.yml';
 
 class Refused extends Error {}
 class Unreachable extends Error {}
@@ -44,12 +52,69 @@ function parseArgs(argv) {
     return args;
 }
 
-function readPolicyId(dir) {
-    const file = path.join(dir, 'policy.yml');
-    if (!fs.existsSync(file)) {
-        throw new Refused(`No policy.yml in ${dir}. A policy folder needs its manifest first.`);
+/** Validate a --manifest value: a bare file name policy.yml or policy.<slug>.yml (slug kebab-case). */
+function validateManifestName(name) {
+    if (typeof name !== 'string' || name === '') {
+        throw new Unreachable('--manifest needs a file name such as policy.yml or policy.<slug>.yml.');
     }
-    // Top-level scalar only; policy.yml ids are plain kebab-case slugs.
+    if (/[\\/]/.test(name)) {
+        throw new Unreachable(`--manifest must be a file name inside --dir, not a path: "${name}".`);
+    }
+    if (!MANIFEST_NAME.test(name)) {
+        throw new Unreachable(`--manifest must be policy.yml or policy.<slug>.yml with a kebab-case slug, got "${name}".`);
+    }
+    return name;
+}
+
+/** policy.yml -> publications.json; policy.<slug>.yml -> publications.<slug>.json. */
+function logNameFor(manifestName) {
+    validateManifestName(manifestName);
+    return manifestName.replace(/^policy/, 'publications').replace(/\.yml$/, '.json');
+}
+
+/** Manifest files in a directory (policy.yml and policy.<slug>.yml), sorted, policy.yml first. */
+function discoverManifests(dir) {
+    if (!fs.existsSync(dir)) {
+        return [];
+    }
+    return fs
+        .readdirSync(dir, { withFileTypes: true })
+        .filter((d) => !d.isDirectory() && MANIFEST_NAME.test(d.name))
+        .map((d) => d.name)
+        .sort((a, b) => (a === DEFAULT_MANIFEST ? -1 : b === DEFAULT_MANIFEST ? 1 : a < b ? -1 : a > b ? 1 : 0));
+}
+
+/**
+ * Manifests an invocation applies to. With --manifest: exactly that one. Without: the single
+ * manifest in the folder, or (several) every one when allowAll is set, else a usage error.
+ * A folder with no manifests resolves to the default name, so existing "missing" messages are kept.
+ */
+function resolveManifests(dir, requested, allowAll) {
+    if (requested !== undefined) {
+        return [validateManifestName(requested)];
+    }
+    const found = discoverManifests(dir);
+    if (found.length === 0) {
+        return [DEFAULT_MANIFEST];
+    }
+    if (found.length === 1 || allowAll) {
+        return found;
+    }
+    throw new Unreachable(
+        `${dir} holds several manifests (${found.join(', ')}). Say which one with --manifest <file>.`
+    );
+}
+
+function policyIdMismatchMessage(logName, logId, manifestName, policyId) {
+    return `${logName} is for "${logId}" but ${manifestName} id is "${policyId}".`;
+}
+
+function readPolicyId(dir, manifestName) {
+    const file = path.join(dir, manifestName);
+    if (!fs.existsSync(file)) {
+        throw new Refused(`No ${manifestName} in ${dir}. A policy folder needs its manifest first.`);
+    }
+    // Top-level scalar only; manifest ids are plain kebab-case slugs.
     const m = fs.readFileSync(file, 'utf8').match(/^id:\s*["']?([a-z0-9]+(?:-[a-z0-9]+)*)["']?\s*(?:#.*)?$/m);
     if (!m) {
         throw new Refused(`Could not read a top-level id from ${file}.`);
@@ -57,8 +122,8 @@ function readPolicyId(dir) {
     return m[1];
 }
 
-function readLog(dir) {
-    const file = path.join(dir, 'publications.json');
+function readLog(dir, logName) {
+    const file = path.join(dir, logName);
     if (!fs.existsSync(file)) {
         return null;
     }
@@ -123,16 +188,17 @@ async function verify(network, timestamp) {
     return { version: message.version, topicId };
 }
 
-function writeLog(dir, log) {
-    fs.writeFileSync(path.join(dir, 'publications.json'), JSON.stringify(log, null, 2) + '\n');
+function writeLog(dir, logName, log) {
+    fs.writeFileSync(path.join(dir, logName), JSON.stringify(log, null, 2) + '\n');
 }
 
-async function record(dir, network, timestamp) {
+async function record(dir, manifestName, network, timestamp) {
     assertClaimShape(network, timestamp);
-    const policyId = readPolicyId(dir);
-    const log = readLog(dir) || { policy_id: policyId, entries: [] };
+    const logName = logNameFor(manifestName);
+    const policyId = readPolicyId(dir, manifestName);
+    const log = readLog(dir, logName) || { policy_id: policyId, entries: [] };
     if (log.policy_id !== policyId) {
-        throw new Refused(`publications.json is for "${log.policy_id}" but policy.yml id is "${policyId}".`);
+        throw new Refused(policyIdMismatchMessage(logName, log.policy_id, manifestName, policyId));
     }
     const existing = log.entries.find((e) => e.hedera_timestamp === timestamp);
     if (existing && existing.network === network) {
@@ -158,20 +224,21 @@ async function record(dir, network, timestamp) {
         }
     }
     log.entries.push(ordered);
-    writeLog(dir, log);
+    writeLog(dir, logName, log);
     console.log(`Recorded ${network} ${timestamp} (version ${ordered.version || '?'}, topic ${ordered.hedera_topic_id || '?'}).`);
 }
 
-async function check(dir) {
-    const log = readLog(dir);
+async function check(dir, manifestName) {
+    const logName = logNameFor(manifestName);
+    const log = readLog(dir, logName);
     if (!log) {
-        console.log(`No publications.json in ${dir}. Nothing to check.`);
+        console.log(`No ${logName} in ${dir}. Nothing to check.`);
         return;
     }
-    const policyId = readPolicyId(dir);
+    const policyId = readPolicyId(dir, manifestName);
     let failed = false;
     if (log.policy_id !== policyId) {
-        console.error(`FAIL policy_id "${log.policy_id}" does not match policy.yml id "${policyId}".`);
+        console.error(`FAIL ${policyIdMismatchMessage(logName, log.policy_id, manifestName, policyId)}`);
         failed = true;
     }
     for (const e of log.entries || []) {
@@ -198,26 +265,64 @@ async function check(dir) {
         }
     }
     if (failed) {
-        throw new Refused('publications.json failed verification.');
+        throw new Refused(`${logName} failed verification.`);
     }
 }
 
 async function main() {
     const args = parseArgs(process.argv.slice(2));
     if (!args.dir) {
-        throw new Unreachable('Usage: --dir <policy folder> (--check | --network <mainnet|testnet> --hedera-timestamp <s.n>)');
+        throw new Unreachable(
+            'Usage: --dir <policy folder> [--manifest <policy.yml | policy.<slug>.yml>] ' +
+                '(--check | --network <mainnet|testnet> --hedera-timestamp <s.n>)'
+        );
     }
     const dir = path.resolve(args.dir);
     if (args.check) {
-        return check(dir);
+        // Without --manifest, a multi-manifest folder has every manifest's log checked.
+        const manifests = resolveManifests(dir, args.manifest, true);
+        if (manifests.length === 1) {
+            return check(dir, manifests[0]);
+        }
+        let failed = false;
+        for (const manifestName of manifests) {
+            try {
+                await check(dir, manifestName);
+            } catch (e) {
+                if (!(e instanceof Refused)) {
+                    throw e;
+                }
+                console.error(e.message);
+                failed = true;
+            }
+        }
+        if (failed) {
+            throw new Refused('Verification failed.');
+        }
+        return;
     }
     if (!args.network || !args['hedera-timestamp']) {
         throw new Unreachable('Recording needs --network and --hedera-timestamp. Use --check to verify an existing log.');
     }
-    return record(dir, args.network, args['hedera-timestamp']);
+    const [manifestName] = resolveManifests(dir, args.manifest, false);
+    return record(dir, manifestName, args.network, args['hedera-timestamp']);
 }
 
-main().catch((e) => {
-    console.error(e.message);
-    process.exit(e instanceof Refused ? 1 : 2);
-});
+if (require.main === module) {
+    main().catch((e) => {
+        console.error(e.message);
+        process.exit(e instanceof Refused ? 1 : 2);
+    });
+}
+
+module.exports = {
+    MANIFEST_NAME,
+    validateManifestName,
+    logNameFor,
+    discoverManifests,
+    resolveManifests,
+    policyIdMismatchMessage,
+    readPolicyId,
+    Refused,
+    Unreachable,
+};
