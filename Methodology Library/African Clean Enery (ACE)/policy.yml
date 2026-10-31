@@ -1,0 +1,31 @@
+id: ace-african-clean-energy
+name: African Clean Energy (ACE)
+version: "1.0.0"
+description: >
+  Improved cookstove MRV workflow: a project developer registers customers,
+  stoves and shops and submits usage and fuel-sales data, a consultant and an
+  auditor review it, and approved usage and fuel tokens are converted into
+  CO2 Tonne tokens.
+policy_type: proof-of-concept
+status: superseded
+license: Apache-2.0
+category: carbon-credits
+token_type: CO2T
+token_standard: HIP-412-NFT
+roles:
+  - Project Developer
+  - Consultant
+  - Auditor
+authors:
+  - name: Fairfood
+    type: organization
+    url: https://fairfood.org/
+maintainers:
+  - name: Fairfood
+tags:
+  - cookstoves
+  - clean-energy
+  - carbon-credit
+  - mrv
+  - monitoring
+  - nft
