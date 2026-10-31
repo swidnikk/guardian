@@ -1,0 +1,22 @@
+id: ghg-korean-fixed-combustion-liquid-fuel
+name: Korean Fixed Combustion (Liquid Fuel)
+version: "0.1.2"
+description: >
+  Calculates Scope 1 direct greenhouse gas emissions from the combustion of
+  liquid fuels (such as gasoline, diesel, kerosene and fuel oils) in stationary
+  equipment, using Korean national emission factors. Supports cost-based and
+  usage-based activity data.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: emission-reporting
+authors:
+  - name: Wincl
+    type: organization
+tags:
+  - ghg-protocol
+  - asia
+standard_body: GHG Protocol
+maintainers:
+  - name: Wincl
+sector: industrial
