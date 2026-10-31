@@ -1,0 +1,25 @@
+id: ghg-remote-work-policy-scope-3
+name: Remote Work Policy (Scope 3)
+version: "1.0.0"
+description: >
+  Estimates and tokenizes Scope 3 GHG emissions from employee remote work
+  (home electricity, natural gas and waste), using employee survey responses
+  and logged work hours, with location- and market-based results. It can run
+  stand-alone or feed a GHG Protocol Corporate Standard inventory.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: emission-reporting
+authors:
+  - name: Envision
+    type: organization
+maintainers:
+  - name: Envision
+standard_body: GHG Protocol
+token_type: GHG
+token_standard: fungible
+roles:
+  - Employee
+  - Employer
+tags:
+  - ghg-protocol
