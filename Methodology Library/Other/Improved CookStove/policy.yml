@@ -10,8 +10,6 @@ policy_type: novel-methodology
 status: draft
 license: Apache-2.0
 category: carbon-credits
-token_type: HGICP-VER
-token_standard: HIP-412-NFT
 roles:
   - PROJECT_DEVELOPER
   - VALIDATOR
