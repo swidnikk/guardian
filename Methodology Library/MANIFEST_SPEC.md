@@ -1,7 +1,7 @@
 # Guardian Policy Manifest Specification
 
 > **Audience**: policy contributors and methodology authors adding or updating a policy in the Guardian Methodology Library.
-> [See PRD for additional context](../docs/guardian/community-standards/rfcs/POLICY_MANIFEST_PRD.md).
+> [See PRD for additional context](../docs/community-and-contributing/community-standards/rfcs/policy_manifest_prd.md).
 > **Schema**: [policy.schema.json](./policy.schema.json)
 
 ---
