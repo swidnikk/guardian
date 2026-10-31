@@ -1,0 +1,34 @@
+id: dovu-mmcm
+name: MMCM
+version: "1.0.0"
+description: >
+  MRV template for MMCM's end-of-life vehicle scrapping program in India. It
+  digitizes a blend of CDM AMS-III.BA and AMS-III.AJ, tracks scrapped vehicles
+  through Registered Vehicle Scrapping Facilities, and issues an ELV Asset
+  Certificate NFT.
+policy_type: mrv-template
+status: draft
+license: Apache-2.0
+category: waste
+authors:
+  - name: DOVU
+    type: organization
+contributors:
+  - name: Matt Smithies
+    type: individual
+    github: mattsmithies
+tags:
+  - mrv-template
+  - mrv
+  - end-of-life-vehicles
+  - e-waste
+  - south-asia
+standard_body: Dovu
+token_type: elv-cd-certificate
+token_standard: HIP-412-NFT
+roles:
+  - Supplier
+  - Verifier
+maintainers:
+  - name: DOVU
+sector: waste
