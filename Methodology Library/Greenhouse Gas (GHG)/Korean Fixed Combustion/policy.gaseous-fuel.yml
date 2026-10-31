@@ -1,0 +1,21 @@
+id: ghg-korean-fixed-combustion-gaseous-fuel
+name: Korean Fixed Combustion (Gaseous Fuel)
+version: "0.2.0"
+description: >
+  Calculates Scope 1 direct greenhouse gas emissions from the combustion of
+  gaseous fuels in stationary equipment, using Korean national emission
+  factors. Supports cost-based and usage-based activity data.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: emission-reporting
+authors:
+  - name: Wincl
+    type: organization
+tags:
+  - ghg-protocol
+  - asia
+standard_body: GHG Protocol
+maintainers:
+  - name: Wincl
+sector: industrial
