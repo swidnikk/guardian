@@ -1,0 +1,27 @@
+id: hackathon-puro-earth-biochar
+name: Puro.earth Biochar
+version: "0.0.1"
+description: >
+  Hackathon Guardian policy digitizing the Puro.earth Biochar Methodology.
+  Suppliers register biochar production facilities and submit monitoring
+  reports, auditors verify them, and the registry issues CO2 Removal
+  Certificates (CORCs).
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: carbon-credits
+standard_body: Puro.earth
+authors:
+  - name: Gautam Prajapati
+    type: individual
+    github: gautamp8
+tags:
+  - biochar
+  - hackathon
+roles:
+  - Supplier
+  - Auditor
+token_type: CORC
+token_standard: HIP-412-NFT
+maintainers:
+  - name: Gautam Prajapati
