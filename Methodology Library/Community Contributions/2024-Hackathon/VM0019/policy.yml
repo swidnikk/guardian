@@ -18,11 +18,11 @@ roles:
   - Project_Proponent
   - VVB
 authors:
-  - name: Satyam Tripathi
+  - name: satyacasm
     type: individual
     github: satyacasm
 maintainers:
-  - name: Satyam Tripathi
+  - name: satyacasm
 tags:
   - verra
   - vm0019

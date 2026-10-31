@@ -12,11 +12,11 @@ license: Apache-2.0
 category: carbon-credits
 sector: transport
 authors:
-  - name: Peter Kompasz
+  - name: pbkompasz
     type: individual
     github: pbkompasz
 maintainers:
-  - name: Peter Kompasz
+  - name: pbkompasz
 standard_body: Verra
 methodology_id: VM0038
 roles:

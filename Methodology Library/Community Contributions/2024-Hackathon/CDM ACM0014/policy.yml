@@ -10,7 +10,7 @@ status: draft
 license: Apache-2.0
 category: waste
 authors:
-  - name: Denis Muriungi
+  - name: riush03
     type: individual
     github: riush03
 tags:
@@ -26,5 +26,5 @@ roles:
 token_type: CER
 token_standard: HIP-412-NFT
 maintainers:
-  - name: Denis Muriungi
+  - name: riush03
 sector: waste

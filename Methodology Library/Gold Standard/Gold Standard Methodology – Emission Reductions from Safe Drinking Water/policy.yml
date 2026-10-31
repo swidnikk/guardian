@@ -10,7 +10,7 @@ status: draft
 license: Apache-2.0
 category: carbon-credits
 authors:
-  - name: Gayanath Ranasinghe
+  - name: gayanath8
     type: individual
     github: gayanath8
 tags:
@@ -23,5 +23,5 @@ roles:
   - Project Developer
   - Validation and Verification Body
 maintainers:
-  - name: Gayanath Ranasinghe
+  - name: gayanath8
 sector: water

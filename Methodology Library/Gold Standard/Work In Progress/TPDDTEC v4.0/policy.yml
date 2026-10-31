@@ -11,7 +11,7 @@ status: draft
 license: Apache-2.0
 category: carbon-credits
 authors:
-  - name: Saharsh Khicha
+  - name: saharshkhicha18
     type: individual
     github: saharshkhicha18
 tags:
@@ -29,5 +29,5 @@ roles:
   - NGO Supporters
   - Gold Standard
 maintainers:
-  - name: Saharsh Khicha
+  - name: saharshkhicha18
 sector: energy

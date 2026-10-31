@@ -11,11 +11,11 @@ license: Apache-2.0
 category: carbon-credits
 sector: agriculture
 authors:
-  - name: Samuel Adeyemi
+  - name: SammyAdey
     type: individual
     github: SammyAdey
 maintainers:
-  - name: Samuel Adeyemi
+  - name: SammyAdey
 tags:
   - hackathon
   - agriculture
