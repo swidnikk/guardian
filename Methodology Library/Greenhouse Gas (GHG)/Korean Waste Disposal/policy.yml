@@ -1,0 +1,22 @@
+id: ghg-korean-waste-disposal
+name: Korean Waste Disposal
+version: "1.0.0"
+description: >
+  Calculates Scope 1 greenhouse gas emissions from waste treatment in Korea,
+  covering incineration, landfilling and biological treatment, following the
+  national guidelines of the Greenhouse Gas Inventory and Research Center of
+  Korea (GIR).
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: emission-reporting
+authors:
+  - name: Wincl
+    type: organization
+tags:
+  - ghg-protocol
+  - asia
+standard_body: GHG Protocol
+maintainers:
+  - name: Wincl
+sector: waste
