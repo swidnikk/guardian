@@ -1,0 +1,27 @@
+id: hackathon-ecoregenalliance-main
+name: EcoRegenAlliance-main
+version: "1.0.0"
+description: >
+  Guardian policy for algae-based carbon sequestration supply chains, from
+  cultivation through biomass to biochar. Project Proponents and VVBs submit
+  monitoring reports to mint ECO tokens, and damage reports allow affected
+  token batches to be retired.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: carbon-credits
+token_standard: HIP-412-NFT
+token_type: ECO
+roles:
+  - Project_Proponent
+  - VVB
+authors:
+  - name: EcoRegen Alliance
+    type: organization
+    github: phahim1
+maintainers:
+  - name: EcoRegen Alliance
+tags:
+  - hackathon
+  - biochar
+  - carbon-credit
