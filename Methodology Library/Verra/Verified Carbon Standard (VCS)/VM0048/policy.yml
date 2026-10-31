@@ -1,0 +1,32 @@
+id: verra-vm0048
+name: VM0048
+version: "2.0.0"
+description: >
+  Guardian implementation of Verra VM0048, Reducing Emissions from Deforestation
+  and Forest Degradation (REDD), including the VMD0055 module for avoiding
+  unplanned deforestation. Verified Carbon Units (VCU) are issued to the project
+  proponent after VVB verification.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: erikamoji
+    type: individual
+    github: erikamoji
+tags:
+  - verra
+  - vm0048
+  - redd-plus
+  - forest
+  - vcu
+standard_body: Verra
+methodology_id: VM0048
+token_type: VCU
+token_standard: HIP-412-NFT
+roles:
+  - VVB
+  - Project_Proponent
+maintainers:
+  - name: erikamoji
+sector: land-use
