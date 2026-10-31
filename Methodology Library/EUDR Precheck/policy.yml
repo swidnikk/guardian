@@ -1,0 +1,30 @@
+id: eudr-precheck
+name: EUDR Precheck
+version: "1.0.0"
+description: >
+  Multi-party pre-check workflow for the EU Deforestation Regulation (EUDR):
+  a supplier submits farmer polygons, which are validated for geometry,
+  screened against public deforestation-risk layers, scored by an analyst and
+  endorsed by the registry before an EUDR token is minted.
+policy_type: novel-methodology
+status: draft
+license: Apache-2.0
+category: supply-chain
+token_type: ET
+token_standard: fungible
+roles:
+  - Methodology Owner
+  - Data Collector
+  - Analyst
+  - Facilitator
+authors:
+  - name: Fairfood
+    type: organization
+    url: https://fairfood.org/
+maintainers:
+  - name: Fairfood
+tags:
+  - eudr
+  - deforestation
+  - supply-chain
+  - geospatial
