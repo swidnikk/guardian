@@ -1,0 +1,29 @@
+id: hackathon-urbano2asis-main
+name: UrbanO2asis-main
+version: "1.0.0"
+description: >
+  Hackathon Guardian policy for urban greening projects. Project proponents
+  register projects, air quality monitors supply baseline and ongoing
+  measurements, verifiers review outcomes, and fungible tokens are minted for
+  air quality improvement, greening and community engagement.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: other
+category_note: Urban greening and air quality improvement; no listed category fits exactly.
+authors:
+  - name: contrabandinteractive
+    type: individual
+    github: contrabandinteractive
+tags:
+  - hackathon
+  - biodiversity
+  - token
+roles:
+  - Project Proponent
+  - Verifier
+  - Air Quality Monitor
+  - Local Community Representative
+  - Urban Planner
+maintainers:
+  - name: contrabandinteractive
