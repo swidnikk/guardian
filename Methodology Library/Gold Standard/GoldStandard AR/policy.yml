@@ -1,0 +1,33 @@
+id: gold-standard-ar
+name: GoldStandard AR
+version: "1.0.0"
+description: >
+  Guardian implementation of the Gold Standard Afforestation/Reforestation (A/R)
+  GHG Emissions Reduction & Sequestration Methodology. Quantifies removals from
+  above- and below-ground tree biomass and issues Verified Emission Reductions
+  (VERs) after VVB verification.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Envision
+    type: organization
+tags:
+  - gold-standard
+  - afforestation
+  - reforestation
+  - ver
+  - nft
+standard_body: Gold Standard
+methodology_version: "2.0"
+token_type: VER
+token_standard: HIP-412-NFT
+roles:
+  - Project_Proponent
+  - VVB
+  - Technical Advisory Committee
+  - NGO Supporters
+maintainers:
+  - name: Envision
+sector: land-use
