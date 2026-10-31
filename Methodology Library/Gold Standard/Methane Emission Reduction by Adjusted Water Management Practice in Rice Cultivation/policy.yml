@@ -1,0 +1,33 @@
+id: gold-standard-methane-emission-reduction-by-adjusted-water-management-practice-in-rice-cultivation
+name: Methane Emission Reduction by Adjusted Water Management Practice in Rice Cultivation
+version: "1.0.0"
+description: >
+  Guardian implementation of the Gold Standard methodology for reducing methane
+  emissions in rice cultivation through adjusted water management, such as
+  alternate wetting and drying. Verified Emission Reductions (VERs) are minted
+  after VVB verification and registry approval.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: unknown
+tags:
+  - gold-standard
+  - ver
+  - carbon-credit
+  - nft
+  - agriculture
+  - rice
+standard_body: Gold Standard
+token_type: VER
+token_standard: HIP-412-NFT
+roles:
+  - Project_Proponent
+  - VVB
+  - Technical Advisory Committee
+  - NGO Supporters
+  - Gold Standard
+maintainers:
+  - name: unknown
+sector: agriculture
