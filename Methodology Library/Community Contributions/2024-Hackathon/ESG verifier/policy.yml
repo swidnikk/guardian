@@ -1,0 +1,26 @@
+id: hackathon-esg-verifier
+name: ESG verifier
+version: "0.1.0"
+description: >
+  Registrants submit ESG scores for financial institutions, which a Verifier
+  reviews and approves; approved scores are recorded and a fungible token is
+  minted by the Verifier.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: other
+category_note: ESG score verification
+token_type: DOVU CCP
+token_standard: fungible
+roles:
+  - Registrant
+  - Verifier
+authors:
+  - name: gitjeet
+    type: individual
+    github: gitjeet
+maintainers:
+  - name: gitjeet
+tags:
+  - hackathon
+  - token
