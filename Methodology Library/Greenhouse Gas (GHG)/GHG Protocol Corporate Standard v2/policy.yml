@@ -1,0 +1,27 @@
+id: ghg-protocol-corporate-standard-v2
+name: GHG Protocol Corporate Standard v2
+version: "1.0.0"
+description: >
+  Corporate GHG inventory policy following the GHG Protocol Corporate Standard
+  (Scope 1, Scope 2 and selected Scope 3 sources). Organizations build an
+  entity, asset and source hierarchy, optionally verified by a VVB, and
+  Carbon Emission Tokens (1 tCO2e each) are minted; it also publishes
+  product carbon footprints per the Pathfinder Framework v2.0.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: emission-reporting
+authors:
+  - name: Envision
+    type: organization
+maintainers:
+  - name: Envision
+standard_body: GHG Protocol
+token_type: GHGP
+token_standard: fungible
+roles:
+  - Organization
+  - VVB
+tags:
+  - ghg-protocol
+  - mrv
