@@ -1,0 +1,30 @@
+id: verra-vm0033
+name: VM0033
+version: "1.0.0"
+description: >
+  Guardian implementation of Verra VCS methodology VM0033, Tidal Wetland and
+  Seagrass Restoration. Verified emission reductions and removals are minted
+  as VCU tokens.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Gautam Prajapati
+    type: individual
+    github: gautamp8
+tags:
+  - verra
+  - vm0033
+  - blue-carbon
+  - vcu
+standard_body: Verra
+methodology_id: VM0033
+token_type: VCU
+token_standard: HIP-412-NFT
+roles:
+  - Project_Proponent
+  - VVB
+maintainers:
+  - name: Alexander Pyatakov
+sector: land-use
