@@ -1,0 +1,26 @@
+id: dovu-agricultural-soils-of-western-australia-mrv
+name: Agricultural soils of Western Australia MRV
+version: "1.0.0"
+description: >
+  MRV template for soil organic carbon measurement in Western Australian
+  agricultural soils, based on guidance from the WA Department of Primary
+  Industries and Regional Development. Captures soil depth, bulk density,
+  carbon value and SOC per hectare for verifier review.
+policy_type: mrv-template
+status: draft
+license: Apache-2.0
+category: sustainable-agriculture
+authors:
+  - name: DOVU
+    type: organization
+tags:
+  - agriculture
+standard_body: Dovu
+token_type: Agricultural AU
+token_standard: fungible
+roles:
+  - Registrant
+  - Verifier
+maintainers:
+  - name: DOVU
+sector: agriculture
