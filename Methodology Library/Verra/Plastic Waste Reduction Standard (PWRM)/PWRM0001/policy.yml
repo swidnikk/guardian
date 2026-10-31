@@ -1,0 +1,29 @@
+id: verra-pwrm0001
+name: PWRM0001
+version: "1.0.0"
+description: >
+  Guardian implementation of Verra's Plastic Waste Reduction Standard
+  methodology PWRM0001, quantifying additional plastic waste collected or
+  diverted from the environment. Verified collection is minted as Waste
+  Collection Credit (WCC) tokens.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Envision
+    type: organization
+tags:
+  - verra
+  - pwrm0001
+  - plastic
+standard_body: Verra
+methodology_id: PWRM0001
+token_type: WCC
+token_standard: HIP-412-NFT
+roles:
+  - Project_Proponent
+  - VVB
+maintainers:
+  - name: Envision
+sector: waste
