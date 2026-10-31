@@ -1,0 +1,28 @@
+id: cdm-acm0001
+name: CDM ACM0001
+version: "1.0.0"
+description: >
+  Guardian implementation of CDM methodology ACM0001, flaring or use of landfill
+  gas. Verified emission reductions are minted as CER tokens.
+policy_type: standard-implementation
+status: deprecated
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Envision
+    type: organization
+  - name: UNFCCC
+    type: organization
+tags:
+  - cdm
+  - landfill
+  - cer
+standard_body: UNFCCC CDM
+methodology_id: ACM0001
+token_type: CER
+token_standard: HIP-412-NFT
+roles:
+  - Project Participant
+  - VVB
+maintainers:
+  - name: Envision
