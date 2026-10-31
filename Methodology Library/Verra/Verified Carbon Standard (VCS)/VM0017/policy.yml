@@ -1,0 +1,30 @@
+id: verra-vm0017
+name: VM0017
+version: "1.0.0"
+description: >
+  Guardian implementation of Verra VCS methodology VM0017, adoption of
+  sustainable agricultural land management. Verified emission reductions are
+  issued to the Project Proponent as VCU tokens.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Envision
+    type: organization
+tags:
+  - verra
+  - vm0017
+  - agriculture
+  - soil-carbon
+  - vcu
+standard_body: Verra
+methodology_id: VM0017
+token_type: VCU
+token_standard: HIP-412-NFT
+roles:
+  - Project_Proponent
+  - VVB
+maintainers:
+  - name: Envision
+sector: agriculture
