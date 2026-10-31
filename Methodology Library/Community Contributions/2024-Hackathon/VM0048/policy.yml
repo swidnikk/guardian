@@ -1,0 +1,34 @@
+id: hackathon-vm0048
+name: VM0048
+version: "1.0.0"
+description: >
+  Hackathon proof-of-concept Guardian implementation of Verra VM0048, Reducing
+  Emissions from Deforestation and Forest Degradation (REDD), with the VMD0055
+  module for avoiding unplanned deforestation. Verified Carbon Units (VCU) are
+  minted to the project proponent after VVB verification.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: erikamoji
+    type: individual
+    github: erikamoji
+tags:
+  - hackathon
+  - verra
+  - vm0048
+  - redd-plus
+  - forest
+  - deforestation
+  - vcu
+standard_body: Verra
+methodology_id: VM0048
+token_type: VCU
+token_standard: HIP-412-NFT
+roles:
+  - VVB
+  - Project_Proponent
+maintainers:
+  - name: erikamoji
+sector: land-use
