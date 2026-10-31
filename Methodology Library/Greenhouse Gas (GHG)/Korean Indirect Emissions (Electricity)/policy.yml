@@ -1,0 +1,21 @@
+id: ghg-korean-indirect-emissions-electricity
+name: Korean Indirect Emissions (Electricity)
+version: "0.1.8"
+description: >
+  Calculates Scope 2 indirect greenhouse gas emissions from purchased
+  electricity in Korea, supporting location-based and market-based approaches
+  with renewable energy certificates (PPA, REC, equity participation).
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: emission-reporting
+authors:
+  - name: Wincl
+    type: organization
+tags:
+  - ghg-protocol
+  - asia
+standard_body: GHG Protocol
+maintainers:
+  - name: Wincl
+sector: energy
