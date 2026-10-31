@@ -1,0 +1,21 @@
+id: ghg-korean-mobile-combustion
+name: Korean Mobile Combustion
+version: "1.0.0"
+description: >
+  Quantifies Scope 1 direct greenhouse gas emissions from road transport fuel
+  combustion (passenger cars, vans, trucks) for reporting organizations in
+  Korea, using national default calorific values and emission factors.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: emission-reporting
+authors:
+  - name: Wincl
+    type: organization
+tags:
+  - ghg-protocol
+  - asia
+standard_body: GHG Protocol
+maintainers:
+  - name: Wincl
+sector: transport
