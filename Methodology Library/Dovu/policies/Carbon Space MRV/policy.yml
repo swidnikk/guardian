@@ -1,0 +1,26 @@
+id: dovu-carbon-space-mrv
+name: Carbon Space MRV
+version: "1.0.0"
+description: >
+  DOVU MRV template for satellite-derived carbon footprint reports from the
+  Carbon Space platform. A Registrant submits asset ID, footprint, area and
+  report link, and a Verifier approves it before fungible tokens are minted.
+policy_type: mrv-template
+status: draft
+license: Apache-2.0
+category: emission-reporting
+authors:
+  - name: DOVU
+    type: organization
+tags:
+  - mrv-template
+  - mrv
+  - geospatial
+standard_body: Dovu
+token_type: Carbon Space
+token_standard: fungible
+roles:
+  - Registrant
+  - Verifier
+maintainers:
+  - name: DOVU
