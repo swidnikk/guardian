@@ -1,0 +1,128 @@
+name: Validate Methodology Manifests
+on:
+  pull_request:
+    paths:
+      - 'Methodology Library/**/policy.yml'
+      - 'Methodology Library/**/policy.*.yml'
+      - 'Methodology Library/policy.schema.json'
+      - 'Methodology Library/publications.schema.json'
+      - 'Methodology Library/**/publications*.json'
+      - 'Methodology Library/TAG_TAXONOMY.md'
+      - 'Methodology Library/scripts/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-manifests-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate manifests
+    runs-on: hg-guard-lin-md
+    timeout-minutes: 15
+    env:
+      NODE_VERSION: "24.22.1"
+      YQ_VERSION: "v4.53.6"
+    defaults:
+      run:
+        shell: bash
+        working-directory: Methodology Library
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install ajv-cli, ajv-formats and yq
+        run: |
+          npm install -g ajv-cli ajv-formats
+          sudo wget -q -O /usr/local/bin/yq "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64"
+          sudo chmod +x /usr/local/bin/yq
+          yq --version
+
+      - name: Validate manifests against policy.schema.json
+        run: |
+          fail=0
+          tmp="$(mktemp -d)/manifest.json"   # ajv-cli picks its parser from the .json extension
+          count=0
+          while IFS= read -r -d '' f; do
+            count=$((count + 1))
+            yq -o=json . "$f" > "$tmp"
+            if ! out="$(ajv validate --spec=draft2020 -c ajv-formats -s policy.schema.json -d "$tmp" 2>&1)"; then
+              echo "::error file=Methodology Library/${f#./}::Does not validate against policy.schema.json"
+              echo "$out"
+              fail=1
+            fi
+          done < <(find . \( -name 'policy.yml' -o -name 'policy.*.yml' \) -type f -print0)
+          echo "Validated $count manifests."
+          exit $fail
+
+      - name: Check directories do not mix policy.yml with policy.<slug>.yml
+        run: |
+          fail=0
+          while IFS= read -r -d '' f; do
+            dir="$(dirname "$f")"
+            if [ -n "$(find "$dir" -maxdepth 1 -name 'policy.*.yml' -type f -print -quit)" ]; then
+              echo "::error file=Methodology Library/${f#./}::$dir has both policy.yml and policy.<slug>.yml. Use one policy.yml or several policy.<slug>.yml, never both."
+              fail=1
+            fi
+          done < <(find . -name 'policy.yml' -type f -print0)
+          exit $fail
+
+      - name: Check ids are unique across all manifests
+        run: |
+          ids="$(mktemp)"
+          while IFS= read -r -d '' f; do
+            printf '%s\t%s\n' "$(yq -r '.id' "$f")" "$f" >> "$ids"
+          done < <(find . \( -name 'policy.yml' -o -name 'policy.*.yml' \) -type f -print0)
+          dups="$(cut -f1 "$ids" | sort | uniq -d)"
+          if [ -n "$dups" ]; then
+            while IFS= read -r id; do
+              echo "::error::Duplicate manifest id \"$id\" in:"
+              awk -F'\t' -v id="$id" '$1 == id { print "  " $2 }' "$ids"
+            done <<< "$dups"
+            exit 1
+          fi
+
+      - name: Warn about tags missing from TAG_TAXONOMY.md
+        run: |
+          while IFS= read -r -d '' f; do
+            while IFS= read -r tag; do
+              [ -z "$tag" ] && continue
+              if ! grep -qF "\`$tag\`" TAG_TAXONOMY.md; then
+                echo "::warning file=Methodology Library/${f#./}::Tag \"$tag\" is not in TAG_TAXONOMY.md (allowed, but consider an existing tag)."
+              fi
+            done < <(yq -r '.tags[]?' "$f")
+          done < <(find . \( -name 'policy.yml' -o -name 'policy.*.yml' \) -type f -print0)
+
+      - name: Validate publication logs against publications.schema.json
+        run: |
+          fail=0
+          while IFS= read -r -d '' f; do
+            if ! out="$(ajv validate --spec=draft2020 -c ajv-formats -s publications.schema.json -d "$f" 2>&1)"; then
+              echo "::error file=Methodology Library/${f#./}::Does not validate against publications.schema.json"
+              echo "$out"
+              fail=1
+            fi
+          done < <(find . -name 'publications*.json' ! -name 'publications.schema.json' -type f -print0)
+          exit $fail
+
+      - name: Unit tests for record-publication.js (offline)
+        run: node --test scripts/record-publication.test.js
+
+      # Separate from the checks above: --check asks the Hedera mirror nodes, so a mirror outage
+      # must not fail a PR. continue-on-error shows the step as a warning instead of blocking merge.
+      - name: Re-verify publication logs on Hedera (mirror nodes, non-blocking)
+        continue-on-error: true
+        run: |
+          fail=0
+          while IFS= read -r dir; do
+            node scripts/record-publication.js --dir "$dir" --check || fail=1
+          done < <(find . -name 'publications*.json' ! -name 'publications.schema.json' -type f -print0 | xargs -0 -n1 dirname | sort -u)
+          exit $fail

@@ -235,7 +235,17 @@ A directory that uses `policy.<slug>.yml` (see [One manifest per directory](#one
 
 The `policy_id` in `publications.<slug>.json` must equal the `id` in `policy.<slug>.yml`. The file format is unchanged.
 
-> **Not yet supported by tooling.** `scripts/record-publication.js` currently reads only `policy.yml` and writes only `publications.json`, so it cannot record or check a `publications.<slug>.json` log until it is extended (for example with a `--manifest` option). Until then, do not hand-write these logs: the log is written only by the script.
+The script takes `--manifest <file>` (default `policy.yml`; it must be a bare file name matching `policy.yml` or `policy.<slug>.yml`, not a path) and derives the log name from it. In a directory with several manifests it needs `--manifest` to record, and refuses rather than guess; `--check` without `--manifest` checks every manifest's log:
+
+```bash
+node scripts/record-publication.js \
+  --dir "Greenhouse Gas (GHG)/Korean Fixed Combustion" \
+  --manifest policy.gaseous-fuel.yml \
+  --network testnet \
+  --hedera-timestamp 1707207286.119377003
+```
+
+Logs are still written only by the script, never by hand.
 
 ### Recording a publication
 
@@ -253,7 +263,7 @@ The script looks the timestamp up on the mirror node for the network you name:
 - mainnet: `https://mainnet-public.mirrornode.hedera.com/api/v1/topics/messages/<timestamp>`
 - testnet: `https://testnet.mirrornode.hedera.com/api/v1/topics/messages/<timestamp>`
 
-It refuses to record the entry unless the message exists on that network and is a Guardian `publish-policy` message. It then reads `version` and the topic id from the message and appends the entry. Re-recording a timestamp already in the log is a no-op. `--check` re-verifies every entry in the log without writing, so CI can run it.
+It refuses to record the entry unless the message exists on that network and is a Guardian `publish-policy` message. It then reads `version` and the topic id from the message and appends the entry. Re-recording a timestamp already in the log is a no-op. `--check` re-verifies every entry in the log without writing. A directory with a single manifest needs no `--manifest`.
 
 ### Where publications show up
 
@@ -343,4 +353,12 @@ done
 
 ### CI
 
-A GitHub Actions workflow (`.github/workflows/validate-manifests.yml`) runs this check on every PR that touches a `policy.yml` or `policy.*.yml` file (path filters `Methodology Library/**/policy.yml` and `Methodology Library/**/policy.*.yml`). Failures block merge. Tag warnings (unrecognized tags from `TAG_TAXONOMY.md`) are reported as annotations but do not block merge.
+A GitHub Actions workflow (`.github/workflows/validate-manifests.yml`) runs on pull requests (and manually) that touch `Methodology Library/**/policy.yml`, `Methodology Library/**/policy.*.yml`, `Methodology Library/**/publications*.json`, `policy.schema.json`, `publications.schema.json`, `TAG_TAXONOMY.md` or `scripts/**`. It:
+
+- validates every `policy.yml` and `policy.<slug>.yml` against `policy.schema.json` (the commands above);
+- fails if a directory holds both `policy.yml` and a `policy.<slug>.yml`, or if two manifests share an `id`;
+- validates every `publications*.json` against `publications.schema.json`;
+- runs the offline unit tests for `scripts/record-publication.js` (`node --test`);
+- reports tags missing from `TAG_TAXONOMY.md` as `::warning` annotations.
+
+Failures in these checks block merge; tag warnings do not. The last step runs `record-publication.js --check` for each directory that has a log. It asks the Hedera mirror nodes, so it is set to `continue-on-error`: an outage or a mismatch shows as a warning on the run and does not block merge.
