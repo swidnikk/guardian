@@ -1,0 +1,26 @@
+id: cdm-ams-iii-f
+name: CDM AMS-III.F
+version: "1.0.0"
+description: >
+  Guardian implementation of CDM methodology AMS-III.F, avoidance of methane
+  emissions through composting. Verified emission reductions are minted as CER
+  tokens.
+policy_type: standard-implementation
+status: deprecated
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Envision
+    type: organization
+tags:
+  - cdm
+  - cer
+standard_body: UNFCCC CDM
+methodology_id: AMS-III.F
+token_type: CER
+token_standard: HIP-412-NFT
+roles:
+  - Project Participant
+  - VVB
+maintainers:
+  - name: Envision
