@@ -1,0 +1,28 @@
+id: hackathon-ams-3-z
+name: AMS-3.Z
+version: "1.0.0"
+description: >
+  Hackathon Guardian implementation of CDM methodology AMS-III.Z, fuel switch,
+  process improvement and energy efficiency in brick manufacture. A project
+  proponent submits project and monitoring data for VVB review, and carbon
+  reduction credits are issued.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: hawk012
+    type: individual
+    github: hawk012
+tags:
+  - hackathon
+  - cdm
+  - carbon-credit
+standard_body: UNFCCC CDM
+methodology_id: AMS-III.Z
+roles:
+  - VVB
+  - Project_Proponent
+maintainers:
+  - name: hawk012
+sector: industrial
