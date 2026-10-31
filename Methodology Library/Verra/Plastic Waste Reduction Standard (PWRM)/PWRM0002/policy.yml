@@ -1,0 +1,29 @@
+id: verra-pwrm0002
+name: PWRM0002
+version: "1.0.0"
+description: >
+  Guardian implementation of Verra's Plastic Waste Reduction Standard methodology
+  PWRM0002, which quantifies additional plastic waste recycled through chemical
+  and/or mechanical recycling. Verified recycling is issued as Waste Recycling
+  Credits (WRC).
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Envision
+    type: organization
+tags:
+  - verra
+  - plastic
+  - pwrm0002
+standard_body: Verra
+methodology_id: PWRM0002
+token_type: WRC
+token_standard: HIP-412-NFT
+roles:
+  - Project_Proponent
+  - VVB
+maintainers:
+  - name: Envision
+sector: waste
