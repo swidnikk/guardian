@@ -1,0 +1,29 @@
+id: dovu-soil-carbon-coalition-mrv
+name: Soil Carbon Coalition MRV
+version: "1.0.0"
+description: >
+  DOVU MRV template that codifies the field soil assessment form (p.42) of the
+  Soil Carbon Coalition guide "Measuring Soil Carbon Change". A Registrant
+  submits plot, soil and carbon data, a Verifier approves it, and
+  SoilCarbonCoalition fungible tokens are minted.
+policy_type: mrv-template
+status: draft
+license: Apache-2.0
+category: sustainable-agriculture
+authors:
+  - name: DOVU
+    type: organization
+tags:
+  - mrv-template
+  - mrv
+  - agriculture
+  - soil-carbon
+standard_body: Dovu
+token_type: SoilCarbonCoalition
+token_standard: fungible
+roles:
+  - Registrant
+  - Verifier
+maintainers:
+  - name: DOVU
+sector: agriculture
