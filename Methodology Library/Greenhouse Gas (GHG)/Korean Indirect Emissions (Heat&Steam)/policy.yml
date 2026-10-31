@@ -1,0 +1,22 @@
+id: ghg-korean-indirect-emissions-heatsteam
+name: "Korean Indirect Emissions (Heat&Steam)"
+version: "1.0.0"
+description: >
+  Calculates Scope 2 indirect greenhouse gas emissions from purchased heat and
+  steam (district heating and cooling) in Korea, using branch-specific
+  emission factors published by the supplier, such as Korea District Heating
+  Corporation.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: emission-reporting
+authors:
+  - name: Wincl
+    type: organization
+tags:
+  - ghg-protocol
+  - asia
+standard_body: GHG Protocol
+maintainers:
+  - name: Wincl
+sector: energy
