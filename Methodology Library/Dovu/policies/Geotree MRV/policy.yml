@@ -1,0 +1,27 @@
+id: dovu-geotree-mrv
+name: Geotree MRV
+version: "1.0.0"
+description: >
+  DOVU MRV template for qualitative land-cover data extracted from Geotree
+  satellite-imagery reports. A Registrant submits the report fields, a Verifier
+  approves them, and Geotree fungible tokens are minted.
+policy_type: mrv-template
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: DOVU
+    type: organization
+tags:
+  - mrv-template
+  - mrv
+  - geospatial
+standard_body: Dovu
+token_type: Geotree
+token_standard: fungible
+roles:
+  - Registrant
+  - Verifier
+maintainers:
+  - name: DOVU
+sector: land-use
