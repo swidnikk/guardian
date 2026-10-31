@@ -1,0 +1,26 @@
+id: irec-international-renewable-energy-certificate
+name: International Renewable Energy Certificate (iREC)
+version: "10.1.0"
+description: >
+  Guardian implementation of the I-REC Standard and I-REC(E) Product Code for
+  tokenizing renewable electricity certificates. A Registrant registers a
+  generation device and submits verified meter data, and the Issuer approves
+  issue requests that mint iREC tokens.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: renewable-energy
+authors:
+  - name: Envision
+    type: organization
+tags:
+  - irec
+  - renewable-energy
+standard_body: iREC
+token_type: iRec
+token_standard: HIP-412-NFT
+roles:
+  - Registrant
+maintainers:
+  - name: Envision
+sector: energy
