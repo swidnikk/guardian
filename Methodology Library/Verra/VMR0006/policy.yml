@@ -1,0 +1,30 @@
+id: verra-vmr0006
+name: VMR0006
+version: "1.0.0"
+description: >
+  Guardian implementation of Verra VMR0006, Energy Efficiency and Fuel Switch
+  Measures in Thermal Applications, an extension of CDM AMS-II.G for improved
+  cookstove projects. Verified emission reductions are minted as VCU tokens.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Venkatesh R
+    type: individual
+tags:
+  - verra
+  - vmr0006
+  - cookstoves
+  - clean-energy
+  - vcu
+standard_body: Verra
+methodology_id: VMR0006
+token_type: VCU
+token_standard: HIP-412-NFT
+roles:
+  - Project_Proponent
+  - VVB
+maintainers:
+  - name: Venkatesh R
+sector: energy
