@@ -1,0 +1,30 @@
+id: hackathon-cdm-acm0014
+name: CDM ACM0014
+version: "1.0.0"
+description: >
+  Hackathon Guardian implementation of CDM methodology ACM0014, treatment of
+  wastewater. A project participant submits project and monitoring data for VVB
+  verification, and CER tokens are minted for the emission reductions.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: waste
+authors:
+  - name: Denis Muriungi
+    type: individual
+    github: riush03
+tags:
+  - hackathon
+  - cdm
+  - water
+  - carbon-credit
+standard_body: UNFCCC CDM
+methodology_id: ACM0014
+roles:
+  - Project Participant
+  - VVB
+token_type: CER
+token_standard: HIP-412-NFT
+maintainers:
+  - name: Denis Muriungi
+sector: waste
