@@ -1,0 +1,33 @@
+id: gold-standard-tpddtec-v4-0
+name: TPDDTEC v4.0
+version: "1.0.0"
+description: >
+  Guardian implementation of Gold Standard TPDDTEC v4.0 (Technologies and
+  Practices to Displace Decentralized Thermal Energy Consumption), a revision
+  of TPDDTEC v3.1. Work in progress: the folder holds two bundle revisions
+  (v4.0.0 and v4.0.1). Projects may be issued GSVERs.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Saharsh Khicha
+    type: individual
+    github: saharshkhicha18
+tags:
+  - gold-standard
+  - clean-energy
+standard_body: Gold Standard
+methodology_id: TPDDTEC
+methodology_version: "4.0.0"
+token_type: VER
+token_standard: fungible
+roles:
+  - Project_Proponent
+  - VVB
+  - Technical Advisory Committee
+  - NGO Supporters
+  - Gold Standard
+maintainers:
+  - name: Saharsh Khicha
+sector: energy
