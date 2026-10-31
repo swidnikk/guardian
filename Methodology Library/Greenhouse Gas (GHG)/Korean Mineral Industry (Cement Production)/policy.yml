@@ -1,0 +1,21 @@
+id: ghg-korean-mineral-industry-cement-production
+name: Korean Mineral Industry (Cement Production)
+version: "1.0.0"
+description: >
+  Calculates Scope 1 direct CO2 emissions from cement production (clinker
+  calcination and cement kiln dust) in Korea, following the national guidelines
+  of the Greenhouse Gas Inventory and Research Center of Korea.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: emission-reporting
+authors:
+  - name: Wincl
+    type: organization
+tags:
+  - ghg-protocol
+  - asia
+standard_body: GHG Protocol
+maintainers:
+  - name: Wincl
+sector: industrial
