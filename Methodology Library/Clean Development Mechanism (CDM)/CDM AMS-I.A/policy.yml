@@ -1,0 +1,29 @@
+id: cdm-ams-i-a
+name: CDM AMS-I.A
+version: "1.0.0"
+description: >
+  Guardian implementation of CDM small-scale methodology AMS-I.A, electricity
+  generation by the user from renewable sources. Verified emission reductions
+  are minted as CER tokens.
+policy_type: standard-implementation
+status: deprecated
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Envision
+    type: organization
+  - name: UNFCCC
+    type: organization
+tags:
+  - cdm
+  - renewable-energy
+  - cer
+standard_body: UNFCCC CDM
+methodology_id: AMS-I.A
+token_type: CER
+token_standard: HIP-412-NFT
+roles:
+  - Project Participant
+  - VVB
+maintainers:
+  - name: Envision
