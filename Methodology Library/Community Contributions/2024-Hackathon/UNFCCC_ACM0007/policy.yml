@@ -1,0 +1,29 @@
+id: hackathon-unfccc-acm0007
+name: UNFCCC_ACM0007
+version: "1.0.0"
+description: >
+  Hackathon Guardian policy for CDM methodology ACM0007, conversion from single
+  cycle to combined cycle power generation. Project participants submit
+  monitoring data, VVBs verify it, and a Tokens Manager role mints CER and
+  CCPT tokens.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: carbon-credits
+sector: energy
+standard_body: UNFCCC CDM
+methodology_id: ACM0007
+authors:
+  - name: ankurgupta007
+    type: individual
+    github: ankurgupta007
+tags:
+  - cdm
+  - cer
+  - hackathon
+roles:
+  - Project Participant
+  - VVB
+  - Tokens Manager
+maintainers:
+  - name: ankurgupta007
