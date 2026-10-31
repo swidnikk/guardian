@@ -1,0 +1,30 @@
+id: verra-vm0042-discontinued
+name: VM0042 Discontinued
+version: "1.0.0"
+description: >
+  Guardian implementation of Verra methodology VM0042, improved agricultural
+  land management, quantifying emission reductions and carbon storage increases
+  from practices such as reduced tillage and fertilizer use and cover cropping.
+  Verified reductions are minted as VCU tokens.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Envision
+    type: organization
+tags:
+  - verra
+  - vm0042
+  - agriculture
+  - soil-carbon
+standard_body: Verra
+methodology_id: VM0042
+token_type: VCU
+token_standard: HIP-412-NFT
+roles:
+  - Project_Proponent
+  - VVB
+maintainers:
+  - name: Envision
+sector: agriculture
