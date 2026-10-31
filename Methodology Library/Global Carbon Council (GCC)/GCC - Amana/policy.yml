@@ -1,0 +1,28 @@
+id: gcc-amana
+name: GCC - Amana
+version: "1.0.0"
+description: >
+  KrypC Carbon Core policy for renewable energy generation projects supplying
+  electricity to the grid or captive consumers, implementing GCC methodology
+  GCCM001. Meter data drives emission reduction calculations, and auditor-approved
+  reductions are minted as carbon credit NFTs.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+standard_body: GCC
+methodology_id: GCCM001
+methodology_version: "3.0"
+token_type: AMAMR01
+token_standard: HIP-412-NFT
+sector: energy
+authors:
+  - name: KrypC
+    type: organization
+maintainers:
+  - name: KrypC
+tags:
+  - gcc
+  - renewable-energy
+  - carbon-credit
+  - nft
