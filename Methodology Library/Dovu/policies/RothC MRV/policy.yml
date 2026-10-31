@@ -1,0 +1,28 @@
+id: dovu-rothc-mrv
+name: RothC MRV
+version: "1.0.0"
+description: >
+  DOVU MRV template for measuring soil organic carbon changes with the RothC
+  model, based on work by Omdena. A Registrant submits climate, soil and
+  residue inputs, a Verifier approves them, and RothC fungible tokens are minted.
+policy_type: mrv-template
+status: draft
+license: Apache-2.0
+category: sustainable-agriculture
+authors:
+  - name: DOVU
+    type: organization
+tags:
+  - mrv-template
+  - mrv
+  - agriculture
+  - soil-carbon
+standard_body: Dovu
+token_type: RothC
+token_standard: fungible
+roles:
+  - Registrant
+  - Verifier
+maintainers:
+  - name: DOVU
+sector: agriculture
