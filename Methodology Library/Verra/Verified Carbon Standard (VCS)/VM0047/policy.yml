@@ -1,0 +1,32 @@
+id: verra-vm0047
+name: VM0047
+version: "1.0.0"
+description: >
+  Guardian implementation of the Verra VM0047 Afforestation, Reforestation and
+  Revegetation (ARR) methodology: quantifies net removals from planting projects,
+  including biomass burning and nitrogen fertilizer emissions, from project
+  description through VVB verification to VCU issuance.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+standard_body: Verra
+methodology_id: VM0047
+sector: land-use
+token_type: VCU
+token_standard: HIP-412-NFT
+roles:
+  - Project_Proponent
+  - VVB
+authors:
+  - name: ilyozzz
+    type: individual
+    github: ilyozzz
+maintainers:
+  - name: ilyozzz
+tags:
+  - verra
+  - vm0047
+  - afforestation
+  - reforestation
+  - revegetation
