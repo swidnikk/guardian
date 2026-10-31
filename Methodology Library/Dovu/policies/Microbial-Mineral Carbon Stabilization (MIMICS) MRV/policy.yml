@@ -1,0 +1,29 @@
+id: dovu-microbial-mineral-carbon-stabilization-mimics-mrv
+name: Microbial-Mineral Carbon Stabilization (MIMICS) MRV
+version: "1.0.0"
+description: >
+  DOVU MRV template based on the MIMICS soil carbon model published in Scientific
+  Reports. A Registrant submits site, soil and cropping data (location, clay, pH,
+  bulk density, initial SOC), a Verifier approves it, and MIMICS fungible tokens
+  are minted.
+policy_type: mrv-template
+status: draft
+license: Apache-2.0
+category: sustainable-agriculture
+authors:
+  - name: DOVU
+    type: organization
+tags:
+  - mrv-template
+  - mrv
+  - agriculture
+  - soil-carbon
+standard_body: Dovu
+token_type: MIMICS
+token_standard: fungible
+roles:
+  - Registrant
+  - Verifier
+maintainers:
+  - name: DOVU
+sector: agriculture
