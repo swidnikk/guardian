@@ -10,7 +10,7 @@ policy_type: proof-of-concept
 status: draft
 license: Apache-2.0
 category: carbon-credits
-standard_body: DLT Earth
+standard_body: Verra
 methodology_id: VM0047
 sector: land-use
 token_standard: HIP-412-NFT

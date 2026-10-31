@@ -26,3 +26,4 @@ roles:
   - Field Operator Login
   - Lab Operator Login
   - Dashboard Viewer
+token_standard: none
