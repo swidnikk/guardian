@@ -11,11 +11,11 @@ license: Apache-2.0
 category: carbon-credits
 sector: land-use
 authors:
-  - name: Jason Chung
+  - name: rikunobu2022
     type: individual
     github: rikunobu2022
 maintainers:
-  - name: Jason Chung
+  - name: rikunobu2022
 standard_body: Verra
 methodology_id: VM0015
 roles:

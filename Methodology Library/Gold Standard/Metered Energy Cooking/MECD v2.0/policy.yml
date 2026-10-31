@@ -11,7 +11,7 @@ status: draft
 license: Apache-2.0
 category: carbon-credits
 authors:
-  - name: Gautam Prajapati
+  - name: gautamp8
     type: individual
     github: gautamp8
 tags:
@@ -31,5 +31,5 @@ roles:
   - Project Proponent
   - VVB
 maintainers:
-  - name: Gautam Prajapati
+  - name: gautamp8
 sector: energy

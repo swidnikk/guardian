@@ -16,11 +16,11 @@ roles:
   - Project_Proponent
   - VVB
 authors:
-  - name: Ilya Ozerov
+  - name: ilyozzz
     type: individual
     github: ilyozzz
 maintainers:
-  - name: Ilya Ozerov
+  - name: ilyozzz
 tags:
   - hackathon
   - verra

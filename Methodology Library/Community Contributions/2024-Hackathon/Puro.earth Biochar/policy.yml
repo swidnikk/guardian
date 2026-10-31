@@ -12,7 +12,7 @@ license: Apache-2.0
 category: carbon-credits
 standard_body: Puro.earth
 authors:
-  - name: Gautam Prajapati
+  - name: gautamp8
     type: individual
     github: gautamp8
 tags:
@@ -24,4 +24,4 @@ roles:
 token_type: CORC
 token_standard: HIP-412-NFT
 maintainers:
-  - name: Gautam Prajapati
+  - name: gautamp8
