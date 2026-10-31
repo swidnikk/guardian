@@ -1,0 +1,30 @@
+id: gold-standard-tpddtecv3-1-0
+name: GS-TPDDTEC(v3.1.0)
+version: "2.0.0"
+description: >
+  Guardian implementation of Gold Standard TPDDTEC v3.1.0 (Technologies and
+  Practices to Displace Decentralized Thermal Energy Consumption), built on the
+  Global Climate Registry policy template. Credits are minted as NFTs after VVB
+  validation and verification.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Global Carbon Registry
+    type: organization
+tags:
+  - gold-standard
+  - cookstoves
+  - clean-energy
+standard_body: Gold Standard
+methodology_id: TPDDTEC
+methodology_version: "3.1.0"
+token_type: GCR-GSTPDDTECv3.1.0
+token_standard: HIP-412-NFT
+roles:
+  - PROJECT_DEVELOPER
+  - VVB
+maintainers:
+  - name: Global Carbon Registry
+sector: energy
