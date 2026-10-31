@@ -1,0 +1,32 @@
+id: other-improved-cookstove
+name: Improved CookStove
+version: "2.6.1"
+description: >
+  Guardian policy suite for improved biomass cookstove projects: a main policy
+  that issues non-fungible Improved Cookstove carbon credit tokens, with
+  subpolicies for agent licensing, PDD validation and monitoring report
+  verification. Abstracts common standards rather than adhering to one.
+policy_type: novel-methodology
+status: draft
+license: Apache-2.0
+category: carbon-credits
+token_type: HGICP-VER
+token_standard: HIP-412-NFT
+roles:
+  - PROJECT_DEVELOPER
+  - VALIDATOR
+  - VERIFIER
+  - VIEWER
+authors:
+  - name: Tolam Earth, Inc.
+    type: organization
+  - name: Nova Institute
+    type: organization
+maintainers:
+  - name: Tolam Earth, Inc.
+tags:
+  - cookstoves
+  - clean-energy
+  - carbon-credit
+  - mrv
+  - nft
