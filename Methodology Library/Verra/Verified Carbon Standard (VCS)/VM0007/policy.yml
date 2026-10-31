@@ -1,0 +1,30 @@
+id: verra-vm0007-redd-plus
+name: VM0007
+version: "3.0.0"
+description: >
+  Guardian implementation of the Verra VCS VM0007 REDD+ Methodology Framework,
+  with a workflow for avoiding planned deforestation projects. Verified Carbon
+  Units (VCUs) are issued to the Project Proponent after VVB verification.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Envision
+    type: organization
+tags:
+  - verra
+  - vm0007
+  - redd-plus
+  - forest
+standard_body: Verra
+methodology_id: VM0007
+token_type: VCU
+token_standard: HIP-412-NFT
+roles:
+  - Project_Proponent
+  - VVB
+  - VVB(manager)
+maintainers:
+  - name: Envision
+sector: land-use
