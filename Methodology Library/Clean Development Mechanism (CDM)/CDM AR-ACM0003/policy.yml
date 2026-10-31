@@ -1,0 +1,30 @@
+id: cdm-ar-acm0003
+name: CDM AR-ACM0003
+version: "1.0.0"
+description: >
+  Guardian implementation of CDM methodology AR-ACM0003, afforestation and
+  reforestation of lands except wetlands. Verified GHG removals are minted as
+  CER tokens.
+policy_type: standard-implementation
+status: deprecated
+license: Apache-2.0
+category: carbon-credits
+sector: land-use
+authors:
+  - name: Envision
+    type: organization
+tags:
+  - cdm
+  - cer
+  - afforestation
+  - reforestation
+standard_body: UNFCCC CDM
+methodology_id: AR-ACM0003
+token_type: CER
+token_standard: HIP-412-NFT
+roles:
+  - Project_Proponent
+  - VVB
+  - Designated_National_Authority
+maintainers:
+  - name: Envision
