@@ -31,7 +31,7 @@ tags:
 9. [Tag Taxonomy Guidance](policy_manifest_prd.md#9-tag-taxonomy-guidance)
 10. [Versioning Convention](policy_manifest_prd.md#10-versioning-convention)
 11. [Thumbnail Specification](policy_manifest_prd.md#11-thumbnail-specification)
-12. [Publications Array](policy_manifest_prd.md#12-publications-array)
+12. [Publication Records](policy_manifest_prd.md#12-publication-records)
 13. [Success Metrics](policy_manifest_prd.md#13-success-metrics)
 14. [Phased Rollout](policy_manifest_prd.md#14-phased-rollout)
 15. [Open Questions and Decisions Needed](policy_manifest_prd.md#15-open-questions-and-decisions-needed)
@@ -258,7 +258,6 @@ Methodology Library/
 | `registry_body`          | string | —                                                                           | Registry that validated.                                                                                                                       | `Verra`                                 |
 | `registry_reference`     | string | —                                                                           | Formal registry reference number.                                                                                                              | `VCS-1234`                              |
 | `registry_accepted_date` | string | ISO 8601 date                                                               | Date of registry acceptance.                                                                                                                   | `2024-03-15`                            |
-| `hedera_timestamp`       | string | `^[0-9]+\.[0-9]+$`                                                          | Hedera consensus timestamp of the most recent mainnet publication (testnet if not yet on mainnet). Full history in `publications.json`.        | `"1707207286.119377003"`                |
 | `sdg_alignment`          | array  | integers 1–17                                                               | UN SDG numbers supported.                                                                                                                      | `[13, 15]`                              |
 | `sector`                 | enum   | `energy\|transport\|waste\|land-use\|industrial\|agriculture\|water\|other` | Primary economic sector.                                                                                                                       | `land-use`                              |
 | `guardian_version_min`   | string | semver                                                                      | Minimum Guardian platform version.                                                                                                             | `2.20.0`                                |
@@ -288,9 +287,9 @@ maintainers:
   url:     string  optional  website URL
 ```
 
-### 6.4 hedera\_timestamp
+### 6.4 Publications are not manifest fields
 
-A nanosecond-precision Hedera consensus timestamp returned by Guardian's publish API. Stored as a quoted string to preserve decimal precision. This is the timestamp of the Hedera message that carries the IPFS CID. Points to the most recent mainnet publication; use the testnet timestamp if the policy has not yet reached mainnet. Full multi-network history is in `publications.json` — see Section 12.
+`policy.yml` has no Hedera timestamp field. A timestamp identifies one publish event on one network, so it is recorded in `publications.json` with its network, not as a property of the policy. See Section 12.
 
 ### 6.5 dependencies array items
 
@@ -370,7 +369,7 @@ This tracks the state of the Guardian implementation itself.
 
 State transition rules:
 
-* Only `active` policies should have mainnet `publications` entries.
+* Only `active` policies should have `mainnet` entries in `publications.json`.
 * `deprecated` means the policy still functions but is not recommended for new projects.
 * `superseded` means a direct replacement exists. Set `superseded_by` to the replacement's `id`.
 * `draft` and `candidate` are testnet-only states.
@@ -519,31 +518,26 @@ Fallback (3) is always available, so thumbnails are never strictly required.
 
 ## 12. Publication Records
 
-### Design: two-file split
+### Design: properties in `policy.yml`, events in `publications.json`
 
-Publication history is split across two files with different ownership and update cadences:
+`policy.yml` describes what a policy **is**: identity, version, classification, ownership. A publication is an **event**: one publish action, on one network, at one moment. Events are recorded in a separate file.
 
-| File                              | Owned by                    | Updated how   | Contents                                                                              |
-| --------------------------------- | --------------------------- | ------------- | ------------------------------------------------------------------------------------- |
-| `policy.yml` (`hedera_timestamp`) | Policy author               | Manually      | Single convenience timestamp — most recent mainnet (or testnet if not yet on mainnet) |
-| `publications.json`               | `record-publication` script | Automatically | Full append-only log of every network × version publication event                     |
+| File                | Contains                               | Written by                  |
+| ------------------- | -------------------------------------- | --------------------------- |
+| `policy.yml`        | Properties of the policy               | Policy author, in a PR      |
+| `publications.json` | Append-only log of publication events  | `record-publication` script |
 
-This separation exists because **the Hedera timestamp is generated by Guardian at publish time** — the contributor cannot know it before publishing. Asking contributors to manually maintain a structured YAML array inside `policy.yml` after every publish action is error-prone and will not be done consistently. The script removes the manual step entirely.
+**`policy.yml` has no Hedera timestamp field.** An earlier draft carried a `hedera_timestamp` scalar for the latest mainnet publication. It was removed because:
 
-### `hedera_timestamp` in `policy.yml`
+* A timestamp identifies one message on one network. A scalar cannot say which network or version it belongs to, and the draft's own example labelled a testnet timestamp as mainnet.
+* It duplicated the latest log entry, creating a second source of truth that had to be updated by hand after every publish.
+* It cannot be checked by reading the manifest. Timestamps in `publications.json` can be verified against the mirror nodes (see below).
 
-A single string field. Update it by hand whenever a new mainnet version is published (copy-paste from the Guardian publish confirmation screen). For testnet-only policies, use the testnet timestamp.
+Tooling that needs "the latest mainnet publication" computes it from `publications.json`.
 
-```yaml
-# Most recent Hedera consensus timestamp. Full history in publications.json.
-hedera_timestamp: "1707207286.119377003"
-```
+### `publications.json`: the append-only log
 
-### `publications.json` — the append-only log
-
-Validated against `publications.schema.json`. Written exclusively by `scripts/record-publication.js`. Never edited by hand.
-
-**Structure:**
+Validated against `publications.schema.json`. Written only by `scripts/record-publication.js`. Never edited by hand.
 
 ```json
 {
@@ -551,51 +545,68 @@ Validated against `publications.schema.json`. Written exclusively by `scripts/re
   "entries": [
     {
       "network": "testnet",
-      "version": "1.1.0",
+      "version": "1.0.0",
       "hedera_timestamp": "1707207018.434778003",
-      "published_by": "Knowhere",
-      "recorded_at": "2024-02-06T10:00:00Z",
-      "notes": "Initial demonstration"
+      "hedera_topic_id": "0.0.2672416"
     },
     {
-      "network": "mainnet",
+      "network": "testnet",
+      "version": "2.0.0",
+      "hedera_timestamp": "1707207149.487956003",
+      "hedera_topic_id": "0.0.2672435"
+    },
+    {
+      "network": "testnet",
       "version": "3.0.0",
       "hedera_timestamp": "1707207286.119377003",
-      "hedera_topic_id": "0.0.5678901",
-      "published_by": "Knowhere",
-      "recorded_at": "2024-02-06T14:00:00Z"
+      "hedera_topic_id": "0.0.2672443"
     }
   ]
 }
 ```
 
-**Recording a new publication:**
+These three entries are real Verra VM0007 testnet publications, verified on the testnet mirror node. Each publish creates a new instance topic, so the topic id belongs to the entry.
+
+| Field                        | Required | Meaning                                                                                          |
+| ---------------------------- | -------- | ------------------------------------------------------------------------------------------------ |
+| `policy_id`                  | yes      | The `id` in the sibling `policy.yml`.                                                            |
+| `entries[].network`          | yes      | `mainnet` or `testnet`. A timestamp exists on exactly one network, so it is always explicit.     |
+| `entries[].hedera_timestamp` | yes      | Consensus timestamp of the Guardian publish message. Quoted string matching `^[0-9]+\.[0-9]+$`.  |
+| `entries[].version`          | no       | Policy version in the publish message. Filled in by the script.                                  |
+| `entries[].hedera_topic_id`  | no       | Instance topic of that publication. Filled in by the script.                                     |
+
+The publication time is the consensus timestamp itself, so there is no separate `recorded_at` field.
+
+### Recording and verifying publications
 
 ```bash
 node scripts/record-publication.js \
-  --policy verra-vm0007-redd-plus \
-  --network mainnet \
-  --version 3.0.0 \
-  --hedera-timestamp 1707207286.119377003 \
-  --topic-id 0.0.5678901
+  --dir "Verra/Verified Carbon Standard (VCS)/VM0007" \
+  --network testnet \
+  --hedera-timestamp 1707207286.119377003
 ```
 
-The script appends one entry and commits the file. The contributor also updates `hedera_timestamp` in `policy.yml` if this is a mainnet publication.
+The script looks the timestamp up on the mirror node for the named network and refuses to record it unless the message exists there and is a Guardian `publish-policy` message. It reads `version` and the topic id from the message, then appends the entry. `--check` re-verifies every entry without writing, so CI can run it.
+
+* mainnet: `https://mainnet-public.mirrornode.hedera.com/api/v1/topics/messages/<timestamp>`
+* testnet: `https://testnet.mirrornode.hedera.com/api/v1/topics/messages/<timestamp>`
+
+The check deliberately does not require the message `uuid` to match the `.policy` bundle in the folder. Every publish or re-import of a policy gets a new `uuid`, and the bundle in the folder is not guaranteed to be the published build.
 
 ### Testnet-only signal
 
-A policy whose `publications.json` contains no mainnet entry has never been published to production. Catalog tooling surfaces this as the absence of a "Live on mainnet" badge — the missing entry is itself an informative signal, not a gap.
+A policy whose `publications.json` contains no `mainnet` entry has never been published to production. Catalog tooling surfaces this as the absence of a "Live on mainnet" badge. A missing log means no publication is recorded, not that none exists.
 
-### hedera\_timestamp format
+### Timestamp format
 
-Nanosecond-precision Hedera consensus timestamp as returned by Guardian's publish API. Stored as a quoted YAML/JSON string — not a number — to preserve decimal precision: `"1707207149.487956003"`, not `1707207149.487956003`.
+Nanosecond-precision Hedera consensus timestamp as returned by Guardian's publish API. Stored as a quoted JSON string, never a number, to preserve precision: `"1707207149.487956003"`.
 
 ### File placement example
 
 ```
 Verra/Verified Carbon Standard (VCS)/VM0007/
-  policy.yml           ← hedera_timestamp: "1707207286.119377003"  (author-maintained)
-  publications.json    ← full 4-entry history across 3 versions    (script-maintained)
+  policy.yml           ← properties of the policy       (author-maintained)
+  publications.json    ← publication events             (script-maintained)
   readme.md
   Policies/
     Verra VM0007 (3.0.0 - groups).policy
@@ -685,7 +696,7 @@ Deliverables:
   * Traverses the library and indexes all valid `policy.yml` files.
   * Renders a filterable card grid (filter by category, sector, SDG, token type, network, status).
   * Renders individual policy detail pages with full manifest data and links to README.
-  * Embeds publications table with IPFS timestamps and Hedera topic links.
+  * Embeds a publications table (network, version, Hedera timestamp, topic link) read from `publications.json`.
 * Hosted at a Guardian docs subdomain (TBD).
 * Search (static — lunr.js or pagefind).
 
@@ -718,7 +729,7 @@ Success criteria: Policy import by manifest ID works end-to-end on testnet; Guar
 | 4  | **registry\_status ownership**: Who is authorized to set `registry_status: validated`?                                  | (a) Anyone (honor system). (b) Only maintainers (via CODEOWNERS). (c) Registry body sign-off via GPG.      | Governance    | High     |
 | 5  | **Thumbnail IP**: Do we need a formal IP policy for thumbnails using standards body logos?                              | (a) Require original artwork only. (b) Allow with attribution.                                             | Legal         | Medium   |
 | 6  | **Closed vs open tag set**: Should we eventually move to a closed tag enum in the schema?                               | (a) Keep open (warning-only). (b) Harden to error after Phase 2.                                           | Platform team | Low      |
-| 7  | **hedera\_timestamp as string vs number**: YAML parsers can truncate float precision. Is quoting convention sufficient? | (a) String (current). (b) Add schema `type: string` with note.                                             | Platform team | Medium   |
+| 7  | ~~**hedera\_timestamp as string vs number**~~ — **Resolved.** The field was removed from `policy.yml`. Timestamps live in `publications.json` as quoted strings checked by the schema pattern. | — | — | — |
 | 8  | **Guardian version compatibility matrix**: Should `guardian_version_min` be checked programmatically?                   | (a) Documentation only. (b) CI reads Guardian release tags and warns.                                      | Tooling team  | Low      |
 | 9  | **Internationalization**: Should `description` and `name` support i18n keys or localized variants?                      | (a) English-only (current). (b) `description_i18n: {fr: "...", es: "..."}` optional fields.                | Platform team | Low      |
 | 10 | **Manifest signing**: Should published manifests be cryptographically signed?                                           | (a) No — trust the Git history. (b) Yes — GPG sign merged manifests. (c) Hedera DID signature in manifest. | Governance    | Medium   |

@@ -224,13 +224,6 @@
       "examples": ["2024-03-15"]
     },
 
-    "hedera_timestamp": {
-      "type": "string",
-      "description": "Hedera consensus timestamp of the most recent mainnet publication (or testnet if not yet on mainnet), as returned by Guardian's publish API. This is the timestamp of the Hedera message that carries the IPFS CID. Full publication history — all networks and versions — is recorded in publications.json by the record-publication script; never edit that file by hand.",
-      "pattern": "^[0-9]+\\.[0-9]+$",
-      "examples": ["1707207286.119377003"]
-    },
-
     "sdg_alignment": {
       "type": "array",
       "description": "UN Sustainable Development Goal numbers (1-17) that this policy directly supports.",
