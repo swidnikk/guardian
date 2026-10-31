@@ -1,0 +1,28 @@
+id: hackathon-vm0015
+name: VM0015
+version: "1.0.0"
+description: >
+  Project-screening policy based on Verra VM0015 Avoided Unplanned
+  Deforestation v1.2: a Registrant submits project, forest-definition and
+  baseline data, and a VVB reviews it against the minimum requirements.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: carbon-credits
+sector: land-use
+authors:
+  - name: Jason Chung
+    type: individual
+    github: rikunobu2022
+maintainers:
+  - name: Jason Chung
+standard_body: Verra
+methodology_id: VM0015
+roles:
+  - Registrant
+  - VVB
+tags:
+  - hackathon
+  - verra
+  - forest
+  - deforestation
