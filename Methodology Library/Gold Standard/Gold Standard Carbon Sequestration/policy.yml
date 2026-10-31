@@ -1,0 +1,31 @@
+id: gold-standard-carbon-sequestration
+name: Gold Standard Carbon Sequestration
+version: "1.0.0"
+description: >
+  Guardian implementation of the Gold Standard methodology for carbon
+  sequestration through accelerated carbonation of concrete aggregate. Verified
+  Emission Reductions (VERs) are issued to the Project Proponent after VVB
+  verification.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Envision
+    type: organization
+tags:
+  - gold-standard
+  - ver
+  - carbon-credit
+  - nft
+standard_body: Gold Standard
+token_type: VER
+token_standard: HIP-412-NFT
+roles:
+  - Project_Proponent
+  - VVB
+  - Technical Advisory Committee
+  - NGO Supporters
+maintainers:
+  - name: Envision
+sector: industrial
