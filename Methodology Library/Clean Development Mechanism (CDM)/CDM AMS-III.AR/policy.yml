@@ -1,0 +1,29 @@
+id: cdm-ams-iii-ar
+name: CDM AMS-III.AR
+version: "1.0.0"
+description: >
+  Guardian implementation of CDM methodology AMS-III.AR, substituting fossil
+  fuel-based lighting with LED/CFL lighting systems. Verified emission
+  reductions are minted as CER tokens.
+policy_type: standard-implementation
+status: deprecated
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Envision
+    type: organization
+  - name: UNFCCC
+    type: organization
+tags:
+  - cdm
+  - clean-energy
+  - cer
+standard_body: UNFCCC CDM
+methodology_id: AMS-III.AR
+token_type: CER
+token_standard: HIP-412-NFT
+roles:
+  - Project Participant
+  - VVB
+maintainers:
+  - name: Envision
