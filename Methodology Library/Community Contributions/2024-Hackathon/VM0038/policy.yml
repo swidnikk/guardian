@@ -1,0 +1,28 @@
+id: hackathon-vm0038
+name: VM0038
+version: "1.0.0"
+description: >
+  Guardian implementation of Verra VM0038 Methodology for Electric Vehicle
+  Charging Systems v1.0: a Project Proponent submits project design and
+  monitoring data, a VVB validates and verifies it, and the registry owner
+  issues Carbon Reduction Credits.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: carbon-credits
+sector: transport
+authors:
+  - name: kafka018
+    type: individual
+    github: kafka018
+maintainers:
+  - name: kafka018
+standard_body: Verra
+methodology_id: VM0038
+roles:
+  - Project_Proponent
+  - VVB
+tags:
+  - hackathon
+  - verra
+  - transport
