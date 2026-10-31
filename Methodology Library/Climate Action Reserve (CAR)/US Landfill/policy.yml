@@ -1,0 +1,31 @@
+id: car-us-landfill
+name: US Landfill
+version: "1.0.0"
+description: >
+  Guardian implementation of the Climate Action Reserve U.S. Landfill Protocol
+  for quantifying, reporting and verifying GHG reductions from landfill methane
+  capture and destruction, issuing Climate Reserve Tonnes (CRTs).
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+standard_body: CAR
+methodology_id: U.S. Landfill Protocol
+methodology_version: "6.0"
+token_type: CRT
+token_standard: HIP-412-NFT
+sector: waste
+roles:
+  - Project Developer
+  - Verification Body
+authors:
+  - name: Envision
+    type: organization
+maintainers:
+  - name: Envision
+tags:
+  - climate-action-reserve
+  - landfill
+  - north-america
+  - carbon-credit
+  - nft
