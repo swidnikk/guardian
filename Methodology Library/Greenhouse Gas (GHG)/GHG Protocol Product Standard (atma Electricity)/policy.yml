@@ -1,0 +1,24 @@
+id: ghg-protocol-product-standard-atma-electricity
+name: GHG Protocol Product Standard (atma Electricity)
+version: "1.0.5"
+description: >
+  Monitors production-stage greenhouse gas emissions for products on the
+  atma.io digital product cloud, converting energy consumption per item or batch
+  into emissions using emission factors and global warming potentials. Monthly
+  totals are aggregated and minted as a fungible emission token.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: emission-reporting
+authors:
+  - name: Atma
+    type: organization
+maintainers:
+  - name: Atma
+standard_body: GHG Protocol
+roles:
+  - Organization
+tags:
+  - ghg-protocol
+  - mrv
+  - token
