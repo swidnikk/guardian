@@ -1,0 +1,26 @@
+id: ghg-protocol-product-standard-atma-cradle-to-gate
+name: GHG Protocol Product Standard (atma Cradle-to-Gate)
+version: "1.0.0"
+description: >
+  Calculates partial Scope 3 cradle-to-gate product emissions per production
+  batch for RFID inlay manufacturing on the atma.io platform, using Scope 2
+  results per unit of analysis, and mints an emission token per batch. Outputs
+  feed PACT Pathfinder compliant product carbon footprint records.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: emission-reporting
+authors:
+  - name: Atma
+    type: organization
+maintainers:
+  - name: Atma
+standard_body: GHG Protocol
+token_type: C
+token_standard: fungible
+roles:
+  - Organization
+tags:
+  - ghg-protocol
+  - mrv
+  - token
