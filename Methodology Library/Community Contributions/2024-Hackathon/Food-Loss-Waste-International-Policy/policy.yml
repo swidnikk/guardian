@@ -1,0 +1,28 @@
+id: hackathon-food-loss-waste-international-policy
+name: Food-Loss-Waste-International-Policy
+version: "1.0.0"
+description: >
+  Guardian workflow for food loss and waste reduction projects across the food
+  supply chain. Project Proponents submit monitoring reports verified by a VVB,
+  and two fungible tokens reward ground-level participating entities and
+  project proponents for GHG emission reductions.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: waste
+sector: waste
+roles:
+  - Project_Proponent
+  - VVB
+  - Project_Participating_Entity
+authors:
+  - name: ksh7
+    type: individual
+    github: ksh7
+maintainers:
+  - name: ksh7
+tags:
+  - hackathon
+  - mrv
+  - token
+  - global
