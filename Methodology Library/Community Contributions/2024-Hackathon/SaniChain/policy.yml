@@ -1,0 +1,28 @@
+id: hackathon-sanichain
+name: SaniChain
+version: "1.0.0"
+description: >
+  Hackathon Guardian policy in which restaurants register low-carbon menu
+  projects, a verifier reviews the submitted data, and SANI fungible tokens are
+  minted for the verified reduction. Tokens can be retired in exchange for
+  restaurant discount coupons.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: guizostudios
+    type: individual
+    github: guizostudios
+tags:
+  - hackathon
+  - mrv
+  - carbon-credit
+  - token
+roles:
+  - Registrant
+  - Verifier
+token_type: SANI
+token_standard: fungible
+maintainers:
+  - name: guizostudios
