@@ -1,0 +1,34 @@
+id: dlt-earth-vm0047
+name: VM0047 V1.1
+version: "1.0.0"
+description: >
+  Guardian implementation of Verra VM0047 Afforestation, Reforestation and
+  Revegetation (ARR) with carbon forwards: ex-ante and ex-post removal
+  estimates, VVB verification, and minting of NFT-based forward and removal
+  credits.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: carbon-credits
+standard_body: DLT Earth
+methodology_id: VM0047
+sector: land-use
+token_standard: HIP-412-NFT
+roles:
+  - Project Proponent
+  - VVB
+authors:
+  - name: Ilya Ozerov
+    type: individual
+    github: ilyozzz
+maintainers:
+  - name: Ilya Ozerov
+tags:
+  - bounty
+  - verra
+  - forest
+  - afforestation
+  - reforestation
+  - revegetation
+  - carbon-credit
+  - nft
