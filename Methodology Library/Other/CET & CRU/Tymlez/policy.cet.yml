@@ -1,0 +1,26 @@
+id: other-tymlez-cet
+name: "Tymlez (CET: Carbon Emissions)"
+version: "1.0.0"
+description: >
+  Records Scope 1 and 2 greenhouse gas emissions for a site from device and
+  external data, using a schema based on the GHG Protocol corporate standard,
+  and mints a fungible emissions token to the owner.
+policy_type: novel-methodology
+status: draft
+license: Apache-2.0
+category: emission-reporting
+authors:
+  - name: TYMLEZ Pty Ltd
+    type: organization
+tags:
+  - mrv
+  - monitoring
+  - token
+maintainers:
+  - name: TYMLEZ Pty Ltd
+roles:
+  - ROOT_AUTHORITY
+  - INSTALLER
+  - TOKEN_OWNER
+token_type: TYM_CET
+token_standard: fungible
