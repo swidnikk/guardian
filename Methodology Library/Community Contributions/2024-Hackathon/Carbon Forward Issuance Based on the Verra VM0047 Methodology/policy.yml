@@ -1,0 +1,30 @@
+id: hackathon-carbon-forward-issuance-based-on-the-verra-vm0047-methodology
+name: Carbon Forward Issuance Based on the Verra VM0047 Methodology
+version: "1.0.0"
+description: >
+  Guardian implementation of the Verra VM0047 afforestation, reforestation and
+  revegetation (ARR) methodology with a forward-minting module: PDD data entry,
+  VVB validation, and issuance of fungible Carbon Forward tokens.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: carbon-credits
+methodology_id: VM0047
+sector: land-use
+token_standard: fungible
+roles:
+  - Project_Proponent
+  - VVB
+authors:
+  - name: Ilya Ozerov
+    type: individual
+    github: ilyozzz
+maintainers:
+  - name: Ilya Ozerov
+tags:
+  - hackathon
+  - verra
+  - forest
+  - afforestation
+  - reforestation
+  - carbon-credit
