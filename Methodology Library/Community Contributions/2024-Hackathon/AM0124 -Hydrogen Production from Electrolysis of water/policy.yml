@@ -1,0 +1,27 @@
+id: hackathon-am0124-hydrogen-production-from-electrolysis-of-water
+name: AM0124 -Hydrogen Production from Electrolysis of water
+version: "1.0.0"
+description: >
+  Hackathon proof-of-concept Guardian policy for methodology AM0124, hydrogen
+  production from electrolysis of water using captive renewable electricity.
+  Project proponents submit project and monitoring documents for VVB review
+  before credit issuance.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: carbon-credits
+methodology_id: AM0124
+sector: energy
+roles:
+  - VVB
+  - Project_Proponent
+authors:
+  - name: xylem-soul
+    type: individual
+    github: xylem-soul
+maintainers:
+  - name: xylem-soul
+tags:
+  - am0124
+  - hackathon
+  - renewable-energy
