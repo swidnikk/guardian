@@ -1,0 +1,24 @@
+id: hackathon-chain-assurance
+name: Chain Assurance
+version: "4.0.0"
+description: >
+  Supplier ESG due-diligence workflow: survey creation and distribution,
+  supplier data collection, ESG scoring, and issuance of iRec non-fungible
+  tokens.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: supply-chain
+token_standard: HIP-412-NFT
+roles:
+  - Registrant
+authors:
+  - name: allanmukhwana
+    type: individual
+    github: allanmukhwana
+maintainers:
+  - name: allanmukhwana
+tags:
+  - hackathon
+  - supply-chain
+  - nft
