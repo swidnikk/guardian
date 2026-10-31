@@ -1,0 +1,32 @@
+id: hackathon-mce-r01
+name: MCE-R01
+version: "1.0.0"
+description: >
+  Circular economy methodology for plastic recycling projects: a PCEM
+  proponent submits project and monitoring data, a VVB validates and
+  verifies it, and Circular Plastic Credits (CPC) are minted as NFTs.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: waste
+sector: waste
+authors:
+  - name: Idowu Festus
+    type: individual
+    github: Mcnoble1
+maintainers:
+  - name: Idowu Festus
+standard_body: Cercarbono
+methodology_id: M/CE-R01
+token_type: CPC
+token_standard: HIP-412-NFT
+roles:
+  - PCEM Proponent
+  - VVB
+tags:
+  - hackathon
+  - plastic
+resources:
+  - type: methodology
+    label: Cercarbono Voluntary Programme on Circular Economy
+    url: https://www.cercarbono.com/voluntary-programme-circular-economy/
