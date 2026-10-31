@@ -1,0 +1,27 @@
+id: dovu-agrecalc-mrv
+name: Agrecalc MRV
+version: "2.0.0"
+description: >
+  DOVU MRV template that uses Agrecalc farm carbon calculator results as the
+  measurement input. A Registrant submits MRV data, a Verifier approves it, and
+  DOVU CCP fungible tokens are minted.
+policy_type: mrv-template
+status: draft
+license: Apache-2.0
+category: sustainable-agriculture
+authors:
+  - name: DOVU
+    type: organization
+tags:
+  - mrv-template
+  - mrv
+  - agriculture
+standard_body: Dovu
+token_type: DOVU CCP
+token_standard: fungible
+roles:
+  - Registrant
+  - Verifier
+maintainers:
+  - name: DOVU
+sector: agriculture
