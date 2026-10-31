@@ -1,0 +1,28 @@
+id: verified-premium-payments
+name: Verified Premium Payments
+version: "1.0.0"
+description: >
+  Records and certifies premiums paid to farmers on top of the base crop
+  price, such as annual bonuses, quality incentives or community-project
+  funds. A collector records the premium and the farmer confirms it, by NFC
+  card signature or hashed evidence, before a Premium Paid token is minted.
+policy_type: novel-methodology
+status: draft
+license: Apache-2.0
+category: supply-chain
+authors:
+  - name: Fairfood
+    type: organization
+maintainers:
+  - name: Fairfood
+tags:
+  - farmer-payments
+  - supply-chain
+  - fair-trade
+  - nfc
+  - token
+roles:
+  - Co-Operative
+  - Farmer
+token_type: PP
+token_standard: fungible
