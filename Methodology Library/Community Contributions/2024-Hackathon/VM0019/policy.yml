@@ -1,0 +1,31 @@
+id: hackathon-vm0019
+name: VM0019
+version: "1.0.0"
+description: >
+  Hackathon Guardian implementation of Verra VM0019, fuel switch from gasoline
+  to ethanol in flex-fuel vehicle fleets: project proponent submissions are
+  validated and verified by a VVB, leading to VCU issuance.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: carbon-credits
+standard_body: Verra
+methodology_id: VM0019
+sector: transport
+token_type: VCU
+token_standard: HIP-412-NFT
+roles:
+  - Project_Proponent
+  - VVB
+authors:
+  - name: Satyam Tripathi
+    type: individual
+    github: satyacasm
+maintainers:
+  - name: Satyam Tripathi
+tags:
+  - verra
+  - vm0019
+  - transport
+  - vcu
+  - hackathon
