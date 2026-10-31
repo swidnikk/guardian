@@ -64,7 +64,6 @@ That is the complete minimum. Everything else is optional but strongly encourage
 | `registry_body` | string | Registry that validated (when `registry_status: validated`). | `Verra` |
 | `registry_reference` | string | Formal registry reference number. | `VCS-1234` |
 | `registry_accepted_date` | string | ISO 8601 date of registry acceptance. | `2024-03-15` |
-| `hedera_timestamp` | string | Hedera consensus timestamp of the most recent mainnet publication (testnet if not yet on mainnet). Full history lives in `publications.json`. | `"1707207286.119377003"` |
 | `sdg_alignment` | array | UN SDG numbers 1–17. | `[13, 15]` |
 | `sector` | string | `energy` \| `transport` \| `waste` \| `land-use` \| `industrial` \| `agriculture` \| `water` \| `other` | `land-use` |
 | `guardian_version_min` | string | Minimum Guardian platform version required. | `2.20.0` |
@@ -155,40 +154,74 @@ Increment `version` using standard semver rules:
 
 ## Publication records
 
-Publication history is split across two files with different ownership:
+`policy.yml` describes what a policy **is**: identity, version, classification, ownership. It does not record Hedera publications. A publication is an **event** (one publish action, on one network, at one moment), so events live in a separate file, `publications.json`, beside `policy.yml`.
 
-| File | Who writes it | How |
+| File | Contains | Who writes it |
 |---|---|---|
-| `policy.yml` (`hedera_timestamp`) | Policy author | Manually — paste the most recent mainnet timestamp (or testnet if not yet on mainnet) |
-| `publications.json` | The `record-publication` script | Automatically — run once after each Guardian publish action |
+| `policy.yml` | Properties of the policy | Policy author, reviewed in a PR |
+| `publications.json` | Append-only log of publication events | The `record-publication` script only. Never edit by hand |
 
-### `hedera_timestamp` in `policy.yml`
+There is deliberately no `hedera_timestamp` field in `policy.yml`. A timestamp identifies one message on one network, so a single scalar cannot say which network or version it belongs to, and it would duplicate the latest log entry. Tooling that needs "the latest mainnet publication" computes it from `publications.json`.
 
-A single convenience field for the most recent mainnet publication — used by Guardian's one-click import. Update it whenever a new mainnet version is published.
+### `publications.json`
 
-```yaml
-# Most recent Hedera consensus timestamp. Full history in publications.json.
-hedera_timestamp: "1707207286.119377003"
+```json
+{
+  "policy_id": "verra-vm0007-redd-plus",
+  "entries": [
+    {
+      "network": "testnet",
+      "version": "1.0.0",
+      "hedera_timestamp": "1707207018.434778003",
+      "hedera_topic_id": "0.0.2672416"
+    },
+    {
+      "network": "testnet",
+      "version": "2.0.0",
+      "hedera_timestamp": "1707207149.487956003",
+      "hedera_topic_id": "0.0.2672435"
+    },
+    {
+      "network": "testnet",
+      "version": "3.0.0",
+      "hedera_timestamp": "1707207286.119377003",
+      "hedera_topic_id": "0.0.2672443"
+    }
+  ]
+}
 ```
 
-For testnet-only policies, use the testnet timestamp. The absence of a mainnet entry in `publications.json` is itself a visible signal in the catalog (no "Live on mainnet" badge).
+| Field | Required | Meaning |
+|---|---|---|
+| `policy_id` | yes | The `id` in the sibling `policy.yml`. |
+| `entries[].network` | yes | `mainnet` or `testnet`. A timestamp exists on exactly one network, so this is always explicit. |
+| `entries[].hedera_timestamp` | yes | Consensus timestamp of the Guardian publish message, as a string matching `^[0-9]+\.[0-9]+$`. Keep it quoted: it is not a number. |
+| `entries[].version` | no | Policy version in the publish message. Filled in by the script. |
+| `entries[].hedera_topic_id` | no | Instance topic of that publication. Each publish creates a new one. Filled in by the script. |
 
-### `publications.json` — the full history
+The publication time is the consensus timestamp itself, so there is no separate `recorded_at`.
 
-After publishing in Guardian, run:
+### Recording a publication
+
+After publishing in Guardian, run from the Methodology Library root:
 
 ```bash
 node scripts/record-publication.js \
-  --policy verra-vm0007-redd-plus \
-  --network mainnet \
-  --version 3.0.0 \
-  --hedera-timestamp 1707207286.119377003 \
-  --topic-id 0.0.5678901
+  --dir "Verra/Verified Carbon Standard (VCS)/VM0007" \
+  --network testnet \
+  --hedera-timestamp 1707207286.119377003
 ```
 
-The script appends one record to `publications.json` in the policy folder. **Never edit `publications.json` by hand.**
+The script looks the timestamp up on the mirror node for the network you name:
 
-The file is validated against `publications.schema.json`. See `Verra/Verified Carbon Standard (VCS)/VM0007/publications.json` for a worked example with multiple network entries across three versions.
+- mainnet: `https://mainnet-public.mirrornode.hedera.com/api/v1/topics/messages/<timestamp>`
+- testnet: `https://testnet.mirrornode.hedera.com/api/v1/topics/messages/<timestamp>`
+
+It refuses to record the entry unless the message exists on that network and is a Guardian `publish-policy` message. It then reads `version` and the topic id from the message and appends the entry. Re-recording a timestamp already in the log is a no-op. `--check` re-verifies every entry in the log without writing, so CI can run it.
+
+### Where publications show up
+
+A policy whose log has no `mainnet` entry has never been published to production. Catalog tooling shows that as the absence of a "Live on mainnet" badge. A missing log means no publication is recorded, not that none exists.
 
 ---
 
