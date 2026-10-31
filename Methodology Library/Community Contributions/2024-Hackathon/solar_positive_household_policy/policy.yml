@@ -1,0 +1,27 @@
+id: hackathon-solar-positive-household-policy
+name: solar_positive_household_policy
+version: "1.0.0"
+description: >
+  Hackathon Guardian workflow for household-level emission reductions from clean
+  cooking, solar water heating and solar PV generation. Project proponents submit
+  projects and monitoring reports for VVB review, and the registry owner mints
+  Solar Positive Household Tokens.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: renewable-energy
+authors:
+  - name: unknown
+maintainers:
+  - name: unknown
+tags:
+  - hackathon
+  - renewable-energy
+  - cookstoves
+methodology_id: SPH001
+roles:
+  - Solar_Project_Proponent
+  - VVB
+token_type: SPHT
+token_standard: fungible
+sector: energy
