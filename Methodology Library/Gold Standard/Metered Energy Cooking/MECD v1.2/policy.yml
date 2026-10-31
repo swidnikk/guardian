@@ -1,0 +1,32 @@
+id: gold-standard-mecd-v1-2
+name: MECD v1.2
+version: "1.0.0"
+description: >
+  Guardian implementation of Gold Standard's Metered & Measured Energy Cooking
+  Devices (MECD) v1.2 methodology, covering project listing, validation,
+  monitoring, verification and emission reduction token minting for metered
+  clean-cooking projects.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Gautam Prajapati
+    type: individual
+    github: gautamp8
+tags:
+  - gold-standard
+  - cookstoves
+  - clean-energy
+  - mecd-v1-2
+standard_body: Gold Standard
+methodology_id: MECD
+methodology_version: "1.2"
+token_type: VCU
+token_standard: HIP-412-NFT
+roles:
+  - Project Proponent
+  - VVB
+maintainers:
+  - name: Gautam Prajapati
+sector: energy
