@@ -1,0 +1,27 @@
+id: gold-standard-methodology-emission-reductions-from-safe-drinking-water
+name: Gold Standard Methodology – Emission Reductions from Safe Drinking Water
+version: "1.0.0"
+description: >
+  Guardian implementation of the Gold Standard methodology for quantifying GHG
+  emission reductions from safe drinking water supply and treatment technologies
+  that replace boiling of water with biomass or fossil fuels.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Gayanath Ranasinghe
+    type: individual
+    github: gayanath8
+tags:
+  - gold-standard
+  - water
+standard_body: Gold Standard
+token_type: VCU
+token_standard: HIP-412-NFT
+roles:
+  - Project Developer
+  - Validation and Verification Body
+maintainers:
+  - name: Gayanath Ranasinghe
+sector: water
