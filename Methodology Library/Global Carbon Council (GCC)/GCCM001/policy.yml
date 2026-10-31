@@ -1,0 +1,29 @@
+id: gcc-gccm001
+name: GCCM001
+version: "1.0.5"
+description: >
+  Guardian implementation of GCC methodology GCCM001 v.4, renewable energy
+  generation projects supplying electricity to the grid or captive consumers
+  (A1 project type). Approved carbon credits are minted as ACC tokens.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Envision
+    type: organization
+tags:
+  - gcc
+  - gccm001
+  - renewable-energy
+standard_body: GCC
+methodology_id: GCCM001
+token_type: ACC
+token_standard: HIP-412-NFT
+roles:
+  - Project Owner
+  - Verifier
+  - GCC Steering Commitee
+maintainers:
+  - name: Envision
+sector: energy
