@@ -1,0 +1,27 @@
+id: cdm-ams-i-e
+name: CDM AMS-I.E
+version: "1.0.0"
+description: >
+  Guardian implementation of CDM methodology AMS-I.E, switch from non-renewable
+  biomass for thermal applications by the user (e.g. cookstoves). Verified
+  emission reductions are minted as CER tokens.
+policy_type: standard-implementation
+status: deprecated
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Envision
+    type: organization
+tags:
+  - cdm
+  - cookstoves
+  - cer
+standard_body: UNFCCC CDM
+methodology_id: AMS-I.E
+token_type: CER
+token_standard: HIP-412-NFT
+roles:
+  - Project Participant
+  - VVB
+maintainers:
+  - name: Envision
