@@ -1,0 +1,30 @@
+id: hackathon-gf0001
+name: GF0001
+version: "1.0.0"
+description: >
+  Hackathon Guardian implementation of Lightency's GF0001 methodology for
+  replacing diesel-powered agricultural water pumping with solar-powered
+  systems in Tunisia. A farmer applies, an agent and a VVB review the
+  application, and GFT tokens are minted on approval.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: renewable-energy
+authors:
+  - name: Lightency
+    type: organization
+  - name: rayenharhouri
+    type: individual
+    github: rayenharhouri
+tags:
+  - hackathon
+  - renewable-energy
+  - agriculture
+roles:
+  - Enda Agent
+  - Farmer
+  - VVB
+token_type: GFT
+token_standard: fungible
+maintainers:
+  - name: Lightency
