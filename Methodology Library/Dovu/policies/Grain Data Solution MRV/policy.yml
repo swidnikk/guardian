@@ -1,0 +1,28 @@
+id: dovu-grain-data-solution-mrv
+name: Grain Data Solution MRV
+version: "1.0.0"
+description: >
+  DOVU MRV template for qualitative soil-coverage and biodiversity data
+  extracted from satellite imagery and linked to a standalone report. A
+  Registrant submits the report fields, a Verifier approves them, and Grain Data
+  Solution fungible tokens are minted.
+policy_type: mrv-template
+status: draft
+license: Apache-2.0
+category: sustainable-agriculture
+authors:
+  - name: DOVU
+    type: organization
+tags:
+  - mrv-template
+  - mrv
+  - geospatial
+  - agriculture
+standard_body: Dovu
+token_type: Grain Data Solution
+token_standard: fungible
+roles:
+  - Registrant
+  - Verifier
+maintainers:
+  - name: DOVU
