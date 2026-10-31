@@ -1,0 +1,28 @@
+id: living-income-price
+name: Living Income Price (LIP)
+version: "1.0.0"
+description: >
+  Digitises the Fairfood and Heifer International Living Income Price framework:
+  collects farmer, cooperative and exporter data to calculate farm-gate,
+  cooperative and FOB price floors needed for a living income, with verification
+  and approval steps before a living-income token is minted.
+policy_type: novel-methodology
+status: draft
+license: Apache-2.0
+category: supply-chain
+token_type: F
+token_standard: fungible
+roles:
+  - Methodology Owner
+  - Data Collector
+  - Analyst
+  - Facilitator
+authors:
+  - name: Fairfood
+    type: organization
+maintainers:
+  - name: Fairfood
+tags:
+  - living-income
+  - fair-trade
+  - farmer-payments
