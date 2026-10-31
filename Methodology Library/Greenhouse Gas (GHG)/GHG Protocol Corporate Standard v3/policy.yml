@@ -1,0 +1,28 @@
+id: ghg-protocol-corporate-standard-v3
+name: GHG Protocol Corporate Standard v3
+version: "1.0.0"
+description: >
+  Guardian implementation of the GHG Protocol Corporate Accounting and Reporting
+  Standard (including the Scope 2 Guidance). A main framework of schemas plus
+  selectable calculation, activity-data and secondary-data tools produces
+  organizational Scope 1, 2 and 3 inventories, minting Carbon Emission Tokens
+  after assurance.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: emission-reporting
+authors:
+  - name: Dariy Miseldzhani
+    type: individual
+tags:
+  - mrv
+standard_body: GHG Protocol
+roles:
+  - Organizational Representative
+  - Assurance Provider
+contributors:
+  - name: danielnorkin
+    type: individual
+    github: danielnorkin
+maintainers:
+  - name: Dariy Miseldzhani
