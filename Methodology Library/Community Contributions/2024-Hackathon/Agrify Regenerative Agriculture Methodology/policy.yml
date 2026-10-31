@@ -1,0 +1,28 @@
+id: hackathon-agrify-regenerative-agriculture-methodology
+name: Agrify Regenerative Agriculture Methodology
+version: "1.0.0"
+description: >
+  Hackathon proof-of-concept for issuing carbon credits from regenerative
+  agriculture projects. Project proponents submit farm projects, a VVB
+  reviews them, and a VCU non-fungible token is minted on approval.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: carbon-credits
+sector: agriculture
+authors:
+  - name: Samuel Adeyemi
+    type: individual
+    github: SammyAdey
+maintainers:
+  - name: Samuel Adeyemi
+tags:
+  - hackathon
+  - agriculture
+  - carbon-credit
+  - geospatial
+token_type: VCU
+token_standard: HIP-412-NFT
+roles:
+  - Project_Proponent
+  - VVB
