@@ -1,0 +1,27 @@
+id: tolam-digitization-of-analog-assets
+name: Tolam Digitization of Analog Assets Policy
+version: "1.0.0"
+description: >
+  General policy for listing carbon offsets from projects and registries outside
+  the Hedera ecosystem: a Transcriber enters project documentation and claims,
+  the Administrator approves them, and a non-fungible Tolam Non-Digital (TND)
+  token is minted to the Seller's account.
+policy_type: novel-methodology
+status: draft
+license: Apache-2.0
+category: carbon-credits
+token_type: TND
+token_standard: HIP-412-NFT
+roles:
+  - Admin
+  - Transcriber
+  - Seller
+authors:
+  - name: Tolam Earth, Inc.
+    type: organization
+maintainers:
+  - name: Tolam Earth, Inc.
+tags:
+  - carbon-credit
+  - nft
+  - token
