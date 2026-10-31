@@ -32,6 +32,29 @@ That is the complete minimum. Everything else is optional but strongly encourage
 
 ---
 
+## One manifest per directory
+
+A policy directory holds exactly one `policy.yml`. That file describes the one policy the directory contains, including all of its versions and variants (for example a methodology's v1 and v2 bundles, or regional or language variants of the same methodology). Versions and variants of one methodology are **not** separate policies: record them with `version` and `methodology_version`, and keep a single `policy.yml`.
+
+**Exception: a directory that holds several distinct policies.** If one directory holds `.policy` bundles that implement different methodologies (different `methodology_id`, or no shared upstream methodology), each distinct policy gets its own sidecar named `policy.<slug>.yml`:
+
+```
+Greenhouse Gas (GHG)/Korean Fixed Combustion/
+  policy.gaseous-fuel.yml
+  policy.liquid-fuel.yml
+  policy.solid-fuel.yml
+```
+
+Rules for the exception:
+
+- `<slug>` is kebab-case (`^[a-z0-9]+(?:-[a-z0-9]+)*$`) and unique within the directory. It names the policy within the directory; it does not have to equal `id`.
+- A `policy.<slug>.yml` follows exactly the same schema and content rules as `policy.yml`. The `id` is still required, globally unique and permanent.
+- Do not mix the two forms: a directory has either one `policy.yml` or two or more `policy.<slug>.yml` files, never both.
+- Do not use the exception to split versions or variants of one methodology. New contributions should still prefer one directory per policy.
+- Existing files are never renamed to make this work. The manifests are sidecars.
+
+---
+
 ## Field reference
 
 ### Required fields
@@ -201,6 +224,19 @@ There is deliberately no `hedera_timestamp` field in `policy.yml`. A timestamp i
 
 The publication time is the consensus timestamp itself, so there is no separate `recorded_at`.
 
+### Directories with several policies
+
+A directory that uses `policy.<slug>.yml` (see [One manifest per directory](#one-manifest-per-directory)) keeps one log per policy, named `publications.<slug>.json` beside its manifest, with the same `<slug>`:
+
+| Manifest | Log |
+|---|---|
+| `policy.yml` | `publications.json` |
+| `policy.<slug>.yml` | `publications.<slug>.json` |
+
+The `policy_id` in `publications.<slug>.json` must equal the `id` in `policy.<slug>.yml`. The file format is unchanged.
+
+> **Not yet supported by tooling.** `scripts/record-publication.js` currently reads only `policy.yml` and writes only `publications.json`, so it cannot record or check a `publications.<slug>.json` log until it is extended (for example with a `--manifest` option). Until then, do not hand-write these logs: the log is written only by the script.
+
 ### Recording a publication
 
 After publishing in Guardian, run from the Methodology Library root:
@@ -248,7 +284,7 @@ Allowed `type` values: `methodology`, `regulation`, `research`, `demo-guide`, `a
 
 ## Thumbnail conventions
 
-- Place the thumbnail in an `assets/` subdirectory next to `policy.yml`.
+- Place the thumbnail in an `assets/` subdirectory next to `policy.yml`. The path is relative to the manifest that references it; in a directory with several `policy.<slug>.yml` files, use distinct filenames (for example `assets/gaseous-fuel-thumbnail.png`).
 - Reference it as a relative path: `thumbnail: assets/thumbnail.png`
 - Recommended dimensions: **400 × 300 px** (4:3 ratio).
 - Accepted formats: PNG (preferred) or JPEG.
@@ -279,7 +315,7 @@ Install the AJV CLI (requires Node.js 18+):
 npm install -g ajv-cli ajv-formats
 ```
 
-Validate a single `policy.yml`:
+Validate a single manifest (`policy.yml` or `policy.<slug>.yml`):
 
 ```bash
 # Convert YAML to JSON first (requires js-yaml or yq)
@@ -296,7 +332,7 @@ ajv validate \
 ### Validate all manifests at once
 
 ```bash
-find "Methodology Library" -name "policy.yml" | while read f; do
+find "Methodology Library" \( -name "policy.yml" -o -name "policy.*.yml" \) | while read f; do
   yq -o=json . "$f" > /tmp/policy.json
   echo -n "$f: "
   ajv validate --spec=draft2020 -c ajv-formats \
@@ -307,4 +343,4 @@ done
 
 ### CI
 
-A GitHub Actions workflow (`.github/workflows/validate-manifests.yml`) runs this check on every PR that touches a `policy.yml` file. Failures block merge. Tag warnings (unrecognized tags from `TAG_TAXONOMY.md`) are reported as annotations but do not block merge.
+A GitHub Actions workflow (`.github/workflows/validate-manifests.yml`) runs this check on every PR that touches a `policy.yml` or `policy.*.yml` file (path filters `Methodology Library/**/policy.yml` and `Methodology Library/**/policy.*.yml`). Failures block merge. Tag warnings (unrecognized tags from `TAG_TAXONOMY.md`) are reported as annotations but do not block merge.
