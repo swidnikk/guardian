@@ -1,0 +1,27 @@
+id: hackathon-sector-specific-food-loss-waste-ghg-reduction-policy
+name: Sector-Specific-Food-Loss-Waste-GHG-Reduction-Policy
+version: "1.0.0"
+description: >
+  Guardian workflow for food loss and waste GHG reduction where a government
+  authority acts as policy owner and registry. Project Implementing Agencies
+  submit monitoring reports verified by a Verification Authority, and the
+  registry mints sector-specific fungible tokens for farm production,
+  transport, storage, processing and consumption.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: waste
+sector: waste
+roles:
+  - Project_Implementing_Agency
+  - Verification_Authority
+authors:
+  - name: ksh7
+    type: individual
+    github: ksh7
+maintainers:
+  - name: ksh7
+tags:
+  - hackathon
+  - mrv
+  - token
