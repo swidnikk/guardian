@@ -1,0 +1,27 @@
+id: other-tymlez-cru
+name: "Tymlez (CRU: Carbon Reduction)"
+version: "1.0.0"
+description: >
+  Records CO2e emissions reductions (avoidance and insetting claims) for a
+  site from device and external data, using a schema based on the GHG Protocol
+  corporate standard, and mints a non-fungible reduction token to the owner.
+policy_type: novel-methodology
+status: draft
+license: Apache-2.0
+category: emission-reporting
+authors:
+  - name: TYMLEZ Pty Ltd
+    type: organization
+tags:
+  - mrv
+  - monitoring
+  - nft
+  - token
+maintainers:
+  - name: TYMLEZ Pty Ltd
+roles:
+  - ROOT_AUTHORITY
+  - INSTALLER
+  - TOKEN_OWNER
+token_type: TYM_CRU
+token_standard: HIP-412-NFT
