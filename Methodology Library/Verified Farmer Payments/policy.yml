@@ -1,0 +1,28 @@
+id: verified-farmer-payments
+name: Verified Farmer Payments
+version: "1.0.0"
+description: >
+  Turns each farm-gate payment into a tamper-evident digital receipt that
+  farmers and cooperatives can showcase. A collector records the payment and
+  the farmer confirms it, by NFC card signature or by accepting a hashed
+  receipt image, before a Digital Receipt token is minted.
+policy_type: novel-methodology
+status: draft
+license: Apache-2.0
+category: supply-chain
+authors:
+  - name: Fairfood
+    type: organization
+maintainers:
+  - name: Fairfood
+tags:
+  - farmer-payments
+  - supply-chain
+  - fair-trade
+  - nfc
+  - token
+roles:
+  - Co-Operative
+  - Farmer
+token_type: DR
+token_standard: fungible
