@@ -1,0 +1,28 @@
+id: verra-vm0041
+name: VM0041
+version: "1.0.0"
+description: >
+  Guardian implementation of Verra methodology VM0041, quantifying enteric
+  methane emission reductions in livestock production by suppressing
+  methanogenesis in ruminant diets. Verified reductions are minted as VCU tokens.
+policy_type: standard-implementation
+status: draft
+license: Apache-2.0
+category: carbon-credits
+authors:
+  - name: Envision
+    type: organization
+tags:
+  - verra
+  - vm0041
+  - agriculture
+standard_body: Verra
+methodology_id: VM0041
+token_type: VCU
+token_standard: HIP-412-NFT
+roles:
+  - Project_Proponent
+  - VVB
+maintainers:
+  - name: Envision
+sector: agriculture
