@@ -1,0 +1,28 @@
+id: wip-deloitte-esi-mangrove
+name: Deloitte ESI Mangrove
+version: "1.0.0"
+description: >
+  Deloitte ESI dMRV workflow for mangrove restoration: field operators log sediment
+  cores and samples, lab operators enter lab results, and Guardian calculates dry bulk
+  density and organic carbon content, chaining the data as one VC per sample for dashboard viewing.
+policy_type: proof-of-concept
+status: draft
+license: Apache-2.0
+category: other
+category_note: mangrove soil carbon stock measurement
+authors:
+  - name: Deloitte
+    type: organization
+maintainers:
+  - name: Deloitte
+tags:
+  - mangrove
+  - blue-carbon
+  - soil-carbon
+  - reforestation
+  - mrv
+roles:
+  - Mangrove Admin
+  - Field Operator Login
+  - Lab Operator Login
+  - Dashboard Viewer
