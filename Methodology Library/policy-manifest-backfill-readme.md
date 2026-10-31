@@ -36,6 +36,11 @@ The Google Sheet is **deprecated**. The exported `Policy Manifest Backfill.xlsx`
 | Sector | Set for every CDM manifest (energy, waste, water, agriculture, land-use) per methodology scope. |
 | Commits | The lead commits manifests and the workbook as rows reach `ready` (one commit per row); nothing is pushed. |
 | Team pattern from Phase 2 | A timestamp verifier runs alongside each backfill batch, an auditor samples each batch, and provenance runs where workbook authors are blank or contradicted. |
+| Multi-policy directories | Where one directory holds several distinct policies, each gets `policy.<slug>.yml` (decided 2026-10-30; documented in `MANIFEST_SPEC.md`, section 'One manifest per directory', commit `81c4f2555`). Applied to `Greenhouse Gas (GHG)/Korean Fixed Combustion` (three policies: gaseous, liquid, solid fuel). `publications.<slug>.json` is the proposed log name; `scripts/record-publication.js` needs a `--manifest` option first (not done). No `validate-manifests` workflow exists to update. |
+| Korean Fixed Combustion rows | Workbook row 52 became the gaseous-fuel row (new id `ghg-korean-fixed-combustion-gaseous-fuel`); rows 109 and 110 added for liquid and solid (same Current Path). |
+| Origin tags | `dovu`, `envision` and similar origin/partner tags are dropped everywhere: they repeat `authors`. |
+| Workbook scope tags | `land-use`, `waste`, `industrial` are not canonical tags; the scope goes in `sector` only with clear evidence, otherwise omitted. |
+| Evidence over workbook | Where the README/bundle contradicts the workbook category (Dovu MMCM, Carbon Space, Geotree) the manifest follows the evidence and the cell is corrected, with a review flag. |
 
 ## Progress
 
@@ -56,8 +61,13 @@ The Google Sheet is **deprecated**. The exported `Policy Manifest Backfill.xlsx`
 | Verra VM0047 | `.../VM0047` | committed | pass | sampled | `ilyozzz` (low) | README ts decodes to 'Verra ARR Policy', not VM0047 |
 | Verra VM0048 | `.../VM0048` | committed | pass | sampled | `erikamoji` (low) | README ts testnet only (v2.0.0) |
 | Verra VMR0006 | `Verra/VMR0006` | committed | pass | sampled | Venkatesh R (LICENSE copyright; conflicts with root readme) | none documented |
+| CAR US Landfill; GCC Amana, GCCM001 | `Climate Action Reserve (CAR)/US Landfill`, `Global Carbon Council (GCC)/...` | committed | pass | US Landfill, GCCM001 sampled | Envision (medium), KrypC for Amana (root readme) | US Landfill and GCCM001 README ts testnet only |
+| Gold Standard (Carbon Sequestration, Safe Drinking Water, TPDDTEC v3.1, AR, MECD v1.2, MECD v2.0) | `Gold Standard/...` | committed | pass | MECD v2.0 sampled | Envision; Gayanath Ranasinghe; Global Carbon Registry; Gautam Prajapati | Carbon Sequestration and AR README ts testnet only |
+| Dovu (MMCM + 10 MRV templates, rows 26-36) | `Dovu/MMCM`, `Dovu/policies/...` | committed | pass | Geotree, MMCM sampled | DOVU (root readme, medium); Matt Smithies contributor on MMCM | none documented |
+| GHG (Corporate v2, v3; atma Cradle-to-Gate, Electricity; Korean x7; Remote Work) | `Greenhouse Gas (GHG)/...` | committed (Korean Fixed Combustion as three `policy.<slug>.yml`) | pass | Korean Fixed Combustion, atma Electricity sampled | Envision; Dariy Miseldzhani; Atma (inferred); Wincl (high, git log) | Corporate v2, v3, Remote Work README ts testnet only |
+| iREC | `International Renewable Energy Certificate (iREC)` | committed (16 bundles treated as one version series) | pass | not sampled | Envision (root readme, medium) | 13 README ts testnet only; 3 schema ts 404 on both |
 
-Phases 1 and 2 (18 CDM rows and 12 Verra rows) are committed on this branch (one commit per row, plus `e2a970dac` adding `sector` to the CDM manifests). Nothing is pushed. No `publications.json` has been written anywhere.
+Phases 1, 2 and 3 (18 CDM, 12 Verra and 34 Phase 3 rows) are committed on this branch (one commit per row, plus `e2a970dac` adding `sector` to the CDM manifests). Nothing is pushed. No `publications.json` has been written anywhere.
 
 ## Flags for human review
 
@@ -88,6 +98,17 @@ Phases 1 and 2 (18 CDM rows and 12 Verra rows) are committed on this branch (one
 | 23 | Verra VM0047 | review | description | Auditor suggests softening to 'early implementation ... based on Verra VM0047' because the README says v0.1/unreleased and the bundle is 'Verra ARR Policy'. | auditor | auditor | open (proposed diff not applied) |
 | 24 | Verra VM0048 | review | duplicate | A separate hackathon VM0048 exists (`Policies:row 84`, `Community Contributions/2024-Hackathon/VM0048`); confirm they are different bundles. | workbook | auditor | open |
 | 25 | Verra (6 manifests) | info | tags | `vm0007`, `vm0033`, `vm0042`, `vm0047`, `vm0048`, `vmr0006` are non-canonical (CI warning only); the taxonomy has no methodology-id tag convention. | `TAG_TAXONOMY.md` | auditor | open |
+| 26 | Phase 3: CAR US Landfill, GCC GCCM001, Gold Standard Carbon Sequestration, GoldStandard AR, GHG Corporate v2, v3, Remote Work | review | publications | README timestamps are real `publish-policy` messages on testnet only (404 on mainnet): US Landfill, GCCM001, Carbon Sequestration, AR, Corporate v2 ('GHGP Policy 2' v1), v3 ('GHGP v3' v3.0, a 2026 timestamp), Remote Work. No `publications.json` written. | mirror nodes | timestamp-verifier | open |
+| 27 | iREC | review | publications | 13 README policy timestamps testnet only; the 3 schema timestamps return 404 on both networks. The chosen bundle's version 10.1.0 matches the published 'new trust-chain' message. | mirror nodes | timestamp-verifier | open |
+| 28 | iREC | review | layout | 16 bundles treated as one iRec version series (policy 1-10, MBP, module, variants) with one manifest; 10 Source and 10 Recipient look like two halves of one workflow. Version 10.1.0 is the Recipient (new trust-chain) bundle. Confirm this is not several distinct policies. | bundles; readme | backfiller | open |
+| 29 | Korean GHG (7 policies) | review | standard_body | `GHG Protocol` kept per workbook, but the docs cite Korea's GIR national guidance, not the GHG Protocol. Authors Wincl confirmed from git (commit aaad3011c, PR #5310). | docs; git log | backfillers | open |
+| 30 | GHG Product Standard atma (Cradle-to-Gate, Electricity) | review | authors, scope | Authors Atma are inferred from the folder name; the alternative is Avery Dennison. 'Electricity' is actually the atma GHG Scope II policy and mints two tokens (token fields omitted). | readme; bundle | backfillers | open |
+| 31 | GHG Corporate v2, v3 | review | version, tokens | v2 has two bundles ('GHGP Policy 2' with no version, 'GHGP Policy' 3.0.1): version defaulted to 1.0.0. v3 mints three Scope tokens (token fields omitted); its authors are individuals with no organization stated. | bundles | backfillers | open |
+| 32 | Gold Standard MECD v1.2, v2.0 | review | supersedes | v2.0 `supersedes: gold-standard-mecd-v1-2` (stated in both READMEs); v1.2 stays `draft` with no `superseded_by`. READMEs call the token fungible but bundles define a non-fungible one. | READMEs; bundles | backfillers | open |
+| 33 | Dovu (MMCM, Carbon Space, Geotree, Grain Data Solution) | review | category | Workbook `sustainable-agriculture` corrected to waste, emission-reporting, carbon-credits for the first three; Grain Data Solution kept it on thin evidence. Agrecalc and Cool Farm Tool descriptions are the backfillers' own wording (READMEs have no per-policy text). | READMEs | backfillers | open |
+| 34 | Gold Standard TPDDTEC v3.1 | review | authors | README says 'Global Climate Registry'; the folder name says 'Global Carbon Registry'. README documents a testnet topic and token ids (not in the manifest). | README | backfiller | open |
+| 35 | Gold Standard rice cultivation methane (`Policies:row 46`) | review | authors | No author can be established (not in the root readme, history is a docs bulk update): row held, not backfilled. | provenance | provenance | **needs owner decision** |
+| 36 | Gold Standard `Work In Progress/TPDDTEC v4.0` (`Policies:row 47`) | review | scope | Deferred to Phase 4: the workbook note asks whether WIP items belong in the library. | workbook | lead | open |
 
 ## Spec and workflow-sheet issues
 
@@ -140,3 +161,4 @@ The repo's `.policy` bundles for the same versions carry different `uuid`s (`e52
 | 2026-10-30 | Phase 1: the other 17 CDM rows backfilled by up to three backfillers and committed one row at a time; each row's workbook cells were updated from the manifest (XML patch with old-value assertions and a cell diff). All 18 CDM manifests pass `ajv`. |
 | 2026-10-30 | Phase 1 checks: 13 README timestamps verified on both networks (11 testnet only, 2 not found on either); audit sample of five manifests found no blockers. Sector added to the CDM manifests (`e2a970dac`). |
 | 2026-10-30 | Phase 2 (Verra): one provenance run supplied authors for 12 folders (workbook authors were blank); 12 rows backfilled by up to three backfillers with a timestamp verifier and auditor running alongside, one commit per row. All 31 tracked manifests pass `ajv`; no manifest carries Hedera or IPFS text; no `publications.json` written. VM0007 `land-use` tag removed for consistency; the lead's brief wrongly called VMR0006 a mangrove module (the backfiller corrected it from the README). |
+| 2026-10-30 | Phase 3 (Gold Standard, Dovu, GCC, CAR, iREC, GHG): provenance and README-timestamp checks first, then up to three backfillers at a time with one commit per row. Row 52 (Korean Fixed Combustion) was split into three rows and three `policy.<slug>.yml` sidecars per the owner's instruction; `MANIFEST_SPEC.md` was updated (`81c4f2555`). 34 manifests committed; rows 46 and 47 not done (see flags 35, 36). All manifests pass `ajv`; no `publications.json` written. |
