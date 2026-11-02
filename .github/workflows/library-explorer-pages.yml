@@ -4,6 +4,11 @@ name: Library Explorer (Pages)
 
 on:
   workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch, tag or SHA to read Methodology Library from (blank = the branch the run is started on)'
+        required: false
+        default: 'swid/policy-manifest-backfill'
   push:
     branches: [main]            # ASSUMED default branch; change if yours differs
     paths:
@@ -24,7 +29,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4            # the explorer tooling, from the branch this run started on
+      - uses: actions/checkout@v4            # the library to publish, from the 'ref' input (push runs: same branch)
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+          path: _lib
+          sparse-checkout: Methodology Library
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -35,7 +45,7 @@ jobs:
         run: npm ci
       - name: Build site (reads the library, writes only _site)
         working-directory: tools/library-explorer
-        run: node build.js --lib "$GITHUB_WORKSPACE/Methodology Library" --out "$GITHUB_WORKSPACE/_site" --label "Methodology Library"
+        run: node build.js --lib "$GITHUB_WORKSPACE/_lib/Methodology Library" --out "$GITHUB_WORKSPACE/_site" --label "Methodology Library"
       - name: Drop the build report (not part of the site)
         run: rm -f _site/build-report.json && touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3
