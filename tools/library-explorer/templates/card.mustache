@@ -1,0 +1,7 @@
+<li class="card" data-id="{{id}}" data-status="{{status}}" data-policy_type="{{policy_type}}" data-standard_body="{{standard_body}}" data-category="{{category}}" data-sector="{{sector}}" data-net="{{net}}" data-sdg="{{sdgAttr}}" data-tag="{{tagAttr}}" data-text="{{text}}">
+<a class="thumb" href="{{root}}p/{{id}}/index.html" tabindex="-1" aria-hidden="true"><img src="{{{thumbSrc}}}" alt="" width="400" height="300" loading="lazy"></a>
+<div class="cbody"><h3><a href="{{root}}p/{{id}}/index.html">{{name}}</a></h3>
+<p class="ver">{{id}} · v{{version}}</p>
+<div class="chips">{{#chips}}<a class="chip {{cls}}" href="{{root}}index.html?{{key}}={{qv}}" data-filter="{{key}}" data-value="{{value}}">{{label}}</a>{{/chips}}</div>
+<p class="desc">{{summary}}</p>
+<div class="chips tags">{{#tags}}<a class="chip tag" href="{{root}}index.html?tag={{qv}}" data-filter="tag" data-value="{{value}}">#{{value}}</a>{{/tags}}</div></div></li>

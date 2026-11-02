@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{title}} · Cairn</title>
+<style>{{{css}}}</style>
+{{#catalogPage}}<script src="{{root}}assets/vendor/md.js" defer></script><script>{{{filterJs}}}</script>{{/catalogPage}}
+</head><body class="{{bodyClass}}">
+<a class="skip" href="#main">Skip to content</a>
+<header class="appbar"><a class="brand" href="{{root}}index.html"><span class="logo" aria-hidden="true">▲</span> Cairn <small>Guardian Methodology Library</small></a>
+<nav aria-label="Primary"><a href="{{root}}index.html"{{#navCatalog}} aria-current="page"{{/navCatalog}}>Catalog</a><a href="{{root}}health/index.html"{{#navHealth}} aria-current="page"{{/navHealth}}>Library health</a><a href="{{root}}sql/index.html"{{#navSql}} aria-current="page"{{/navSql}}>SQL (optional)</a><a href="{{root}}data/catalog.json" download>catalog.json</a><a href="{{root}}data/library.sqlite" download>library.sqlite</a></nav></header>
+<main id="main" tabindex="-1">{{{body}}}</main>
+<footer>Prototype, not an official Guardian site. Built {{builtAt}} from {{library}}. {{valid}} valid / {{invalid}} invalid manifests.</footer>
+</body></html>
