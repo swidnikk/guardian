@@ -1,1 +1,48 @@
-/* Shell team owns this file: app bar, brand, top nav, dropdown, page header/intro, about page, footer. */
+/* Shell team owns this file: app bar, brand, top nav, dropdown, page header/intro, about page, advanced page, footer. Prefixes nav-/shell-. */
+.shell-bar{justify-content:space-between;gap:10px 24px;background:linear-gradient(120deg,#00464a,#00696b 55%,#1f7a5c)}
+.shell-brand{display:flex;align-items:center;gap:10px;min-width:0;flex:1 1 auto;border-radius:8px}
+.shell-brand .logo{margin:0;font-size:1.5rem;line-height:1}
+.shell-title{font-size:clamp(1.25rem,1rem + 1.4vw,2rem);font-weight:700;line-height:1.15;letter-spacing:.2px}
+.nav-primary{flex:0 0 auto;margin-left:auto}
+.nav-list{display:flex;align-items:center;gap:4px;list-style:none;margin:0;padding:0}
+.nav-item{position:relative}
+.nav-link,.nav-trigger{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 16px;border:0;border-radius:999px;background:transparent;color:#fff;font:inherit;font-size:.95rem;font-weight:500;text-decoration:none;cursor:pointer}
+.appbar .nav-primary .nav-link{padding:6px 16px;font-size:.95rem}
+.nav-link:hover,.nav-trigger:hover{background:#ffffff2e}
+.nav-link[aria-current=page],.nav-trigger.is-current{background:#fff;color:#00504f;font-weight:600}
+.appbar .nav-link:focus-visible,.nav-trigger:focus-visible,.shell-brand:focus-visible,.nav-menu a:focus-visible{outline:3px solid #ffd27a;outline-offset:2px}
+.nav-caret{transition:transform .15s}.nav-trigger[aria-expanded=true] .nav-caret{transform:rotate(180deg)}
+.nav-menu{list-style:none;margin:0;padding:6px;background:#fff;border-radius:12px;box-shadow:0 8px 24px #0004;min-width:200px}
+.nav-menu a{display:block;padding:10px 14px;border-radius:8px;color:var(--fg);text-decoration:none;font-size:.95rem}
+.appbar .nav-menu a{color:var(--fg)}
+.nav-menu a:hover{background:var(--pc)}
+.appbar .nav-menu a:focus-visible{outline-color:#b36b00}
+.nav-menu a[aria-current=page]{background:var(--pc);color:var(--on-pc);font-weight:600;position:relative}
+.nav-menu a[aria-current=page]::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;background:var(--p)}
+/* with JS: menu is a popover under the trigger; without JS it stays a plain inline list (nothing is hidden) */
+html.js .nav-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:30}
+html.js .nav-menu[hidden]{display:none}
+html:not(.js) .nav-dd{display:flex;align-items:center;gap:4px}
+html:not(.js) .nav-trigger,html:not(.js) .nav-caret{display:none}
+html:not(.js) .nav-menu{display:flex;background:transparent;box-shadow:none;padding:0;min-width:0}
+html:not(.js) .nav-menu a{color:#fff;padding:6px 14px;border-radius:999px}
+html:not(.js) .nav-menu a:hover{background:#ffffff2e}
+html:not(.js) .nav-menu a[aria-current=page]{background:#fff;color:#00504f}html:not(.js) .nav-menu a[aria-current=page]::before{display:none}
+@media(max-width:560px){.shell-bar{padding:10px 14px}.shell-brand{flex-basis:100%}.nav-primary{margin-left:0;width:100%}.nav-list{justify-content:flex-start}html.js .nav-menu{right:auto;left:0}html:not(.js) .nav-dd{flex-wrap:wrap}}
+.shell-intro{background:var(--pc);color:var(--on-pc);border-bottom:1px solid #b5d3d2}
+.shell-intro p{max-width:1320px;margin:0 auto;padding:18px 28px;font-size:1.05rem;line-height:1.55;max-width:min(1320px,100%)}
+@media(max-width:560px){.shell-intro p{padding:14px}}
+@media(prefers-reduced-motion:reduce){.nav-caret{transition:none}}
+/* About page */
+.shell-about{display:grid;gap:16px;max-width:720px}
+.shell-block{background:var(--card);border-radius:16px;padding:18px 22px;box-shadow:0 1px 3px #0002}
+.shell-block h2{margin:0 0 8px;font-size:1.15rem;color:var(--fg);text-transform:none;letter-spacing:0}
+.shell-block p{margin:0}
+.shell-ext{display:inline-flex;align-items:center;gap:6px;font-weight:600;padding:4px 0}
+.shell-ext-icon{flex:none}
+/* Advanced page */
+.shell-downloads{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 18px}
+.shell-dl{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:8px 18px;border-radius:999px;background:var(--p);color:#fff;font-weight:600;text-decoration:none}
+.shell-dl:hover{background:#004f51}.shell-size{font-weight:400;opacity:.9}
+.shell-summary{background:var(--card);border-radius:16px;padding:6px 22px 14px;box-shadow:0 1px 3px #0002;margin:0 0 16px}.shell-summary h2{margin-top:14px}.shell-summary ul{margin:0;padding-left:20px}
+.nav-menu a{white-space:nowrap}html:not(.js) .nav-list{flex-wrap:wrap}

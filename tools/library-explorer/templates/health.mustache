@@ -1,4 +1,4 @@
-<h1>Library health</h1>
+<h1>Health</h1>
 <p>{{found}} manifests found · {{valid}} valid · {{invalid}} invalid. Status: {{statusLine}}. Publication logs: {{pubLogs}} of {{valid}}.</p>
 <h2>Invalid manifests ({{invalidCount}})</h2>
 {{#invalidRows}}{{#first}}<table><thead><tr><th scope="col">Path<th scope="col">Why</tr></thead><tbody>{{/first}}<tr><td>{{path}}<td>{{kind}}: {{reason}}</tr>{{#last}}</tbody></table>{{/last}}{{/invalidRows}}{{^invalidRows}}<p class="note">None.</p>{{/invalidRows}}
