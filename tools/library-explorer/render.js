@@ -14,6 +14,7 @@ const FILTER_JS = fs.readFileSync(path.join(here, 'assets/filter.js'), 'utf8').r
 // every templates/*.mustache is loaded by name, so adding a page template needs no edit here
 const T = Object.fromEntries(fs.readdirSync(path.join(here, 'templates')).filter((f) => f.endsWith('.mustache')).map((f) => [f.replace(/\.mustache$/, ''), fs.readFileSync(path.join(here, 'templates', f), 'utf8')]));
 const safeUrl = (u) => { try { const x = new URL(u); return /^https?:$/.test(x.protocol) ? x.href : null; } catch { return null; } };
+const SITE_TITLE = 'Guardian Methodology Library';
 const UNSPEC = 'Unspecified';
 const NETS = { mainnet: 'Live on mainnet', testnet: 'Testnet only', none: 'No publication recorded' };
 const netOf = (p) => (p.live_mainnet ? 'mainnet' : p.on_testnet ? 'testnet' : 'none');
@@ -25,7 +26,9 @@ export function renderSite(rows, OUT, meta, resolveThumb) {
   const pols = rows(`select * from policies order by case status when 'active' then 0 when 'candidate' then 1 when 'draft' then 2 when 'deprecated' then 3 else 4 end, name collate nocase`);
   const known = new Set(pols.map((p) => p.id));
   const w = (rel, s) => { const f = path.join(OUT, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, s); };
-  const page = (title, depth, body, opts = {}) => Mustache.render(T.layout, { title, root: '../'.repeat(depth), body, css: CSS, site: SITE, filterJs: FILTER_JS, builtAt: meta.built_at, library: meta.library_label, valid: meta.valid, invalid: meta.invalid, ...opts });
+  // Route titles (B-04): the catalogue is the bare site name, every other page is "<site name> / <page>".
+  const fullTitle = (t) => (t === 'Catalog' ? SITE_TITLE : `${SITE_TITLE} / ${t}`);
+  const page = (title, depth, body, opts = {}) => Mustache.render(T.layout, { title: fullTitle(title), root: '../'.repeat(depth), body, css: CSS, site: SITE, filterJs: FILTER_JS, builtAt: meta.built_at, library: meta.library_label, valid: meta.valid, invalid: meta.invalid, ...opts });
   const tagsBy = {}, sdgBy = {};
   rows('select policy_id, tag, canonical from tags order by tag').forEach((t) => (tagsBy[t.policy_id] ||= []).push(t));
   rows('select policy_id, sdg from sdgs order by sdg').forEach((t) => (sdgBy[t.policy_id] ||= []).push(t.sdg));
@@ -88,7 +91,7 @@ export function renderSite(rows, OUT, meta, resolveThumb) {
   // health
   const inv = rows('select * from invalid_manifests order by path'), unc = rows('select path from uncovered_folders order by path').map((r) => r.path), look = rows('select path from other_yaml').map((r) => r.path), wr = rows('select * from warnings order by kind,path');
   const kinds = {}; wr.forEach((x) => (kinds[x.kind] ||= []).push(x));
-  w('health/index.html', page('Library health', 1, Mustache.render(T.health, {
+  w('health/index.html', page('Health', 1, Mustache.render(T.health, {
     found: meta.found, valid: meta.valid, invalid: meta.invalid, statusLine: st.map(([v, n]) => `${v} ${n}`).join(', '), pubLogs,
     invalidCount: inv.length, invalidRows: inv.map((x, i) => ({ ...x, first: i === 0, last: i === inv.length - 1 })), uncCount: unc.length, unc, lookCount: look.length, look,
     warnGroups: Object.entries(kinds).map(([kind, items]) => ({ kind, n: items.length, items })),

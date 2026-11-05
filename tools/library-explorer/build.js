@@ -1,4 +1,4 @@
-// Cairn generator. READ-ONLY on the library. Writes only into --out (default ./dist).
+// Library Explorer generator. READ-ONLY on the library. Writes only into --out (default ./dist).
 // Usage: node generate.js --lib "<library root>" [--out dist] [--label text]
 import fs from 'node:fs';
 import path from 'node:path';
@@ -198,7 +198,7 @@ pubIssues.forEach((w) => ins('warnings', [w.path, 'invalid-publication-log', w.r
 noManifest.forEach((p) => ins('uncovered_folders', [p]));
 lookalikes.forEach((p) => ins('other_yaml', [p, 1]));
 const meta = { built_at: new Date().toISOString(), library_label: args.label || path.basename(LIB), schema_id: policySchema.$id,
-  generator: 'cairn 0.2.0', found: String(manifests.length), valid: String(valid.length), invalid: String(invalid.length) };
+  generator: 'library-explorer 0.2.0', found: String(manifests.length), valid: String(valid.length), invalid: String(invalid.length) };
 Object.entries(meta).forEach(([k, v]) => ins('meta', [k, v]));
 // ---- static site: templates + thumbnails + vendored assets (self-contained, relative links, no CDN) ----
 for (const d of ['p', 'thumbs', 'health', 'sql', 'data', 'assets']) fs.rmSync(path.join(OUT, d), { recursive: true, force: true });
