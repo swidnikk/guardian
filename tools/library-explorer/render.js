@@ -24,7 +24,9 @@ const stCls = (s) => 'st-' + s;
 
 // Folder link for 'View on Github' (B-03d): one setting, site.config.json `repo` (build flags --repo-url/--repo-branch override it). Every segment is URL-encoded.
 const seg = (s) => String(s).split('/').filter(Boolean).map(encodeURIComponent).join('/');
-const repoLink = (repo, folder) => { const base = safeUrl(repo.url); if (!base || !repo.branch || !folder) return ''; return [base.replace(/\/+$/, ''), 'tree', seg(repo.branch), seg(repo.libraryPath ?? 'Methodology Library'), seg(folder.split(path.sep).join('/'))].filter(Boolean).join('/'); };
+// Only http(s) base URLs are accepted (safeUrl); query/hash are dropped; branch, library path and folder are encoded per segment. Anything else => '' => the card shows a disabled button.
+const humanize = (v) => String(v ?? '').split(/[-_\s]+/).filter(Boolean).map((w) => w[0].toUpperCase() + w.slice(1)).join(' '); // display only; filter values and data-* keep the raw slug
+export const repoLink = (repo, folder) => { const u = safeUrl(repo.url); if (!u || !repo.branch || !folder) return ''; const base = u.split(/[?#]/)[0]; return [base.replace(/\/+$/, ''), 'tree', seg(repo.branch), seg(repo.libraryPath ?? 'Methodology Library'), seg(folder.split(path.sep).join('/'))].filter(Boolean).join('/'); };
 const NET_CARD = { mainnet: 'Live', testnet: 'Testnet only', none: 'No record' }; // Q-1 (ASSUMED)
 
 export function renderSite(rows, OUT, meta, resolveThumb, opts = {}) {
@@ -48,7 +50,7 @@ export function renderSite(rows, OUT, meta, resolveThumb, opts = {}) {
     ...(p.live_mainnet ? [{ key: 'net', value: 'mainnet', label: 'Live on mainnet', cls: 'live' }] : p.on_testnet ? [{ key: 'net', value: 'testnet', label: 'Testnet only', cls: '' }] : []),
   ].map((c) => ({ ...c, qv: qv(c.value) }));
   const cards = pols.map((p) => Mustache.render(T.card, {
-    ...p, root: '', hasThumb: !!p.thumb, thumbSrc: p.thumb ? thumbSrc(p, '') : '', artClass: ART.artClass(p.sector), sectorLabel: p.sector || UNSPEC, netLabel: NET_CARD[netOf(p)], githubUrl: repoLink(SITE.repo, p.folder), standard_body: sb(p), net: netOf(p), sdgAttr: ' ' + (sdgBy[p.id] || []).join(' ') + ' ', tagAttr: ' ' + (tagsBy[p.id] || []).map((t) => t.tag).join(' ') + ' ',
+    ...p, root: '', hasThumb: !!p.thumb, thumbSrc: p.thumb ? thumbSrc(p, '') : '', artClass: ART.artClass(p.sector), sectorLabel: p.sector ? humanize(p.sector) : UNSPEC, categoryLabel: humanize(p.category), policyTypeLabel: humanize(p.policy_type), netLabel: NET_CARD[netOf(p)], githubUrl: repoLink(SITE.repo, p.folder), standard_body: sb(p), net: netOf(p), sdgAttr: ' ' + (sdgBy[p.id] || []).join(' ') + ' ', tagAttr: ' ' + (tagsBy[p.id] || []).map((t) => t.tag).join(' ') + ' ',
     text: [p.name, p.id, p.methodology_id, sb(p), p.description, ...(tagsBy[p.id] || []).map((t) => t.tag)].join(' ').toLowerCase(),
     chips: chipsFor(p), summary: p.description.length > 320 ? p.description.slice(0, 317) + '…' : p.description,
     tags: (tagsBy[p.id] || []).slice(0, 6).map((t) => ({ value: t.tag, qv: qv(t.tag) })),
@@ -58,10 +60,10 @@ export function renderSite(rows, OUT, meta, resolveThumb, opts = {}) {
   const group = (key, label, entries, labelFn = (v) => v) => ({ key, label, options: entries.map(([v, n]) => ({ key, value: v, label: labelFn(v), n })) });
   const groups = [
     group('status', 'Status', count((p) => p.status), (v) => v[0].toUpperCase() + v.slice(1)),
-    group('policy_type', 'Policy type', count((p) => p.policy_type)),
+    group('policy_type', 'Policy type', count((p) => p.policy_type), humanize),
     group('standard_body', 'Standard body', count(sb)),
-    group('category', 'Category', count((p) => p.category)),
-    group('sector', 'Sector', count((p) => p.sector).concat(pols.some((p) => !p.sector) ? [] : [])),
+    group('category', 'Category', count((p) => p.category), humanize),
+    group('sector', 'Sector', count((p) => p.sector), humanize),
     group('net', 'Hedera publication', ['mainnet', 'testnet', 'none'].map((v) => [v, pols.filter((p) => netOf(p) === v).length]), (v) => NETS[v]),
     group('sdg', 'SDG', count((p) => sdgBy[p.id] || []).sort((a, b) => a[0] - b[0]), (v) => 'SDG ' + v),
     group('tag', 'Tags', count((p) => (tagsBy[p.id] || []).map((t) => t.tag)), (v) => '#' + v),
