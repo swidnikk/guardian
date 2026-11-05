@@ -11,6 +11,7 @@ const CSS = fs.readdirSync(CSS_DIR).filter((f) => f.endsWith('.css')).sort().map
 const SITE = JSON.parse(fs.readFileSync(path.join(here, 'site.config.json'), 'utf8'));
 // filter.js is inlined into the catalog page. On file:// every extra file open is slow on some machines (measured ~1 s each here), so pages are kept to 1-2 files.
 const FILTER_JS = fs.readFileSync(path.join(here, 'assets/filter.js'), 'utf8').replace(/<\/script/gi, '<\\/script');
+const NAV_JS = fs.readFileSync(path.join(here, 'assets/nav.js'), 'utf8').replace(/<\/script/gi, '<\\/script');
 // every templates/*.mustache is loaded by name, so adding a page template needs no edit here
 const T = Object.fromEntries(fs.readdirSync(path.join(here, 'templates')).filter((f) => f.endsWith('.mustache')).map((f) => [f.replace(/\.mustache$/, ''), fs.readFileSync(path.join(here, 'templates', f), 'utf8')]));
 const safeUrl = (u) => { try { const x = new URL(u); return /^https?:$/.test(x.protocol) ? x.href : null; } catch { return null; } };
@@ -28,7 +29,7 @@ export function renderSite(rows, OUT, meta, resolveThumb) {
   const w = (rel, s) => { const f = path.join(OUT, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, s); };
   // Route titles (B-04): the catalogue is the bare site name, every other page is "<site name> / <page>".
   const fullTitle = (t) => (t === 'Catalog' ? SITE_TITLE : `${SITE_TITLE} / ${t}`);
-  const page = (title, depth, body, opts = {}) => Mustache.render(T.layout, { title: fullTitle(title), root: '../'.repeat(depth), body, css: CSS, site: SITE, filterJs: FILTER_JS, builtAt: meta.built_at, library: meta.library_label, valid: meta.valid, invalid: meta.invalid, ...opts });
+  const page = (title, depth, body, opts = {}) => Mustache.render(T.layout, { title: fullTitle(title), root: '../'.repeat(depth), body, css: CSS, site: SITE, filterJs: FILTER_JS, navJs: NAV_JS, navCatalogGroup: !!(opts.navCatalog || opts.navHealth || opts.navAdvanced), showIntro: !!(opts.catalogPage || opts.navAbout), builtAt: meta.built_at, library: meta.library_label, valid: meta.valid, invalid: meta.invalid, ...opts });
   const tagsBy = {}, sdgBy = {};
   rows('select policy_id, tag, canonical from tags order by tag').forEach((t) => (tagsBy[t.policy_id] ||= []).push(t));
   rows('select policy_id, sdg from sdgs order by sdg').forEach((t) => (sdgBy[t.policy_id] ||= []).push(t.sdg));
@@ -96,6 +97,14 @@ export function renderSite(rows, OUT, meta, resolveThumb) {
     invalidCount: inv.length, invalidRows: inv.map((x, i) => ({ ...x, first: i === 0, last: i === inv.length - 1 })), uncCount: unc.length, unc, lookCount: look.length, look,
     warnGroups: Object.entries(kinds).map(([kind, items]) => ({ kind, n: items.length, items })),
   }), { navHealth: true }));
-  w('sql/index.html', page('SQL', 1, Mustache.render(T.sql, { root: '../' }), { navSql: true }));
+  // about (B-07): blocks come from site.config.json; GitHub URL is derived from the single repo setting (Q-10)
+  const linkUrl = (k) => safeUrl(k === 'github' ? SITE.repo.url : SITE.links[k]);
+  const blocks = SITE.about.blocks.map((b) => ({ question: b.question, label: b.label, url: linkUrl(b.link) })).filter((b) => b.url);
+  w('about/index.html', page('About', 1, Mustache.render(T.about, { root: '../', blocks }), { navAbout: true }));
+  // advanced search (B-08): technical summary numbers come from the build (meta), nothing hard-coded
+  const summary = { found: meta.found, valid: meta.valid, invalid: meta.invalid, builtAt: meta.built_at, sourceCommit: meta.source_commit || '', catalogSize: meta.catalog_size || '', sqliteSize: meta.sqlite_size || '' };
+  w('advanced/index.html', page('Advanced Search', 1, Mustache.render(T.advanced, { root: '../', summary, ...summary }), { navAdvanced: true }));
+  // old URL kept alive (Q-9): tiny redirect page, relative link only
+  w('sql/index.html', `<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n<meta name="robots" content="noindex, nofollow, noarchive, noimageindex">\n<meta http-equiv="refresh" content="0; url=../advanced/index.html">\n<title>${SITE_TITLE} / Advanced Search</title></head><body><p>This page moved to <a href="../advanced/index.html">Advanced Search</a>.</p></body></html>\n`);
   return { total: pols.length };
 }

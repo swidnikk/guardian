@@ -3,6 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import Ajv2020 from 'ajv/dist/2020.js';
@@ -201,7 +202,7 @@ const meta = { built_at: new Date().toISOString(), library_label: args.label || 
   generator: 'library-explorer 0.2.0', found: String(manifests.length), valid: String(valid.length), invalid: String(invalid.length) };
 Object.entries(meta).forEach(([k, v]) => ins('meta', [k, v]));
 // ---- static site: templates + thumbnails + vendored assets (self-contained, relative links, no CDN) ----
-for (const d of ['p', 'thumbs', 'health', 'sql', 'data', 'assets']) fs.rmSync(path.join(OUT, d), { recursive: true, force: true });
+for (const d of ['p', 'thumbs', 'health', 'sql', 'advanced', 'about', 'data', 'assets']) fs.rmSync(path.join(OUT, d), { recursive: true, force: true });
 for (const f of ['library.sqlite', 'catalog.json', 'index.html', 'app.js', 'style.css', 'sql-wasm.js', 'sql-wasm.wasm', 'sitemap-paths.txt']) fs.rmSync(path.join(OUT, f), { force: true });
 const qrows = (sql, p = []) => { const st = db.prepare(sql); st.bind(p); const r = []; while (st.step()) r.push(st.getAsObject()); st.free(); return r; };
 const byId = new Map(valid.map((v) => [v.doc.id, v]));
@@ -219,9 +220,12 @@ fs.rmSync(dbPath, { force: true });
 for (const f of ['sql-page.js']) fs.copyFileSync(path.join(here, 'assets', f), path.join(OUT, 'assets', f));
 for (const f of ['sql-wasm.js', 'sql-wasm.wasm']) fs.copyFileSync(path.join(here, 'node_modules/sql.js/dist', f), path.join(OUT, 'assets/vendor', f));
 esbuild.buildSync({ entryPoints: [path.join(here, 'assets/md-entry.js')], bundle: true, minify: true, format: 'iife', outfile: path.join(OUT, 'assets/vendor/md.js'), logLevel: 'error' });
-const pg = renderSite(qrows, OUT, meta, resolveThumb);
+// catalog.json is written before the pages so the Advanced Search page can show real file sizes (B-08)
 fs.writeFileSync(path.join(OUT, 'data/catalog.json'), JSON.stringify({ schema_version: 1, built_at: meta.built_at,
   policies: valid.map((v) => ({ ...v.doc, _manifest_path: v.path, _publications: v.pubs })) }));
+const human = (n) => (n < 1024 ? `${n} B` : n < 1048576 ? `${(n / 1024).toFixed(0)} KB` : `${(n / 1048576).toFixed(1)} MB`);
+let sourceCommit = ''; try { sourceCommit = execFileSync('git', ['-C', LIB, 'rev-parse', '--short', 'HEAD'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { /* not a git checkout: omitted from the page */ }
+const pg = renderSite(qrows, OUT, { ...meta, source_commit: sourceCommit, sqlite_size: human(fs.statSync(path.join(OUT, 'data/library.sqlite')).size), catalog_size: human(fs.statSync(path.join(OUT, 'data/catalog.json')).size) }, resolveThumb);
 
 const report = {
   library: LIB, built_at: meta.built_at,
