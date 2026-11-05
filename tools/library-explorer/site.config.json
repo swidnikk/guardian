@@ -1,0 +1,9 @@
+{
+  "_comment": "Shared build-time settings, read by render.js and exposed to every template as {{site.*}}. Add keys; do not rename existing ones without telling the other team. Values marked ASSUMED are awaiting the user.",
+  "repo": { "url": "https://github.com/hashgraph/guardian", "branch": "main", "_note": "ASSUMED default. Used by the card 'View on Github' link (Catalog team) and the About page GitHub link (Shell team). For the demo the build may override with --repo-url/--repo-branch." },
+  "links": {
+    "platformUpdates": "https://guardian.hedera.com/updates",
+    "feedback": "https://tiny.cc/grd-feedback"
+  },
+  "intro": { "text": "", "sourceUrl": "https://guardian.hedera.com/methodology-digitalization/methodology-library", "snapshotDate": "", "_note": "Shell team fills this (B-06). Wording needs user approval." }
+}

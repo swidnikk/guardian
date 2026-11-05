@@ -5,10 +5,14 @@ import Mustache from 'mustache';
 import { thumbSvg } from './thumbs.js';
 const here = path.dirname(new URL(import.meta.url).pathname);
 Mustache.escape = (s) => String(s ?? '').replace(/[&<>"'`=\/]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#96;', '=': '&#61;', '/': '&#x2F;' }[c]));
-const CSS = fs.readFileSync(path.join(here, 'assets/style.css'), 'utf8');
+// CSS is split per area (assets/css/NN-*.css) and concatenated in name order, so teams do not edit the same file.
+const CSS_DIR = path.join(here, 'assets/css');
+const CSS = fs.readdirSync(CSS_DIR).filter((f) => f.endsWith('.css')).sort().map((f) => fs.readFileSync(path.join(CSS_DIR, f), 'utf8')).join('\n');
+const SITE = JSON.parse(fs.readFileSync(path.join(here, 'site.config.json'), 'utf8'));
 // filter.js is inlined into the catalog page. On file:// every extra file open is slow on some machines (measured ~1 s each here), so pages are kept to 1-2 files.
 const FILTER_JS = fs.readFileSync(path.join(here, 'assets/filter.js'), 'utf8').replace(/<\/script/gi, '<\\/script');
-const T = Object.fromEntries(['layout', 'card', 'catalog', 'detail', 'health', 'sql'].map((n) => [n, fs.readFileSync(path.join(here, 'templates', n + '.mustache'), 'utf8')]));
+// every templates/*.mustache is loaded by name, so adding a page template needs no edit here
+const T = Object.fromEntries(fs.readdirSync(path.join(here, 'templates')).filter((f) => f.endsWith('.mustache')).map((f) => [f.replace(/\.mustache$/, ''), fs.readFileSync(path.join(here, 'templates', f), 'utf8')]));
 const safeUrl = (u) => { try { const x = new URL(u); return /^https?:$/.test(x.protocol) ? x.href : null; } catch { return null; } };
 const UNSPEC = 'Unspecified';
 const NETS = { mainnet: 'Live on mainnet', testnet: 'Testnet only', none: 'No publication recorded' };
@@ -21,7 +25,7 @@ export function renderSite(rows, OUT, meta, resolveThumb) {
   const pols = rows(`select * from policies order by case status when 'active' then 0 when 'candidate' then 1 when 'draft' then 2 when 'deprecated' then 3 else 4 end, name collate nocase`);
   const known = new Set(pols.map((p) => p.id));
   const w = (rel, s) => { const f = path.join(OUT, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, s); };
-  const page = (title, depth, body, opts = {}) => Mustache.render(T.layout, { title, root: '../'.repeat(depth), body, css: CSS, filterJs: FILTER_JS, builtAt: meta.built_at, library: meta.library_label, valid: meta.valid, invalid: meta.invalid, ...opts });
+  const page = (title, depth, body, opts = {}) => Mustache.render(T.layout, { title, root: '../'.repeat(depth), body, css: CSS, site: SITE, filterJs: FILTER_JS, builtAt: meta.built_at, library: meta.library_label, valid: meta.valid, invalid: meta.invalid, ...opts });
   const tagsBy = {}, sdgBy = {};
   rows('select policy_id, tag, canonical from tags order by tag').forEach((t) => (tagsBy[t.policy_id] ||= []).push(t));
   rows('select policy_id, sdg from sdgs order by sdg').forEach((t) => (sdgBy[t.policy_id] ||= []).push(t.sdg));
