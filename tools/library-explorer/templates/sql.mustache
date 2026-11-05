@@ -1,0 +1,7 @@
+<h1>SQL console (optional extra)</h1>
+<p class="note"><strong>file:// limitation:</strong> this page fetches <code>library.sqlite</code> and loads WebAssembly, which browsers block when the page is opened straight from disk. It works over http (GitHub Pages, or <code>node serve.js ../dist-real</code>). The catalog and policy pages do not need it.</p>
+<p id="sqlstatus" role="status">Loading…</p>
+<textarea id="sqlq" rows="5" aria-label="SQL query">select status, count(*) n from policies group by status order by n desc;</textarea>
+<p><button id="run" type="button" class="chip">Run</button></p>
+<div id="sqlout"></div>
+<script src="{{root}}assets/vendor/sql-wasm.js"></script><script src="{{root}}assets/sql-page.js"></script>

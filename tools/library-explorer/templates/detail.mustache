@@ -1,0 +1,20 @@
+<p class="crumb"><a href="{{root}}index.html">Catalog</a> › <a href="{{root}}index.html?standard_body={{sbQv}}">{{sbLabel}}</a> › {{id}}</p>
+<article class="detail">
+<div class="dhead"><img class="dthumb" src="{{{thumbSrc}}}" alt="" width="400" height="300"><div>
+<h1>{{name}}</h1><p class="ver">{{id}} · v{{version}}</p>
+<div class="chips big">
+<a class="chip sb {{sbCls}}" href="{{root}}index.html?standard_body={{sbQv}}" title="{{sbTitle}}"><span class="k">Standard body</span> {{sbLabel}}</a>
+{{#chips}}<a class="chip {{cls}}" href="{{root}}index.html?{{key}}={{qv}}">{{label}}</a>{{/chips}}</div>
+{{#banner}}<p class="banner" role="note">{{{banner}}}</p>{{/banner}}
+</div></div>
+<p class="lead">{{description}}</p>
+<div class="cols"><section><h2>Hedera publications</h2>
+{{#hasPubs}}<table><thead><tr><th scope="col">Network<th scope="col">Version<th scope="col">Consensus timestamp<th scope="col">Topic</tr></thead><tbody>{{#pubs}}<tr><td>{{network}}<td>{{version}}<td>{{hedera_timestamp}}<td>{{topic_id}}</tr>{{/pubs}}</tbody></table>{{/hasPubs}}
+{{^hasPubs}}<p class="note">{{pubText}}</p>{{/hasPubs}}
+{{#hasChain}}<h2>Lineage</h2><ol class="chain">{{#chain}}<li>{{#current}}<strong>{{id}} (this policy)</strong>{{/current}}{{^current}}{{#inLib}}<a href="{{root}}p/{{id}}/index.html">{{id}}</a>{{/inLib}}{{^inLib}}{{id}} <span class="chip warn">not in library</span>{{/inLib}}{{/current}}</li>{{/chain}}</ol>{{/hasChain}}
+{{#hasRes}}<h2>Resources</h2><ul>{{#resources}}<li>{{type}}: {{#url}}<a rel="noopener noreferrer" href="{{url}}">{{label}}</a>{{/url}}{{^url}}{{label}}{{/url}}</li>{{/resources}}</ul>{{/hasRes}}
+{{#hasPeople}}<h2>People</h2><ul>{{#people}}<li>{{role}}: {{name}}</li>{{/people}}</ul>{{/hasPeople}}</section>
+<section><h2>Details</h2><dl class="kv">{{#details}}<dt>{{k}}</dt><dd>{{v}}</dd>{{/details}}</dl>
+<h2>Tags</h2><div class="chips">{{#tags}}<a class="chip tag {{cls}}" href="{{root}}index.html?tag={{qv}}">#{{value}}{{#noncanon}} (non-canonical){{/noncanon}}</a>{{/tags}}</div>
+{{#hasSdgs}}<h2>SDGs</h2><div class="chips">{{#sdgs}}<a class="chip" href="{{root}}index.html?sdg={{.}}">SDG {{.}}</a>{{/sdgs}}</div>{{/hasSdgs}}</section></div>
+</article>

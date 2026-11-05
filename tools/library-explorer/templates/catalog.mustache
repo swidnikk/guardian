@@ -1,0 +1,17 @@
+<h1 class="sr-only">Policy catalog</h1>
+<section class="hero"><p><strong>{{total}}</strong> policies. {{strip}}</p></section>
+<div class="layout">
+<form class="filters" id="filters" role="search" onsubmit="return false" aria-label="Filters">
+<md-outlined-text-field id="f-q" label="Search name, id, tags" type="search" value=""></md-outlined-text-field>
+{{#groups}}<fieldset data-group="{{key}}"><legend>{{label}}</legend>
+{{#options}}<label class="opt{{#extra}} extra{{/extra}}"><md-checkbox touch-target="wrapper" data-facet="{{key}}" value="{{value}}"></md-checkbox><span class="ol">{{label}}</span><span class="count" data-count-for="{{key}}={{value}}">{{n}}</span></label>
+{{/options}}{{#hasExtra}}<button type="button" class="more" data-more="{{key}}" data-total="{{totalOptions}}" aria-expanded="false">Show all {{totalOptions}}</button>{{/hasExtra}}
+</fieldset>{{/groups}}
+<md-text-button id="clear-all" type="button">Clear all filters</md-text-button>
+</form>
+<section aria-label="Results">
+<div class="toolbar"><p id="count" role="status" aria-live="polite">{{total}} of {{total}} policies</p><div id="active" class="chips" role="group" aria-label="Active filters"></div></div>
+<h2 class="sr-only">Policies</h2><ul class="grid" id="grid">{{{cards}}}</ul>
+<div id="empty" class="empty" hidden><p><strong>No policies match these filters.</strong></p><p id="empty-hint"></p><p><a href="index.html" id="empty-clear">Clear all filters</a></p></div>
+<noscript><p class="note">Filtering needs JavaScript; every policy is listed above and every card links to a static page.</p></noscript>
+</section></div>
