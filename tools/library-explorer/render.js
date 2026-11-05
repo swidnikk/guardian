@@ -2,13 +2,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import Mustache from 'mustache';
-import { thumbSvg } from './thumbs.js';
+import { loadSectorArt } from './thumbs.js';
 const here = path.dirname(new URL(import.meta.url).pathname);
 Mustache.escape = (s) => String(s ?? '').replace(/[&<>"'`=\/]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '`': '&#96;', '=': '&#61;', '/': '&#x2F;' }[c]));
 // CSS is split per area (assets/css/NN-*.css) and concatenated in name order, so teams do not edit the same file.
 const CSS_DIR = path.join(here, 'assets/css');
 const CSS = fs.readdirSync(CSS_DIR).filter((f) => f.endsWith('.css')).sort().map((f) => fs.readFileSync(path.join(CSS_DIR, f), 'utf8')).join('\n');
 const SITE = JSON.parse(fs.readFileSync(path.join(here, 'site.config.json'), 'utf8'));
+const ART = loadSectorArt(path.join(here, 'assets/sector-art'));
 // filter.js is inlined into the catalog page. On file:// every extra file open is slow on some machines (measured ~1 s each here), so pages are kept to 1-2 files.
 const FILTER_JS = fs.readFileSync(path.join(here, 'assets/filter.js'), 'utf8').replace(/<\/script/gi, '<\\/script');
 // every templates/*.mustache is loaded by name, so adding a page template needs no edit here
@@ -21,7 +22,13 @@ const qv = (s) => encodeURIComponent(s);
 const sb = (p) => p.standard_body || UNSPEC;
 const stCls = (s) => 'st-' + s;
 
-export function renderSite(rows, OUT, meta, resolveThumb) {
+// Folder link for 'View on Github' (B-03d): one setting, site.config.json `repo` (build flags --repo-url/--repo-branch override it). Every segment is URL-encoded.
+const seg = (s) => String(s).split('/').filter(Boolean).map(encodeURIComponent).join('/');
+const repoLink = (repo, folder) => { const base = safeUrl(repo.url); if (!base || !repo.branch || !folder) return ''; return [base.replace(/\/+$/, ''), 'tree', seg(repo.branch), seg(repo.libraryPath ?? 'Methodology Library'), seg(folder.split(path.sep).join('/'))].filter(Boolean).join('/'); };
+const NET_CARD = { mainnet: 'Live', testnet: 'Testnet only', none: 'No record' }; // Q-1 (ASSUMED)
+
+export function renderSite(rows, OUT, meta, resolveThumb, opts = {}) {
+  if (opts.repo) { SITE.repo = { ...SITE.repo, ...Object.fromEntries(Object.entries(opts.repo).filter(([, v]) => v)) }; }
   const pols = rows(`select * from policies order by case status when 'active' then 0 when 'candidate' then 1 when 'draft' then 2 when 'deprecated' then 3 else 4 end, name collate nocase`);
   const known = new Set(pols.map((p) => p.id));
   const w = (rel, s) => { const f = path.join(OUT, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, s); };
@@ -29,10 +36,10 @@ export function renderSite(rows, OUT, meta, resolveThumb) {
   const tagsBy = {}, sdgBy = {};
   rows('select policy_id, tag, canonical from tags order by tag').forEach((t) => (tagsBy[t.policy_id] ||= []).push(t));
   rows('select policy_id, sdg from sdgs order by sdg').forEach((t) => (sdgBy[t.policy_id] ||= []).push(t.sdg));
-  // thumbnails: explicit/convention image copied, else deterministic SVG
-  for (const p of pols) { p.thumb = resolveThumb(p) || (() => { const f = `thumbs/${p.id}.svg`; w(f, thumbSvg(p)); return f; })(); }
+  // thumbnails: real image (manifest thumbnail, assets/thumbnail.png|jpg) copied by resolveThumb, else null => the shared sector art (CSS class on the card, one data: URI per sector for the whole page)
+  for (const p of pols) p.thumb = resolveThumb(p);
   // Image files are still written to thumbs/ (deliverable, reusable). Pages embed small ones as data: URIs so browsing needs no per-image file reads.
-  const thumbSrc = (p, root) => { try { const f = path.join(OUT, p.thumb); const b = fs.readFileSync(f); const mime = p.thumb.endsWith('.svg') ? 'image/svg+xml' : p.thumb.endsWith('.png') ? 'image/png' : 'image/jpeg'; if (b.length <= 120_000) return `data:${mime};base64,${b.toString('base64')}`; } catch {} return Mustache.escape(root + p.thumb); };
+  const thumbSrc = (p, root) => { if (!p.thumb) return ART.uri[ART.key(p.sector)] || ''; try { const f = path.join(OUT, p.thumb); const b = fs.readFileSync(f); const mime = p.thumb.endsWith('.svg') ? 'image/svg+xml' : p.thumb.endsWith('.png') ? 'image/png' : 'image/jpeg'; if (b.length <= 120_000) return `data:${mime};base64,${b.toString('base64')}`; } catch {} return Mustache.escape(root + p.thumb); };
   const chipsFor = (p) => [
     { key: 'status', value: p.status, label: p.status, cls: stCls(p.status) },
     { key: 'policy_type', value: p.policy_type, label: p.policy_type, cls: '' },
@@ -41,27 +48,26 @@ export function renderSite(rows, OUT, meta, resolveThumb) {
     ...(p.live_mainnet ? [{ key: 'net', value: 'mainnet', label: 'Live on mainnet', cls: 'live' }] : p.on_testnet ? [{ key: 'net', value: 'testnet', label: 'Testnet only', cls: '' }] : []),
   ].map((c) => ({ ...c, qv: qv(c.value) }));
   const cards = pols.map((p) => Mustache.render(T.card, {
-    ...p, root: '', thumbSrc: thumbSrc(p, ''), standard_body: sb(p), net: netOf(p), sdgAttr: ' ' + (sdgBy[p.id] || []).join(' ') + ' ', tagAttr: ' ' + (tagsBy[p.id] || []).map((t) => t.tag).join(' ') + ' ',
+    ...p, root: '', hasThumb: !!p.thumb, thumbSrc: p.thumb ? thumbSrc(p, '') : '', artClass: ART.artClass(p.sector), sectorLabel: p.sector || UNSPEC, netLabel: NET_CARD[netOf(p)], githubUrl: repoLink(SITE.repo, p.folder), standard_body: sb(p), net: netOf(p), sdgAttr: ' ' + (sdgBy[p.id] || []).join(' ') + ' ', tagAttr: ' ' + (tagsBy[p.id] || []).map((t) => t.tag).join(' ') + ' ',
     text: [p.name, p.id, p.methodology_id, sb(p), p.description, ...(tagsBy[p.id] || []).map((t) => t.tag)].join(' ').toLowerCase(),
-    chips: chipsFor(p), summary: p.description.length > 150 ? p.description.slice(0, 147) + '…' : p.description,
-    tags: (tagsBy[p.id] || []).slice(0, 4).map((t) => ({ value: t.tag, qv: qv(t.tag) })),
+    chips: chipsFor(p), summary: p.description.length > 320 ? p.description.slice(0, 317) + '…' : p.description,
+    tags: (tagsBy[p.id] || []).slice(0, 6).map((t) => ({ value: t.tag, qv: qv(t.tag) })),
   })).join('\n');
   // facet groups
   const count = (fn) => { const m = new Map(); pols.forEach((p) => { [].concat(fn(p)).forEach((v) => v != null && m.set(v, (m.get(v) || 0) + 1)); }); return [...m].sort((a, b) => b[1] - a[1] || String(a[0]).localeCompare(String(b[0]))); };
-  const group = (key, label, entries, labelFn = (v) => v, limit = 8) => ({ key, label, options: entries.map(([v, n], i) => ({ key, value: v, label: labelFn(v), n, extra: i >= limit })), hasExtra: entries.length > limit, totalOptions: entries.length });
+  const group = (key, label, entries, labelFn = (v) => v) => ({ key, label, options: entries.map(([v, n]) => ({ key, value: v, label: labelFn(v), n })) });
   const groups = [
-    group('status', 'Status', count((p) => p.status)),
+    group('status', 'Status', count((p) => p.status), (v) => v[0].toUpperCase() + v.slice(1)),
     group('policy_type', 'Policy type', count((p) => p.policy_type)),
     group('standard_body', 'Standard body', count(sb)),
     group('category', 'Category', count((p) => p.category)),
     group('sector', 'Sector', count((p) => p.sector).concat(pols.some((p) => !p.sector) ? [] : [])),
     group('net', 'Hedera publication', ['mainnet', 'testnet', 'none'].map((v) => [v, pols.filter((p) => netOf(p) === v).length]), (v) => NETS[v]),
-    group('sdg', 'SDG', count((p) => sdgBy[p.id] || []).sort((a, b) => a[0] - b[0]), (v) => 'SDG ' + v, 17),
-    group('tag', 'Tags', count((p) => (tagsBy[p.id] || []).map((t) => t.tag)), (v) => '#' + v, 10),
+    group('sdg', 'SDG', count((p) => sdgBy[p.id] || []).sort((a, b) => a[0] - b[0]), (v) => 'SDG ' + v),
+    group('tag', 'Tags', count((p) => (tagsBy[p.id] || []).map((t) => t.tag)), (v) => '#' + v),
   ].filter((g) => g.options.length);
   const st = count((p) => p.status), pubLogs = pols.filter((p) => p.has_pub_log).length, mainnet = pols.filter((p) => p.live_mainnet).length;
-  const strip = `${st.map(([v, n]) => `${n} ${v}`).join(', ')}. ${mainnet} with a recorded mainnet publication; ${pubLogs} with any publication log (absence of a log is not proof of non-publication).`;
-  w('index.html', page('Catalog', 0, Mustache.render(T.catalog, { groups, total: pols.length, strip, cards }), { catalogPage: true, navCatalog: true, bodyClass: 'catalog' }));
+  w('index.html', page('Catalog', 0, Mustache.render(T.catalog, { groups, total: pols.length, cards }), { catalogPage: true, css: CSS + '\n' + ART.css, navCatalog: true, bodyClass: 'catalog' }));
 
   // detail pages
   for (const p of pols) {
