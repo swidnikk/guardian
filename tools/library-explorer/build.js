@@ -221,11 +221,12 @@ for (const f of ['sql-page.js']) fs.copyFileSync(path.join(here, 'assets', f), p
 for (const f of ['sql-wasm.js', 'sql-wasm.wasm']) fs.copyFileSync(path.join(here, 'node_modules/sql.js/dist', f), path.join(OUT, 'assets/vendor', f));
 esbuild.buildSync({ entryPoints: [path.join(here, 'assets/md-entry.js')], bundle: true, minify: true, format: 'iife', outfile: path.join(OUT, 'assets/vendor/md.js'), logLevel: 'error' });
 // catalog.json is written before the pages so the Advanced Search page can show real file sizes (B-08)
+fs.cpSync(path.join(here, 'assets/sector-art'), path.join(OUT, 'assets/sector-art'), { recursive: true }); // shared fallback card art (also embedded once in the catalog page)
 fs.writeFileSync(path.join(OUT, 'data/catalog.json'), JSON.stringify({ schema_version: 1, built_at: meta.built_at,
   policies: valid.map((v) => ({ ...v.doc, _manifest_path: v.path, _publications: v.pubs })) }));
 const human = (n) => (n < 1024 ? `${n} B` : n < 1048576 ? `${(n / 1024).toFixed(0)} KB` : `${(n / 1048576).toFixed(1)} MB`);
 let sourceCommit = ''; try { sourceCommit = execFileSync('git', ['-C', LIB, 'rev-parse', '--short', 'HEAD'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { /* not a git checkout: omitted from the page */ }
-const pg = renderSite(qrows, OUT, { ...meta, source_commit: sourceCommit, sqlite_size: human(fs.statSync(path.join(OUT, 'data/library.sqlite')).size), catalog_size: human(fs.statSync(path.join(OUT, 'data/catalog.json')).size) }, resolveThumb);
+const pg = renderSite(qrows, OUT, { ...meta, source_commit: sourceCommit, sqlite_size: human(fs.statSync(path.join(OUT, 'data/library.sqlite')).size), catalog_size: human(fs.statSync(path.join(OUT, 'data/catalog.json')).size) }, resolveThumb, { repo: { url: args['repo-url'], branch: args['repo-branch'] } }); // --repo-url/--repo-branch override site.config.json `repo` (e.g. the demo fork)
 
 const report = {
   library: LIB, built_at: meta.built_at,
