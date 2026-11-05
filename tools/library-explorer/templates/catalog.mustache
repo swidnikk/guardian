@@ -1,15 +1,20 @@
 <h1 class="sr-only">Policy catalog</h1>
-<div class="layout">
+<div class="catalog-layout">
+<details class="filters-disclosure" id="filters-details"><summary class="filters-summary">Filters</summary>
 <form class="filters" id="filters" role="search" onsubmit="return false" aria-label="Filters">
-<md-outlined-text-field id="f-q" label="Search name, id, tags" type="search" value=""></md-outlined-text-field>
-{{#groups}}<fieldset data-group="{{key}}"><legend>{{label}}</legend>
-{{#options}}<label class="opt{{#extra}} extra{{/extra}}"><md-checkbox touch-target="wrapper" data-facet="{{key}}" value="{{value}}"></md-checkbox><span class="ol">{{label}}</span><span class="count" data-count-for="{{key}}={{value}}">{{n}}</span></label>
-{{/options}}{{#hasExtra}}<button type="button" class="more" data-more="{{key}}" data-total="{{totalOptions}}" aria-expanded="false">Show all {{totalOptions}}</button>{{/hasExtra}}
-</fieldset>{{/groups}}
-<md-text-button id="clear-all" type="button">Clear all filters</md-text-button>
-</form>
-<section aria-label="Results">
-<div class="toolbar"><p id="count" role="status" aria-live="polite">{{total}} of {{total}} policies</p><div id="active" class="chips" role="group" aria-label="Active filters"></div></div>
+<div class="facet facet-searchbox"><label class="facet-label" for="f-q">Search</label><input type="search" id="f-q" class="facet-search" placeholder="Name, id, tags" autocomplete="off"></div>
+{{#groups}}<div class="facet" data-facet="{{key}}"><span class="facet-label" id="fl-{{key}}">{{label}}</span>
+<div class="facet-ctl"><ul class="facet-chips" aria-label="Selected {{label}}"></ul><button type="button" class="facet-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="fp-{{key}}" aria-labelledby="fl-{{key}}"></button></div>
+<div class="facet-panel" id="fp-{{key}}" role="group" aria-labelledby="fl-{{key}}" hidden>{{#options}}<label class="facet-opt"><input type="checkbox" data-facet="{{key}}" value="{{value}}"><span class="facet-opt-label">{{label}}</span><span class="count" data-count-for="{{key}}={{value}}">{{n}}</span></label>{{/options}}</div></div>
+{{/groups}}
+<div class="switches">
+<label class="switch-row"><input type="checkbox" role="switch" id="sw-deprecated" class="switch-input"><span class="switch-track" aria-hidden="true"></span><span class="switch-label" id="sw-deprecated-lbl">Deprecated Policies Excluded</span></label>
+<label class="switch-row"><input type="checkbox" role="switch" id="sw-superseded" class="switch-input"><span class="switch-track" aria-hidden="true"></span><span class="switch-label" id="sw-superseded-lbl">Superseded Policies Excluded</span></label>
+</div>
+<button type="button" id="clear-all" class="facet-reset">Reset filters</button>
+</form></details>
+<section class="results" aria-label="Results">
+<div class="toolbar"><p id="count" role="status" aria-live="polite">{{total}} of {{total}} policies</p><div id="active" class="chips" role="group" aria-label="Active filters" hidden></div></div>
 <h2 class="sr-only">Policies</h2><ul class="grid" id="grid">{{{cards}}}</ul>
 <div id="empty" class="empty" hidden><p><strong>No policies match these filters.</strong></p><p id="empty-hint"></p><p><a href="index.html" id="empty-clear">Clear all filters</a></p></div>
 <noscript><p class="note">Filtering needs JavaScript; every policy is listed above and every card links to a static page.</p></noscript>
