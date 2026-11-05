@@ -219,7 +219,8 @@ fs.rmSync(dbPath, { force: true });
 for (const f of ['sql-page.js']) fs.copyFileSync(path.join(here, 'assets', f), path.join(OUT, 'assets', f));
 for (const f of ['sql-wasm.js', 'sql-wasm.wasm']) fs.copyFileSync(path.join(here, 'node_modules/sql.js/dist', f), path.join(OUT, 'assets/vendor', f));
 esbuild.buildSync({ entryPoints: [path.join(here, 'assets/md-entry.js')], bundle: true, minify: true, format: 'iife', outfile: path.join(OUT, 'assets/vendor/md.js'), logLevel: 'error' });
-const pg = renderSite(qrows, OUT, meta, resolveThumb);
+fs.cpSync(path.join(here, 'assets/sector-art'), path.join(OUT, 'assets/sector-art'), { recursive: true }); // shared fallback card art (also embedded once in the catalog page)
+const pg = renderSite(qrows, OUT, meta, resolveThumb, { repo: { url: args['repo-url'], branch: args['repo-branch'] } }); // --repo-url/--repo-branch override site.config.json `repo` (e.g. the demo fork)
 fs.writeFileSync(path.join(OUT, 'data/catalog.json'), JSON.stringify({ schema_version: 1, built_at: meta.built_at,
   policies: valid.map((v) => ({ ...v.doc, _manifest_path: v.path, _publications: v.pubs })) }));
 
