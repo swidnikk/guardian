@@ -1,10 +1,10 @@
 <li class="card" data-id="{{id}}" data-status="{{status}}" data-policy_type="{{policy_type}}" data-standard_body="{{standard_body}}" data-category="{{category}}" data-sector="{{sector}}" data-net="{{net}}" data-sdg="{{sdgAttr}}" data-tag="{{tagAttr}}" data-text="{{text}}">
 <div class="card-head {{artClass}}">{{#hasThumb}}<img class="card-art" src="{{{thumbSrc}}}" alt="" loading="lazy">{{/hasThumb}}<div class="card-scrim"></div>
-<p class="card-meta"><span class="card-meta-line"><span class="sr-only">Category: </span>{{category}}</span><span class="card-meta-line"><span class="sr-only">Sector: </span>{{sectorLabel}}</span></p>
+<p class="card-meta"><span class="card-meta-line"><span class="sr-only">Category: </span>{{categoryLabel}}</span><span class="card-meta-line"><span class="sr-only">Sector: </span>{{sectorLabel}}</span></p>
 <h3 class="card-title"><a href="{{root}}p/{{id}}/index.html">{{name}}</a></h3>
 <p class="card-sub"><span class="card-sub-l"><span class="sr-only">Standards body: </span>{{standard_body}}</span><span class="card-sub-r"><span class="sr-only">Hedera publication: </span>{{netLabel}}</span></p></div>
 <div class="card-body">
-<p class="card-row"><span class="card-status st-{{status}}"><span class="sr-only">Status: </span>{{status}}</span><span class="card-type"><span class="sr-only">Policy type: </span>{{policy_type}}</span></p>
+<p class="card-row"><span class="card-status st-{{status}}"><span class="sr-only">Status: </span>{{status}}</span><span class="card-type"><span class="sr-only">Policy type: </span>{{policyTypeLabel}}</span></p>
 <p class="desc card-desc">{{summary}}</p>
 <div class="card-tags">{{#tags}}<a class="chip tag card-tag" href="{{root}}index.html?tag={{qv}}" data-filter="tag" data-value="{{value}}">#{{value}}</a>{{/tags}}</div></div>
 <div class="card-actions">{{#githubUrl}}<a class="card-btn" href="{{{githubUrl}}}" target="_blank" rel="noopener noreferrer">View on Github<span class="sr-only"> (opens in a new tab)</span></a>{{/githubUrl}}{{^githubUrl}}<span class="card-btn" aria-disabled="true">View on Github</span>{{/githubUrl}}
