@@ -21,7 +21,7 @@
 .nav-menu a[aria-current=page]::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;background:var(--p)}
 /* with JS: menu is a popover under the trigger; without JS it stays a plain inline list (nothing is hidden) */
 html.js .nav-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:30}
-html.js .nav-menu[hidden]{display:none}
+html.js .nav-menu[hidden],html.js .nav-trigger[aria-expanded=false]+.nav-menu{display:none}
 html:not(.js) .nav-dd{display:flex;align-items:center;gap:4px}
 html:not(.js) .nav-trigger,html:not(.js) .nav-caret{display:none}
 html:not(.js) .nav-menu{display:flex;background:transparent;box-shadow:none;padding:0;min-width:0}
