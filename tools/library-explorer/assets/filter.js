@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     var act = document.getElementById('active'); if (act && !act.hidden) act.textContent = '';
   }
-  function changed(push) { writeUrl(push !== false); apply(); }
+  function changed(push) { writeUrl(push !== false); apply(); announce(); }
 
   // ---- facet dropdown behaviour (disclosure pattern) ----
   function openFacet(k, focusFirst) {
@@ -138,12 +138,25 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   qf.addEventListener('input', function () { changed(false); });
-  // clickable chips on cards: set that facet to exactly that value
+  // B-11: value links on cards (sector, category, standards body, publication, status, policy type, tags) ADD that value to the current filters in place.
+  // Without JavaScript they are plain links to index.html?key=value, which readUrl() above applies on load. Modified clicks (new tab etc.) keep the browser default.
   grid.addEventListener('click', function (e) {
-    var a = e.target.closest ? e.target.closest('a[data-filter]') : null; if (!a || e.ctrlKey || e.metaKey || e.shiftKey) return;
-    e.preventDefault(); state[a.dataset.filter] = [a.dataset.value]; normalize(); changed();
-    var f = document.getElementById('filters'); if (f && f.scrollIntoView && window.innerWidth < 861) f.scrollIntoView();
+    var a = e.target.closest ? e.target.closest('a[data-filter]') : null; if (!a || e.defaultPrevented || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+    var k = a.dataset.filter, v = a.dataset.value; if (KEYS.indexOf(k) < 0) return;
+    e.preventDefault();
+    var cur = state[k] || [], had = cur.indexOf(v) > -1;
+    if (!had) state[k] = cur.concat(v);
+    normalize(); changed();
+    var lbl = (facets[k] ? facets[k].label : k) + ': ' + optLabel(k, v);
+    announce((had ? 'Already filtering by ' : 'Added filter ') + lbl + '. ', true);
   });
+  // one polite live region for result changes; link clicks prefix their message
+  var announceEl = document.getElementById('announce'), announceTimer, announcePrefix = '';
+  function announce(prefix, now) {
+    if (prefix != null) announcePrefix = prefix;
+    clearTimeout(announceTimer);
+    announceTimer = setTimeout(function () { if (announceEl) announceEl.textContent = announcePrefix + document.getElementById('count').textContent; announcePrefix = ''; }, now ? 50 : 400);
+  }
   function reset(e) { if (e) e.preventDefault(); state = {}; inc = { deprecated: false, superseded: false }; qf.value = ''; closeAll(); changed(); }
   document.getElementById('clear-all').addEventListener('click', reset);
   document.getElementById('empty-clear').addEventListener('click', reset);

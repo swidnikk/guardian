@@ -1,41 +1,49 @@
-/* Shell team owns this file: app bar, brand, top nav, dropdown, page header/intro, about page, advanced page, footer. Prefixes nav-/shell-. */
-.shell-bar{justify-content:space-between;gap:10px 24px;background:linear-gradient(120deg,#00464a,#00696b 55%,#1f7a5c)}
-.shell-brand{display:flex;align-items:center;gap:10px;min-width:0;flex:1 1 auto;border-radius:8px}
-.shell-brand .logo{margin:0;font-size:1.5rem;line-height:1}
-.shell-title{font-size:clamp(1.25rem,1rem + 1.4vw,2rem);font-weight:700;line-height:1.15;letter-spacing:.2px}
+/* Shell: pinned header (brand + nav) and intro, docs look (B-12). Prefixes nav-/shell-. Colors: see the ASSUMED palette note in 00-base.css. */
+html{scroll-padding-top:var(--sticky-top)}[id]{scroll-margin-top:var(--sticky-top)}
+.shell-sticky{position:sticky;top:0;z-index:20;background:var(--surf);border-bottom:1px solid var(--var)}
+.appbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 24px;padding:10px 28px;background:var(--surf);color:var(--fg)}
+.shell-brand{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 auto;font-size:1.25rem;line-height:1.2;font-weight:600;letter-spacing:-.01em}
+.shell-brand a{color:var(--fg);text-decoration:none;border-radius:999px;display:inline-flex;align-items:center;gap:10px;padding:2px 8px;margin:-2px -8px}
+.shell-brand a+.shell-sep{margin-left:-2px}
+.shell-brand a:hover{background:var(--pc);color:var(--on-pc)}
+.shell-logo{display:block;width:32px;height:32px;border-radius:50%;flex:none}
+.shell-sep{color:#6b7280;font-weight:400}
+.shell-library .shell-title{color:var(--fg)}
 .nav-primary{flex:0 0 auto;margin-left:auto}
 .nav-list{display:flex;align-items:center;gap:4px;list-style:none;margin:0;padding:0}
 .nav-item{position:relative}
-.nav-link,.nav-trigger{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 16px;border:0;border-radius:999px;background:transparent;color:#fff;font:inherit;font-size:.95rem;font-weight:500;text-decoration:none;cursor:pointer}
-.appbar .nav-primary .nav-link{padding:6px 16px;font-size:.95rem}
-.nav-link:hover,.nav-trigger:hover{background:#ffffff2e}
-.nav-link[aria-current=page],.nav-trigger.is-current{background:#fff;color:#00504f;font-weight:600}
-.appbar .nav-link:focus-visible,.nav-trigger:focus-visible,.shell-brand:focus-visible,.nav-menu a:focus-visible{outline:3px solid #ffd27a;outline-offset:2px}
+.nav-link,.nav-trigger{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 16px;border:1px solid transparent;border-radius:999px;background:transparent;color:#4b5563;font:inherit;font-size:.95rem;font-weight:500;text-decoration:none;cursor:pointer}
+.nav-link:hover,.nav-trigger:hover{background:var(--pc);color:var(--on-pc)}
+.nav-link[aria-current=page],.nav-trigger.is-current{background:var(--pc);border-color:#c9daf8;color:var(--p);font-weight:600}
 .nav-caret{transition:transform .15s}.nav-trigger[aria-expanded=true] .nav-caret{transform:rotate(180deg)}
-.nav-menu{list-style:none;margin:0;padding:6px;background:#fff;border-radius:12px;box-shadow:0 8px 24px #0004;min-width:200px}
-.nav-menu a{display:block;padding:10px 14px;border-radius:8px;color:var(--fg);text-decoration:none;font-size:.95rem}
-.appbar .nav-menu a{color:var(--fg)}
-.nav-menu a:hover{background:var(--pc)}
-.appbar .nav-menu a:focus-visible{outline-color:#b36b00}
-.nav-menu a[aria-current=page]{background:var(--pc);color:var(--on-pc);font-weight:600;position:relative}
-.nav-menu a[aria-current=page]::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:2px;background:var(--p)}
+.nav-menu{list-style:none;margin:0;padding:6px;background:#fff;border:1px solid var(--var);border-radius:16px;box-shadow:0 8px 24px #1a1b1e26;min-width:200px}
+.nav-menu a{display:block;padding:10px 14px;border-radius:999px;color:var(--fg);text-decoration:none;font-size:.95rem;white-space:nowrap}
+.nav-menu a:hover{background:var(--pc);color:var(--on-pc)}
+.nav-menu a[aria-current=page]{background:var(--pc);color:var(--p);font-weight:600}
 /* with JS: menu is a popover under the trigger; without JS it stays a plain inline list (nothing is hidden) */
 html.js .nav-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:30}
 html.js .nav-menu[hidden],html.js .nav-trigger[aria-expanded=false]+.nav-menu{display:none}
 html:not(.js) .nav-dd{display:flex;align-items:center;gap:4px}
 html:not(.js) .nav-trigger,html:not(.js) .nav-caret{display:none}
-html:not(.js) .nav-menu{display:flex;background:transparent;box-shadow:none;padding:0;min-width:0}
-html:not(.js) .nav-menu a{color:#fff;padding:6px 14px;border-radius:999px}
-html:not(.js) .nav-menu a:hover{background:#ffffff2e}
-html:not(.js) .nav-menu a[aria-current=page]{background:#fff;color:#00504f}html:not(.js) .nav-menu a[aria-current=page]::before{display:none}
-@media(max-width:560px){.shell-bar{padding:10px 14px}.shell-brand{flex-basis:100%}.nav-primary{margin-left:0;width:100%}.nav-list{justify-content:flex-start}html.js .nav-menu{right:auto;left:0}html:not(.js) .nav-dd{flex-wrap:wrap}}
-.shell-intro{background:var(--pc);color:var(--on-pc);border-bottom:1px solid #b5d3d2}
-.shell-intro p{max-width:1320px;margin:0 auto;padding:18px 28px;font-size:1.05rem;line-height:1.55;max-width:min(1320px,100%)}
-@media(max-width:560px){.shell-intro p{padding:14px}}
+html:not(.js) .nav-menu{display:flex;background:transparent;border:0;box-shadow:none;padding:0;min-width:0}
+html:not(.js) .nav-menu a{color:#4b5563;padding:6px 16px;font-weight:500}
+html:not(.js) .nav-menu a[aria-current=page]{background:var(--pc);color:var(--p);font-weight:600}
+html:not(.js) .nav-list{flex-wrap:wrap}
+.shell-intro{display:flex;align-items:baseline;gap:10px;max-width:1320px;margin:0 auto;padding:0 28px 10px;color:var(--mut)}
+.shell-intro p{margin:0;font-size:.92rem;line-height:1.45;flex:1 1 auto;min-width:0}
+.shell-intro-more{display:none;flex:none;border:1px solid #c9daf8;border-radius:999px;background:var(--pc);color:var(--p);font:inherit;font-size:.82rem;font-weight:600;padding:2px 12px;min-height:28px;cursor:pointer}
+/* small or short screens: the pinned intro collapses to one line with a More toggle (B-12, ASSUMED: under 700px wide or tall); without JS the whole header is unpinned there */
+@media(max-width:700px),(max-height:700px){
+ html.js .shell-intro-more{display:inline-block}
+ html.js .shell-intro:not(.is-open) p{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ html:not(.js) .shell-sticky{position:static}
+ .appbar{padding-top:6px;padding-bottom:6px}
+}
+@media(max-width:560px){.appbar{padding:8px 14px}.shell-brand{flex-basis:100%;font-size:1.05rem}.shell-logo{width:28px;height:28px}.nav-primary{margin-left:0;width:100%}.nav-list{justify-content:flex-start}html.js .nav-menu{right:auto;left:0}html:not(.js) .nav-dd{flex-wrap:wrap}.shell-intro{padding:0 14px 8px}}
 @media(prefers-reduced-motion:reduce){.nav-caret{transition:none}}
 /* About page */
 .shell-about{display:grid;gap:16px;max-width:720px}
-.shell-block{background:var(--card);border-radius:16px;padding:18px 22px;box-shadow:0 1px 3px #0002}
+.shell-block{background:var(--card);border-radius:16px;padding:18px 22px;border:1px solid var(--var)}
 .shell-block h2{margin:0 0 8px;font-size:1.15rem;color:var(--fg);text-transform:none;letter-spacing:0}
 .shell-block p{margin:0}
 .shell-ext{display:inline-flex;align-items:center;gap:6px;font-weight:600;padding:4px 0}
@@ -43,6 +51,6 @@ html:not(.js) .nav-menu a[aria-current=page]{background:#fff;color:#00504f}html:
 /* Advanced page */
 .shell-downloads{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 18px}
 .shell-dl{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:8px 18px;border-radius:999px;background:var(--p);color:#fff;font-weight:600;text-decoration:none}
-.shell-dl:hover{background:#004f51}.shell-size{font-weight:400;opacity:.9}
-.shell-summary{background:var(--card);border-radius:16px;padding:6px 22px 14px;box-shadow:0 1px 3px #0002;margin:0 0 16px}.shell-summary h2{margin-top:14px}.shell-summary ul{margin:0;padding-left:20px}
-.nav-menu a{white-space:nowrap}html:not(.js) .nav-list{flex-wrap:wrap}
+.shell-dl:hover{background:#1a3f94}.shell-size{font-weight:400;opacity:.9}
+.shell-summary{background:var(--card);border-radius:16px;padding:6px 22px 14px;border:1px solid var(--var);margin:0 0 16px}.shell-summary h2{margin-top:14px}.shell-summary ul{margin:0;padding-left:20px}
+

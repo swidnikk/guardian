@@ -1,6 +1,15 @@
 // Catalog dropdown (B-05). Disclosure pattern: a button toggles a list of links. Inlined into every page by render.js.
 // Without JavaScript the list is plain visible links (the markup has no hidden attribute).
 (function () {
+  // B-12: the header, nav and intro are pinned (.shell-sticky). Publish its real height as --sticky-top so the filter panel and anchor scrolling sit just below it.
+  var pin = document.getElementById('shell-sticky'), root = document.documentElement;
+  function measure() { if (pin) root.style.setProperty('--sticky-top', Math.ceil(pin.getBoundingClientRect().height) + 12 + 'px'); }
+  if (pin) {
+    measure(); window.addEventListener('resize', measure); window.addEventListener('load', measure);
+    if (window.ResizeObserver) new ResizeObserver(measure).observe(pin);
+    var more = document.getElementById('shell-intro-more'), intro = pin.querySelector('.shell-intro');
+    if (more && intro) more.addEventListener('click', function () { var o = intro.classList.toggle('is-open'); more.setAttribute('aria-expanded', o ? 'true' : 'false'); more.textContent = o ? 'Less' : 'More'; measure(); });
+  }
   var btn = document.getElementById('nav-catalog-btn'), menu = document.getElementById('nav-catalog-menu');
   if (!btn || !menu) return;
   var host = btn.closest('.nav-dd') || btn.parentNode;

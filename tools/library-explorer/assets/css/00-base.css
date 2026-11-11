@@ -1,14 +1,12 @@
-/* Material 3-inspired tokens (hand-set palette, ASSUMED brand-neutral). System font stack: no web-font CDN. */
-:root{--p:#00696b;--on-p:#fff;--pc:#cce8e7;--on-pc:#002020;--s:#4a6363;--surf:#f4fbfa;--card:#fff;--var:#dae5e4;--ol:#6f7979;--fg:#191c1c;--mut:#3f4948;--warn:#8a4600;--warnbg:#ffeedb;--ok:#0b6b2e;--okbg:#d9f4df;--bad:#ba1a1a;
---md-sys-color-primary:var(--p);--md-sys-color-on-primary:#fff;--md-sys-color-surface:var(--surf);--md-sys-color-on-surface:var(--fg);--md-sys-color-on-surface-variant:var(--mut);--md-sys-color-outline:var(--ol);--md-sys-color-secondary-container:var(--pc);--md-sys-color-on-secondary-container:var(--on-pc);--md-sys-color-surface-container-highest:var(--var);--md-sys-color-surface-container:#e8f0ef;--md-sys-color-on-secondary:#fff;--md-sys-color-secondary:var(--s);
+/* B-12 docs look. Palette sampled from the GitBook docs screenshot (images/8.png); every value is ASSUMED: page bg #f9fbff, accent #346ddb (active-tab underline), pill bg #f1f8ff, header rule #e8eaed.
+   Derived (ASSUMED): --p #2a5bc7 is the accent darkened to reach 4.5:1 for text on tinted bg; --pc #eaf1fd is a slightly stronger pill tint (#f1f8ff is too faint to see on #f9fbff); --mut #4b5563 and --fg #1a1b1e are neutral greys. Inter is not bundled (Q-18): system sans stack, no web fonts. */
+:root{--p:#2a5bc7;--acc:#346ddb;--ring:#2a5bc7;--on-p:#fff;--pc:#eaf1fd;--on-pc:#1a3f94;--s:#4b5563;--surf:#f9fbff;--card:#fff;--var:#e8eaed;--ol:#8b95a5;--fg:#1a1b1e;--mut:#4b5563;--warn:#8a4600;--warnbg:#ffeedb;--ok:#0b6b2e;--okbg:#d9f4df;--bad:#ba1a1a;--font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+--md-sys-color-primary:var(--p);--md-sys-color-on-primary:#fff;--md-sys-color-surface:var(--surf);--md-sys-color-on-surface:var(--fg);--md-sys-color-on-surface-variant:var(--mut);--md-sys-color-outline:var(--ol);--md-sys-color-secondary-container:var(--pc);--md-sys-color-on-secondary-container:var(--on-pc);--md-sys-color-surface-container-highest:var(--var);--md-sys-color-surface-container:#eef2f8;--md-sys-color-on-secondary:#fff;--md-sys-color-secondary:var(--s);
 --md-ref-typeface-brand:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--md-ref-typeface-plain:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-*{box-sizing:border-box}body{margin:0;font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--surf);color:var(--fg)}
-a{color:var(--p)}a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #f5a623;outline-offset:2px}
+*{box-sizing:border-box}body{margin:0;font:16px/1.5 var(--font);background:var(--surf);color:var(--fg);min-height:100vh}
+a{color:var(--p)}a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--ring);outline-offset:2px}
 .skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;padding:6px 10px;z-index:20;border-radius:8px}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-.appbar{display:flex;flex-wrap:wrap;gap:8px 28px;align-items:center;padding:14px 28px;background:linear-gradient(120deg,#00464a,#00696b 55%,#2f8f6f);color:#fff;box-shadow:0 2px 8px #0003;position:sticky;top:0;z-index:10}
-.appbar a{color:#fff;text-decoration:none}.brand{font-size:1.35rem;font-weight:700;letter-spacing:.3px}.brand small{font-weight:400;opacity:.85;font-size:.75rem;margin-left:6px}.logo{margin-right:4px}
-.appbar nav{display:flex;flex-wrap:wrap;gap:4px 6px}.appbar nav a{padding:6px 14px;border-radius:999px;font-size:.9rem}.appbar nav a:hover{background:#ffffff26}.appbar nav a[aria-current=page]{background:#fff;color:var(--p);font-weight:600}
 main{max-width:1320px;margin:0 auto;padding:20px 28px 48px}footer{padding:18px 28px;color:var(--mut);font-size:.8rem;border-top:1px solid var(--var)}
 .hero{background:var(--pc);color:var(--on-pc);border-radius:16px;padding:12px 20px;margin-bottom:18px}.hero p{margin:0}
 .layout{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start}@media(max-width:860px){.layout{grid-template-columns:1fr}}
@@ -25,10 +23,10 @@ fieldset .extra{display:none}fieldset.expanded .extra{display:flex}.more{backgro
 .cbody{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}.card h3{margin:0;font-size:1.02rem;line-height:1.25}.card h3 a{color:var(--fg);text-decoration:none}.card h3 a:hover{text-decoration:underline}
 .ver{margin:0;font-size:.75rem;color:var(--mut);word-break:break-all}.desc{margin:0;font-size:.85rem;color:var(--mut);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .chips{display:flex;flex-wrap:wrap;gap:6px}.chip{display:inline-flex;align-items:center;gap:4px;font-size:.75rem;line-height:1;padding:6px 10px;border-radius:8px;border:1px solid var(--ol);color:var(--fg);background:transparent;text-decoration:none;cursor:pointer;font-family:inherit}
-a.chip:hover,button.chip:hover{background:var(--pc)}.chip.tag{border-color:transparent;background:#e8f0ef;color:var(--mut)}
+button.chip:hover{background:var(--pc)}.chip.tag{border-color:transparent;background:#eef2f8;color:var(--mut)}
 .chip.st-active{background:var(--okbg);border-color:var(--ok);color:var(--ok)}.chip.st-draft{background:#eef;border-color:#5a5fa8;color:#33377a}.chip.st-deprecated,.chip.st-superseded,.chip.warn{background:var(--warnbg);border-color:var(--warn);color:var(--warn)}.chip.st-candidate{background:#fff6cc;border-color:#8a7000;color:#5c4a00}
 .chip.live{background:var(--okbg);border-color:var(--ok);color:var(--ok);font-weight:600}.chip.unspec{border-style:dashed;color:var(--mut);font-style:italic}.chip.sb{background:var(--pc);border-color:var(--p);color:var(--on-pc);font-weight:600}.chip.sb.unspec{background:transparent;border-color:var(--ol);font-weight:400}
-.chip .k{opacity:.7;font-weight:400}.chip.active{background:var(--pc);border-color:var(--p);color:var(--on-pc)}
+.chip .k{color:var(--mut);font-weight:400}.chip.active{background:var(--pc);border-color:var(--p);color:var(--on-pc)}
 .chips.big .chip{font-size:.85rem;padding:8px 12px}
 .empty{background:var(--card);border:2px dashed var(--ol);border-radius:16px;padding:20px}
 .crumb{margin:0 0 10px}.detail{background:var(--card);border-radius:20px;padding:24px;box-shadow:0 1px 3px #0002}
@@ -36,7 +34,7 @@ a.chip:hover,button.chip:hover{background:var(--pc)}.chip.tag{border-color:trans
 .lead{font-size:1.05rem;margin:18px 0}.banner{background:var(--warnbg);color:var(--warn);padding:8px 12px;border-radius:10px}
 .cols{display:grid;grid-template-columns:1.2fr 1fr;gap:28px}@media(max-width:860px){.cols{grid-template-columns:1fr}}
 h2{font-size:1rem;margin:20px 0 8px;color:var(--s);text-transform:uppercase;letter-spacing:.05em}
-table{border-collapse:collapse;width:100%;font-size:.88rem;background:#fff;border-radius:8px;overflow:hidden}th,td{border-bottom:1px solid var(--var);padding:6px 10px;text-align:left;vertical-align:top}th{background:#e8f0ef}
+table{border-collapse:collapse;width:100%;font-size:.88rem;background:#fff;border-radius:8px;overflow:hidden}th,td{border-bottom:1px solid var(--var);padding:6px 10px;text-align:left;vertical-align:top}th{background:#eef2f8}
 dl.kv{display:grid;grid-template-columns:max-content 1fr;gap:4px 16px;margin:0}dl.kv dt{color:var(--mut)}dl.kv dd{margin:0;word-break:break-word}
 .chain{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0}.chain li+li::before{content:"→ ";color:var(--ol)}.note{color:var(--mut)}
 textarea{width:100%;font:13px ui-monospace,monospace;padding:8px;border-radius:8px;border:1px solid var(--ol)}

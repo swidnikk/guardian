@@ -16,6 +16,8 @@ const NAV_JS = fs.readFileSync(path.join(here, 'assets/nav.js'), 'utf8').replace
 // every templates/*.mustache is loaded by name, so adding a page template needs no edit here
 const T = Object.fromEntries(fs.readdirSync(path.join(here, 'templates')).filter((f) => f.endsWith('.mustache')).map((f) => [f.replace(/\.mustache$/, ''), fs.readFileSync(path.join(here, 'templates', f), 'utf8')]));
 const safeUrl = (u) => { try { const x = new URL(u); return /^https?:$/.test(x.protocol) ? x.href : null; } catch { return null; } };
+// B-12: Hedera logo (repo file carbon-atlas/public/hedera-logo.png, 512px, downscaled to 64px with sips) is inlined as a data: URI, so there is no extra request.
+const LOGO_URI = 'data:image/png;base64,' + fs.readFileSync(path.join(here, 'assets/hedera-logo-64.png')).toString('base64');
 const SITE_TITLE = 'Guardian Methodology Library';
 const UNSPEC = 'Unspecified';
 const NETS = { mainnet: 'Live on mainnet', testnet: 'Testnet only', none: 'No publication recorded' };
@@ -29,6 +31,7 @@ const seg = (s) => String(s).split('/').filter(Boolean).map(encodeURIComponent).
 // Only http(s) base URLs are accepted (safeUrl); query/hash are dropped; branch, library path and folder are encoded per segment. Anything else => '' => the card shows a disabled button.
 const humanize = (v) => String(v ?? '').split(/[-_\s]+/).filter(Boolean).map((w) => w[0].toUpperCase() + w.slice(1)).join(' '); // display only; filter values and data-* keep the raw slug
 export const repoLink = (repo, folder) => { const u = safeUrl(repo.url); if (!u || !repo.branch || !folder) return ''; const base = u.split(/[?#]/)[0]; return [base.replace(/\/+$/, ''), 'tree', seg(repo.branch), seg(repo.libraryPath ?? 'Methodology Library'), seg(folder.split(path.sep).join('/'))].filter(Boolean).join('/'); };
+const FILTER_KEYS = ['policy_type', 'category', 'sector', 'standard_body']; // detail-page rows that link to the filtered catalog (B-11)
 const NET_CARD = { mainnet: 'Live', testnet: 'Testnet only', none: 'No record' }; // Q-1 (ASSUMED)
 
 export function renderSite(rows, OUT, meta, resolveThumb, opts = {}) {
@@ -38,7 +41,7 @@ export function renderSite(rows, OUT, meta, resolveThumb, opts = {}) {
   const w = (rel, s) => { const f = path.join(OUT, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, s); };
   // Route titles (B-04): the catalogue is the bare site name, every other page is "<site name> / <page>".
   const fullTitle = (t) => (t === 'Catalog' ? SITE_TITLE : `${SITE_TITLE} / ${t}`);
-  const page = (title, depth, body, opts = {}) => Mustache.render(T.layout, { title: fullTitle(title), root: '../'.repeat(depth), body, css: CSS, site: SITE, filterJs: FILTER_JS, navJs: NAV_JS, navCatalogGroup: !!(opts.navCatalog || opts.navHealth || opts.navAdvanced), showIntro: !!(opts.catalogPage || opts.navAbout), builtAt: meta.built_at, library: meta.library_label, valid: meta.valid, invalid: meta.invalid, ...opts });
+  const page = (title, depth, body, opts = {}) => Mustache.render(T.layout, { title: fullTitle(title), root: '../'.repeat(depth), body, css: CSS, site: SITE, logoUri: LOGO_URI, filterJs: FILTER_JS, navJs: NAV_JS, navCatalogGroup: !!(opts.navCatalog || opts.navHealth || opts.navAdvanced), showIntro: !!(opts.catalogPage || opts.navAbout), builtAt: meta.built_at, library: meta.library_label, valid: meta.valid, invalid: meta.invalid, ...opts });
   const tagsBy = {}, sdgBy = {};
   rows('select policy_id, tag, canonical from tags order by tag').forEach((t) => (tagsBy[t.policy_id] ||= []).push(t));
   rows('select policy_id, sdg from sdgs order by sdg').forEach((t) => (sdgBy[t.policy_id] ||= []).push(t.sdg));
@@ -46,15 +49,17 @@ export function renderSite(rows, OUT, meta, resolveThumb, opts = {}) {
   for (const p of pols) p.thumb = resolveThumb(p);
   // Image files are still written to thumbs/ (deliverable, reusable). Pages embed small ones as data: URIs so browsing needs no per-image file reads.
   const thumbSrc = (p, root) => { if (!p.thumb) return ART.uri[ART.key(p.sector)] || ''; try { const f = path.join(OUT, p.thumb); const b = fs.readFileSync(f); const mime = p.thumb.endsWith('.svg') ? 'image/svg+xml' : p.thumb.endsWith('.png') ? 'image/png' : 'image/jpeg'; if (b.length <= 120_000) return `data:${mime};base64,${b.toString('base64')}`; } catch {} return Mustache.escape(root + p.thumb); };
+  // B-11: every value below links to the catalog filtered by it (relative href built in the template from key + encoded value)
   const chipsFor = (p) => [
     { key: 'status', value: p.status, label: p.status, cls: stCls(p.status) },
-    { key: 'policy_type', value: p.policy_type, label: p.policy_type, cls: '' },
+    { key: 'policy_type', value: p.policy_type, label: humanize(p.policy_type), cls: '' },
     { key: 'standard_body', value: sb(p), label: sb(p), cls: p.standard_body ? 'sb' : 'unspec' },
-    { key: 'category', value: p.category, label: p.category, cls: '' },
-    ...(p.live_mainnet ? [{ key: 'net', value: 'mainnet', label: 'Live on mainnet', cls: 'live' }] : p.on_testnet ? [{ key: 'net', value: 'testnet', label: 'Testnet only', cls: '' }] : []),
+    { key: 'category', value: p.category, label: humanize(p.category), cls: '' },
+    ...(p.sector ? [{ key: 'sector', value: p.sector, label: humanize(p.sector), cls: '' }] : []),
+    { key: 'net', value: netOf(p), label: NET_CARD[netOf(p)], cls: p.live_mainnet ? 'live' : '' }, // Q-1 wording: Live / Testnet only / No record
   ].map((c) => ({ ...c, qv: qv(c.value) }));
   const cards = pols.map((p) => Mustache.render(T.card, {
-    ...p, root: '', hasThumb: !!p.thumb, thumbSrc: p.thumb ? thumbSrc(p, '') : '', artClass: ART.artClass(p.sector), sectorLabel: p.sector ? humanize(p.sector) : UNSPEC, categoryLabel: humanize(p.category), policyTypeLabel: humanize(p.policy_type), netLabel: NET_CARD[netOf(p)], githubUrl: repoLink(SITE.repo, p.folder), standard_body: sb(p), net: netOf(p), sdgAttr: ' ' + (sdgBy[p.id] || []).join(' ') + ' ', tagAttr: ' ' + (tagsBy[p.id] || []).map((t) => t.tag).join(' ') + ' ',
+    ...p, root: '', hasThumb: !!p.thumb, thumbSrc: p.thumb ? thumbSrc(p, '') : '', artClass: ART.artClass(p.sector), sectorLabel: p.sector ? humanize(p.sector) : UNSPEC, categoryLabel: humanize(p.category), policyTypeLabel: humanize(p.policy_type), netLabel: NET_CARD[netOf(p)], githubUrl: repoLink(SITE.repo, p.folder), standard_body: sb(p), net: netOf(p), netQv: qv(netOf(p)), statusQv: qv(p.status), typeQv: qv(p.policy_type), catQv: qv(p.category), sbQv: qv(sb(p)), sectorQv: p.sector ? qv(p.sector) : '', sdgAttr: ' ' + (sdgBy[p.id] || []).join(' ') + ' ', tagAttr: ' ' + (tagsBy[p.id] || []).map((t) => t.tag).join(' ') + ' ',
     text: [p.name, p.id, p.methodology_id, sb(p), p.description, ...(tagsBy[p.id] || []).map((t) => t.tag)].join(' ').toLowerCase(),
     chips: chipsFor(p), summary: p.description.length > 320 ? p.description.slice(0, 317) + '…' : p.description,
     tags: (tagsBy[p.id] || []).slice(0, 6).map((t) => ({ value: t.tag, qv: qv(t.tag) })),
@@ -85,10 +90,10 @@ export function renderSite(rows, OUT, meta, resolveThumb, opts = {}) {
     const sdgs = sdgBy[id] || [];
     const banner = (p.status === 'superseded' || p.status === 'deprecated') ? `${Mustache.escape(p.status)}: ${p.superseded_by ? `replaced by <a href="../${Mustache.escape(p.superseded_by)}/index.html">${Mustache.escape(p.superseded_by)}</a>` : 'no replacement is named in the manifest'}` : null;
     const details = ['policy_type', 'category', 'sector', 'standard_body', 'methodology_id', 'methodology_version', 'token_type', 'token_standard', 'registry_status', 'registry_body', 'registry_reference', 'license', 'guardian_version_min', 'manifest_path'].filter((k) => p[k])
-      .map((k) => ({ k, v: k === 'registry_status' && p[k] === 'validated' ? 'validated (asserted in manifest, not independently verified)' : p[k] }));
+      .map((k) => ({ k, href: FILTER_KEYS.includes(k) ? `../../index.html?${k}=${qv(p[k])}` : '', v: k === 'registry_status' && p[k] === 'validated' ? 'validated (asserted in manifest, not independently verified)' : p[k] }));
     if (!p.standard_body) details.push({ k: 'standard_body', v: 'Unspecified (manifest omits it)' });
     const html = Mustache.render(T.detail, {
-      ...p, root: '../../', thumbSrc: thumbSrc(p, '../../'), chips: chipsFor(p).filter((c) => c.key !== 'standard_body'),
+      ...p, root: '../../', thumbSrc: thumbSrc(p, '../../'), chips: chipsFor(p).filter((c) => c.key !== 'standard_body'), netLabel: NET_CARD[netOf(p)], netQv: qv(netOf(p)),
       sbLabel: sb(p), sbQv: qv(sb(p)), sbCls: p.standard_body ? '' : 'unspec', sbTitle: p.standard_body ? 'Show all policies from this standard body' : 'The manifest does not name a standard body',
       banner, hasPubs: pubs.length > 0, pubs, pubText: p.has_pub_log ? 'The publication log exists but has no entries.' : 'No publication log found. This does not mean the policy is unpublished; nothing is recorded.',
       hasChain: chain.length > 1, chain: chain.map((c) => ({ id: c.id, current: c.id === id, inLib: known.has(c.id) })),

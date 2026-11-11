@@ -14,7 +14,8 @@
 <button type="button" id="clear-all" class="facet-reset">Reset filters</button>
 </form></details>
 <section class="results" aria-label="Results">
-<div class="toolbar"><p id="count" role="status" aria-live="polite">{{total}} of {{total}} policies</p><div id="active" class="chips" role="group" aria-label="Active filters" hidden></div></div>
+<div class="toolbar"><p id="count">{{total}} of {{total}} policies</p><div id="active" class="chips" role="group" aria-label="Active filters" hidden></div></div>
+<p id="announce" class="sr-only" role="status" aria-live="polite"></p>
 <h2 class="sr-only">Policies</h2><ul class="grid" id="grid">{{{cards}}}</ul>
 <div id="empty" class="empty" hidden><p><strong>No policies match these filters.</strong></p><p id="empty-hint"></p><p><a href="index.html" id="empty-clear">Clear all filters</a></p></div>
 <noscript><p class="note">Filtering needs JavaScript; every policy is listed above and every card links to a static page.</p></noscript>

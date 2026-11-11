@@ -14,7 +14,7 @@
 {{#hasChain}}<h2>Lineage</h2><ol class="chain">{{#chain}}<li>{{#current}}<strong>{{id}} (this policy)</strong>{{/current}}{{^current}}{{#inLib}}<a href="{{root}}p/{{id}}/index.html">{{id}}</a>{{/inLib}}{{^inLib}}{{id}} <span class="chip warn">not in library</span>{{/inLib}}{{/current}}</li>{{/chain}}</ol>{{/hasChain}}
 {{#hasRes}}<h2>Resources</h2><ul>{{#resources}}<li>{{type}}: {{#url}}<a rel="noopener noreferrer" href="{{url}}">{{label}}</a>{{/url}}{{^url}}{{label}}{{/url}}</li>{{/resources}}</ul>{{/hasRes}}
 {{#hasPeople}}<h2>People</h2><ul>{{#people}}<li>{{role}}: {{name}}</li>{{/people}}</ul>{{/hasPeople}}</section>
-<section><h2>Details</h2><dl class="kv">{{#details}}<dt>{{k}}</dt><dd>{{v}}</dd>{{/details}}</dl>
+<section><h2>Details</h2><dl class="kv">{{#details}}<dt>{{k}}</dt><dd>{{#href}}<a class="detail-link" href="{{href}}">{{v}}</a>{{/href}}{{^href}}{{v}}{{/href}}</dd>{{/details}}</dl>
 <h2>Tags</h2><div class="chips">{{#tags}}<a class="chip tag {{cls}}" href="{{root}}index.html?tag={{qv}}">#{{value}}{{#noncanon}} (non-canonical){{/noncanon}}</a>{{/tags}}</div>
 {{#hasSdgs}}<h2>SDGs</h2><div class="chips">{{#sdgs}}<a class="chip" href="{{root}}index.html?sdg={{.}}">SDG {{.}}</a>{{/sdgs}}</div>{{/hasSdgs}}</section></div>
 </article>
