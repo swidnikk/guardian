@@ -1,0 +1,27 @@
+import puppeteer from 'puppeteer-core';
+import fs from 'node:fs';
+const S=process.argv[2];const axe=fs.readFileSync('/Users/swidhash/Projects/methodology-library-explorer/Cairn/v3/wt-catalog/tools/library-explorer/node_modules/axe-core/axe.min.js','utf8');
+const b=await puppeteer.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});
+const p=await b.newPage();const errs=[];p.on('pageerror',e=>errs.push(String(e)));p.on('console',m=>m.type()==='error'&&errs.push(m.text()));
+await p.setViewport({width:1300,height:850});await p.goto('http://127.0.0.1:8412/',{waitUntil:'load'});
+await p.waitForSelector('html[data-ready]',{timeout:8000}).catch(()=>errs.push('no data-ready'));
+await p.screenshot({path:S+'/prev/r-desktop.png'});
+console.log('count',await p.$eval('#count',e=>e.textContent));
+console.log('panel',await p.$eval('#filters-details',e=>JSON.stringify(e.getBoundingClientRect())),'open',await p.$eval('#filters-details',e=>e.open));
+// open a facet
+await p.click('.facet[data-facet=sector] .facet-toggle');await p.screenshot({path:S+'/prev/r-open.png'});
+await p.evaluate(axe);const AX=()=>p.evaluate(()=>axe.run().then(r=>r.violations.map(v=>v.id+':'+v.nodes.length+' '+v.nodes[0].target)));let r=await AX();console.log('axe open',JSON.stringify(r));
+await p.keyboard.press('Escape');console.log('focus after esc',await p.evaluate(()=>document.activeElement.className));
+await p.click('.facet[data-facet=sector] .facet-toggle');await p.click('.facet[data-facet=sector] input[value=energy]');await p.click('.facet[data-facet=sector] input[value=water]');
+await p.screenshot({path:S+'/prev/r-chips.png'});console.log('count',await p.$eval('#count',e=>e.textContent),p.url());
+await p.keyboard.press('Escape');
+await p.click('#sw-deprecated');console.log('sw',await p.$eval('#sw-deprecated-lbl',e=>e.textContent),await p.$eval('#count',e=>e.textContent),p.url());
+r=await AX();console.log('axe',JSON.stringify(r));
+await p.goto('http://127.0.0.1:8412/',{waitUntil:'load'});await p.waitForSelector('html[data-ready]');
+await p.evaluate(()=>scrollTo(0,1500));await new Promise(r=>setTimeout(r,200));await p.screenshot({path:S+'/prev/r-scrolled.png'});
+console.log('sticky top',await p.$eval('#filters-details',e=>e.getBoundingClientRect().top));
+const cs=await p.evaluate(()=>{const c=[...document.querySelectorAll('.card')];const hs=c.map(x=>x.getBoundingClientRect().height);return {min:Math.min(...hs),max:Math.max(...hs)}});console.log('card heights',cs);
+await p.setViewport({width:390,height:844,isMobile:true,deviceScaleFactor:1});await p.reload({waitUntil:'load'});await p.waitForSelector('html[data-ready]');
+await p.screenshot({path:S+'/prev/r-narrow.png'});console.log('narrow overflow',await p.evaluate(()=>document.documentElement.scrollWidth+' vs '+innerWidth),'open',await p.$eval('#filters-details',e=>e.open));
+await p.click('.filters-summary');await p.screenshot({path:S+'/prev/r-narrow-open.png'});
+console.log('errors',errs);await b.close();

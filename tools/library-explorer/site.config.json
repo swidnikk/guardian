@@ -1,0 +1,40 @@
+{
+  "_comment": "Shared build-time settings, read by render.js and exposed to every template as {{site.*}}. Add keys; do not rename existing ones without telling the other team. Values marked ASSUMED are awaiting the user.",
+  "repo": {
+    "url": "https://github.com/hashgraph/guardian",
+    "branch": "main",
+    "_note": "ASSUMED default. Used by the card 'View on Github' link (Catalog team) and the About page GitHub link (Shell team). For the demo the build may override with --repo-url/--repo-branch."
+  },
+  "links": {
+    "platformUpdates": "https://guardian.hedera.com/updates",
+    "feedback": "https://tiny.cc/grd-feedback",
+    "_note": "Shell team. The GitHub link on the About page is NOT here: it is built from repo.url (Q-10, one setting). tiny.cc is a third-party short-link dependency (user-owned)."
+  },
+  "intro": {
+    "text": "The Methodology Library is Guardian's collection of ready-to-use policies and schemas that already digitize real-world environmental methodologies and standards. It is the world's largest open-source repository of digital environmental policies, spanning CDM, Verra, Gold Standard, GHG Protocol, iREC, and community-contributed methodologies.",
+    "sourceUrl": "https://guardian.hedera.com/methodology-digitalization/methodology-library",
+    "sourceFile": "docs/methodology-digitalization/methodology-library.md",
+    "snapshotDate": "2026-11-05",
+    "_note": "B-06 snapshot of the first paragraph (two sentences, verbatim) of the source page, copied from the local docs file, not fetched. USER MUST APPROVE THE WORDING. It can go stale: whoever publishes the site refreshes it by re-copying the opening paragraph and updating snapshotDate. Edit only here."
+  },
+  "about": {
+    "blocks": [
+      {
+        "question": "Learn more about the Hedera Guardian?",
+        "label": "View the latest platform updates",
+        "link": "platformUpdates"
+      },
+      {
+        "question": "Interested to contribute or download the latest release?",
+        "label": "Visit GitHub",
+        "link": "github"
+      },
+      {
+        "question": "Have feedback or suggestion?",
+        "label": "Share here",
+        "link": "feedback"
+      }
+    ],
+    "_note": "B-07. 'link' is a key of links.* or 'github' (= repo.url). Question wording is exact from the backlog."
+  }
+}

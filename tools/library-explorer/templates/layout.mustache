@@ -1,13 +1,20 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
-<title>{{title}} · Cairn</title>
+<link rel="icon" href="data:,">
+<script>document.documentElement.className+=' js'</script>
+<title>{{title}}</title>
 <style>{{{css}}}</style>
 {{#catalogPage}}<script src="{{root}}assets/vendor/md.js" defer></script><script>{{{filterJs}}}</script>{{/catalogPage}}
 </head><body class="{{bodyClass}}">
 <a class="skip" href="#main">Skip to content</a>
-<header class="appbar"><a class="brand" href="{{root}}index.html"><span class="logo" aria-hidden="true">▲</span> Cairn <small>Guardian Methodology Library</small></a>
-<nav aria-label="Primary"><a href="{{root}}index.html"{{#navCatalog}} aria-current="page"{{/navCatalog}}>Catalog</a><a href="{{root}}health/index.html"{{#navHealth}} aria-current="page"{{/navHealth}}>Library health</a><a href="{{root}}sql/index.html"{{#navSql}} aria-current="page"{{/navSql}}>SQL (optional)</a><a href="{{root}}data/catalog.json" download>catalog.json</a><a href="{{root}}data/library.sqlite" download>library.sqlite</a></nav></header>
+<header class="appbar shell-bar"><a class="brand shell-brand" href="{{root}}index.html"><span class="logo" aria-hidden="true">▲</span><span class="shell-title">Guardian Methodology Library</span></a>
+<nav class="nav-primary" aria-label="Primary"><ul class="nav-list">
+<li class="nav-item nav-dd"><button type="button" class="nav-trigger{{#navCatalogGroup}} is-current{{/navCatalogGroup}}" id="nav-catalog-btn" aria-expanded="false" aria-controls="nav-catalog-menu">Catalog<svg class="nav-caret" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+<ul class="nav-menu" id="nav-catalog-menu"><li><a href="{{root}}index.html"{{#navCatalog}} aria-current="page"{{/navCatalog}}>Catalog</a></li><li><a href="{{root}}health/index.html"{{#navHealth}} aria-current="page"{{/navHealth}}>Health</a></li><li><a href="{{root}}advanced/index.html"{{#navAdvanced}} aria-current="page"{{/navAdvanced}}>Advanced Search</a></li></ul></li>
+<li class="nav-item"><a class="nav-link" href="{{root}}about/index.html"{{#navAbout}} aria-current="page"{{/navAbout}}>About</a></li></ul></nav></header>
+{{#showIntro}}{{#site.intro.text}}<section class="shell-intro" aria-label="About the library"><p>{{site.intro.text}}</p></section>{{/site.intro.text}}{{/showIntro}}
 <main id="main" tabindex="-1">{{{body}}}</main>
 <footer>Prototype, not an official Guardian site. Built {{builtAt}} from {{library}}. {{valid}} valid / {{invalid}} invalid manifests.</footer>
+{{#navJs}}<script>{{{navJs}}}</script>{{/navJs}}
 </body></html>
