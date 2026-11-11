@@ -3,7 +3,7 @@ import puppeteer from 'puppeteer-core';
 const b = await puppeteer.launch({ executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: true });
 const p = await b.newPage();
 await p.setViewport({ width: 1300, height: 850 });
-await p.goto('http://127.0.0.1:8412/?include_deprecated=1&include_superseded=1', { waitUntil: 'load' });
+await p.goto((process.argv[2] || 'http://127.0.0.1:8412/') + '?include_deprecated=1&include_superseded=1', { waitUntil: 'load' });
 await p.waitForSelector('html[data-ready]');
 await p.addStyleTag({ content: '.card-head *{color:transparent!important}' });
 const seen = new Set(); const res = [];

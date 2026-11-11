@@ -30,11 +30,22 @@ The intro is a committed text snapshot, not fetched at build or runtime, so it c
 
 `index.html` (Catalog), `health/`, `advanced/` (Advanced Search), `about/`, `p/<id>/` (policy pages). `sql/index.html` is a small redirect page (meta refresh plus link) to `advanced/`, kept so old links to the former SQL page do not break.
 
+## Filter links (B-11)
+
+On every card and on the policy page, the values for sector, category, standards body, Hedera publication (Live / Testnet only / No record), status and policy type are links to `index.html?<facet>=<value>` (relative, URL-encoded; `net=mainnet|testnet|none` for publication). Without JavaScript they navigate; on the catalog, JavaScript adds the value to the current filters in place and announces the result count. `status=deprecated` or `status=superseded` turns the matching switch on. Hover and keyboard focus show a solid white pill (dark text, over any art). Tag chips now add as well (they used to replace the facet; ASSUMED, for consistency).
+
+## Header and look (B-12)
+
+The title bar is the Hedera logo, "Hedera Guardian" (links to https://guardian.hedera.com) and "Methodology Library" (links to the catalog). Header, nav and intro are pinned together (`#shell-sticky`); `nav.js` publishes their real height as `--sticky-top` (the filter panel and `scroll-margin-top` use it). Under 700px wide or tall the pinned intro is one line with a More toggle; without JavaScript the header is not pinned there. The logo is `carbon-atlas/public/hedera-logo.png` downscaled to `assets/hedera-logo-64.png` (macOS `sips -Z 64`) and inlined as a data URI. Colors are sampled from the GitBook docs screenshot and listed as ASSUMED at the top of `assets/css/00-base.css`; the font is a system sans stack (Inter is not bundled, Q-18).
+
 ## Tests
 
     node test/shell.browser.test.mjs <output dir>
+    node test/v31.browser.test.mjs <output dir> [screenshot dir]
+    node test/catalog.browser.mjs <base url ending in />   (needs the build served over http)
+    node test/catalog.unit.mjs
 
-Runs headless Chrome (`/Applications/Google Chrome.app`) against the build at `/` and `/guardian/`, including axe-core.
+The browser tests run headless Chrome (`/Applications/Google Chrome.app`) against the build; the shell and v31 tests serve it themselves at `/` and `/guardian/` and include axe-core.
 
 ## Names
 
