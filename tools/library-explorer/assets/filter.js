@@ -92,7 +92,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     var act = document.getElementById('active'); if (act && !act.hidden) act.textContent = '';
   }
-  function changed(push) { writeUrl(push !== false); apply(); announce(); }
+  // collapsed-panel notice (narrow screens): "# Filters Applied | Reset Filters"; counts facet values plus a non-empty search, not the two status switches
+  function updateApplied() {
+    var n = qf.value.trim() ? 1 : 0; for (var k in state) n += state[k].length;
+    var box = document.getElementById('filters-applied'), t = document.getElementById('applied-n');
+    if (box && t) { box.hidden = !n; t.textContent = n + (n === 1 ? ' Filter Applied' : ' Filters Applied'); }
+  }
+  function changed(push) { writeUrl(push !== false); apply(); updateApplied(); announce(); }
 
   // ---- facet dropdown behaviour (disclosure pattern) ----
   function openFacet(k, focusFirst) {
@@ -159,13 +165,14 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   function reset(e) { if (e) e.preventDefault(); state = {}; inc = { deprecated: false, superseded: false }; qf.value = ''; closeAll(); changed(); }
   document.getElementById('clear-all').addEventListener('click', reset);
+  var ar = document.getElementById('applied-reset'); if (ar) ar.addEventListener('click', function (e) { e.stopPropagation(); reset(e); });
   document.getElementById('empty-clear').addEventListener('click', reset);
   // Q-4: below 861px the filters sit in a collapsed <details>; above it is always open
   var det = document.getElementById('filters-details');
   function syncDetails() { if (det && window.innerWidth >= 861) det.open = true; }
   window.addEventListener('resize', syncDetails); syncDetails();
-  window.addEventListener('popstate', function () { readUrl(); apply(); });
+  window.addEventListener('popstate', function () { readUrl(); apply(); updateApplied(); });
   readUrl();
-  apply();
+  apply(); updateApplied();
   document.documentElement.setAttribute('data-ready', '1');
 });

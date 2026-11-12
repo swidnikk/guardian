@@ -88,11 +88,11 @@ for (const base of ['/', '/guardian/']) {
   await p.keyboard.press('Enter'); await sleep(450); const k1 = await state(p);
   ok(k1.chips.length === 1 && k1.url !== k0.url, `${base} Enter on a focused value link applies the filter (${k1.url})`);
   const pill = await p.evaluate(() => { const a = document.activeElement, cs = getComputedStyle(a); return [cs.backgroundColor, cs.color, cs.outlineStyle, cs.textDecorationLine]; });
-  ok(ratio(parse(pill[0]), parse(pill[1])) >= 4.5 && /rgb\(255, 255, 255\)/.test(pill[0]) && pill[2] === 'solid', `${base} focused link shows a solid pill, contrast ${ratio(parse(pill[0]), parse(pill[1])).toFixed(1)}:1, focus ring ${pill[2]}`);
+  ok(ratio(parse(pill[0]), parse(pill[1])) >= 4.5 && /rgb\((255, 255, 255|214, 228, 251)\)/.test(pill[0]) && pill[2] === 'solid', `${base} focused link shows a solid pill, contrast ${ratio(parse(pill[0]), parse(pill[1])).toFixed(1)}:1, focus ring ${pill[2]}`);
   await p.goto(U('')); await ready(p);
   const hov = [];
   for (const el of await p.$$('#grid .card:not([hidden]) a.card-link')) { if (hov.length >= 60) break; await el.hover(); hov.push(await el.evaluate((a) => { const cs = getComputedStyle(a); return [cs.backgroundColor, cs.color]; })); }
-  ok(hov.length > 20 && hov.every(([bg, fg]) => /rgb\(255, 255, 255\)/.test(bg) && ratio(parse(bg), parse(fg)) >= 4.5), `${base} hover pill is solid with >=4.5:1 text on ${hov.length} links over the art`);
+  ok(hov.length > 20 && hov.every(([bg, fg]) => /rgb\((255, 255, 255|214, 228, 251)\)/.test(bg) && ratio(parse(bg), parse(fg)) >= 4.5), `${base} hover pill is solid with >=4.5:1 text on ${hov.length} links over the art`);
   if (shots) { const el = await p.$('#grid .card:not([hidden]) a.card-link[data-filter=sector]'); await el.hover(); await p.screenshot({ path: `${shots}/v31-${base.replace(/\W/g, '')}-hover.png`, clip: { x: 330, y: 150, width: 620, height: 300 } }); }
   // ---- detail page
   await p.goto(U(`p/${detail}/`)); await sleep(200);

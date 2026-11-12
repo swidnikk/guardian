@@ -5,7 +5,7 @@ html{scroll-padding-top:var(--sticky-top)}[id]{scroll-margin-top:var(--sticky-to
 .shell-brand{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 auto;font-size:1.25rem;line-height:1.2;font-weight:600;letter-spacing:-.01em}
 .shell-brand a{color:var(--fg);text-decoration:none;border-radius:999px;display:inline-flex;align-items:center;gap:10px;padding:2px 8px;margin:-2px -8px}
 .shell-brand a+.shell-sep{margin-left:-2px}
-.shell-brand a:hover{background:var(--pc);color:var(--on-pc)}
+.shell-brand a:hover,.shell-brand a:focus-visible{text-decoration:underline;text-underline-offset:4px}
 .shell-logo{display:block;width:32px;height:32px;border-radius:50%;flex:none}
 .shell-sep{color:#6b7280;font-weight:400}
 .shell-library .shell-title{color:var(--fg)}

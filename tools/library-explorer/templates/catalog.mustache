@@ -1,6 +1,6 @@
 <h1 class="sr-only">Policy catalog</h1>
 <div class="catalog-layout">
-<details class="filters-disclosure" id="filters-details"><summary class="filters-summary">Filters</summary>
+<details class="filters-disclosure" id="filters-details"><summary class="filters-summary"><span>Filters</span><span class="filters-applied" id="filters-applied" hidden><span id="applied-n"></span> <span class="filters-applied-sep" aria-hidden="true">|</span> <button type="button" class="linklike" id="applied-reset">Reset Filters</button></span></summary>
 <form class="filters" id="filters" role="search" onsubmit="return false" aria-label="Filters">
 <div class="facet facet-searchbox"><label class="facet-label" for="f-q">Search</label><input type="search" id="f-q" class="facet-search" placeholder="Name, id, tags" autocomplete="off"></div>
 {{#groups}}<div class="facet" data-facet="{{key}}"><span class="facet-label" id="fl-{{key}}">{{label}}</span>
