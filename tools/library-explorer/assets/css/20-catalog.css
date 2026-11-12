@@ -117,3 +117,5 @@ button.card-btn:disabled,.card-btn[aria-disabled=true]{color:#4b5563;cursor:not-
 .linklike{border:0;background:none;padding:0;margin:0;font:inherit;color:#2a5bc7;cursor:pointer}.linklike:hover{text-decoration:underline}.linklike:focus-visible{outline:3px solid var(--ring);outline-offset:2px;border-radius:3px}
 /* the card body and tag chips are light, so a white hover pill vanishes there: use a visible blue tint (dark text, >=4.5:1) */
 .card-body .card-link:hover,.card-body .card-link:focus-visible,.detail-link:hover,.detail-link:focus-visible,a.chip:hover,a.chip:focus-visible,a.chip.card-tag:hover,a.chip.card-tag:focus-visible{background:#d6e4fb;color:#12306f}
+/* an unspecified standards body or sector is omitted from the card, so keep the publication value on the right */
+.card-sub-r{margin-left:auto}

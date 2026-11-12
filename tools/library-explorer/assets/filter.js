@@ -54,17 +54,19 @@ document.addEventListener('DOMContentLoaded', function () {
     var l = el && el.parentNode.querySelector('.facet-opt-label');
     return l ? l.textContent : v;
   }
+  var swCount = {}; SWITCHES.forEach(function (s) { swCount[s] = cards.filter(function (c) { return c.dataset.status === s; }).length; });
   function apply() {
-    var n = 0, hidden = 0;
-    cards.forEach(function (c) { var ok = match(c); c.hidden = !ok; if (ok) n++; if (!visibleByStatus(c)) hidden++; });
-    document.getElementById('count').textContent = n + ' of ' + cards.length + ' policies' + (hidden ? ' (' + hidden + ' hidden)' : '');
+    // the total only counts policies the switches allow (excluded deprecated/superseded are out of scope, not "hidden")
+    var n = 0, avail = 0;
+    cards.forEach(function (c) { var ok = match(c); c.hidden = !ok; if (ok) n++; if (visibleByStatus(c)) avail++; });
+    document.getElementById('count').textContent = n + ' of ' + avail + ' policies';
     document.getElementById('empty').hidden = n > 0;
     document.getElementById('empty-hint').textContent = (state.net || []).indexOf('mainnet') > -1 ? 'No policy has a recorded mainnet publication yet. A missing publications.json means nothing is recorded, not that nothing exists.' : '';
     SWITCHES.forEach(function (s) {
       var el = switches[s]; if (!el) return;
       el.checked = inc[s];
       var t = document.getElementById('sw-' + s + '-lbl');
-      if (t) t.textContent = SW_LABEL[s] + (inc[s] ? ' Included' : ' Excluded');
+      if (t) t.textContent = SW_LABEL[s] + (inc[s] ? ' Included' : ' Excluded') + ' (' + swCount[s] + ')'; // the count sits on the switch so people can find the excluded ones there
     });
     // faceted counts: for each option, how many visible cards match all OTHER facets plus this value
     [].slice.call(document.querySelectorAll('[data-count-for]')).forEach(function (el) {

@@ -51,9 +51,9 @@ for (const base of ['/', '/guardian/']) {
   if (shots) { await p.evaluate(() => scrollTo(0, 0)); await p.screenshot({ path: `${shots}/v31-${base.replace(/\W/g, '')}-d-top.png` }); await p.evaluate(() => scrollTo(0, 1800)); await sleep(100); await p.screenshot({ path: `${shots}/v31-${base.replace(/\W/g, '')}-d-scrolled.png` }); }
   await p.evaluate(() => scrollTo(0, 0));
   // ---- B-11 markup: six values per card are real links with relative hrefs
-  const m = await p.evaluate(() => [...document.querySelectorAll('#grid .card')].map((c) => ({ links: [...c.querySelectorAll('a.card-link')].map((a) => [a.dataset.filter, a.getAttribute('href'), a.dataset.value]), sector: c.dataset.sector })));
+  const m = await p.evaluate(() => [...document.querySelectorAll('#grid .card')].map((c) => ({ links: [...c.querySelectorAll('a.card-link')].map((a) => [a.dataset.filter, a.getAttribute('href'), a.dataset.value]), sector: c.dataset.sector, sb: c.dataset.standard_body, hasSbEl: !!c.querySelector('.card-sub-l') })));
   ok(m.every((c) => c.links.every((l) => /^index\.html\?[a-z_]+=[^&=]+$/.test(l[1]) && !/^[a-z]+:|^\//.test(l[1]))), `${base} card value links are relative and URL-encoded`);
-  ok(m.every((c) => ['category', 'standard_body', 'net', 'status', 'policy_type'].every((k) => c.links.some((l) => l[0] === k)) && (!c.sector || c.links.some((l) => l[0] === 'sector'))), `${base} every card links category, standard body, publication, status, policy type (and sector when set)`);
+  ok(m.every((c) => ['category', 'net', 'status', 'policy_type'].every((k) => c.links.some((l) => l[0] === k)) && (!c.sector || c.links.some((l) => l[0] === 'sector')) && (c.sb === 'Unspecified' ? !c.hasSbEl && !c.links.some((l) => l[0] === 'standard_body') : c.links.some((l) => l[0] === 'standard_body')) && (c.sector || !c.links.some((l) => l[0] === 'sector'))), `${base} every card links category, publication, status, policy type; sector and standards body only when specified (Unspecified is omitted)`);
   // ---- click adds in place
   await p.evaluate(() => { window.__marker = 1; });
   const link = (k) => p.evaluateHandle((k) => [...document.querySelectorAll('#grid .card:not([hidden]) a.card-link')].find((a) => a.dataset.filter === k && a.dataset.value !== 'Unspecified'), k);

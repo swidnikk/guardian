@@ -21,16 +21,16 @@ const nDep = await exp("c.dataset.status==='deprecated'"), nSup = await exp("c.d
 check('B-09 no status strip', !(await p.$('.hero')) && !/not proof of non-publication/.test(await p.content()));
 // B-10 defaults
 check('B-10 default hides deprecated+superseded', (await vis()) === T - nDep - nSup, `${await vis()} of ${T}`);
-check('B-10 result line shows hidden', (await count()) === `${T - nDep - nSup} of ${T} policies (${nDep + nSup} hidden)`, await count());
+check('B-10 total excludes deprecated/superseded (no hidden suffix)', (await count()) === `${T - nDep - nSup} of ${T - nDep - nSup} policies`, await count());
 check('B-10 default URL clean', !p.url().includes('?'));
 check('B-10 no Status option for deprecated/superseded', await p.evaluate(() => ['deprecated', 'superseded'].every((v) => document.querySelector(`input[data-facet=status][value=${v}]`).closest('.facet-opt').hidden)));
-check('B-10 switch role + label', (await p.$eval('#sw-deprecated-lbl', (e) => e.textContent)) === 'Deprecated Policies Excluded' && (await p.$eval('#sw-deprecated', (e) => e.getAttribute('role'))) === 'switch');
+check('B-10 switch role + label', (await p.$eval('#sw-deprecated-lbl', (e) => e.textContent)) === `Deprecated Policies Excluded (${nDep})` && (await p.$eval('#sw-deprecated', (e) => e.getAttribute('role'))) === 'switch');
 const sumStatus = await p.evaluate(() => [...document.querySelectorAll('[data-count-for^="status="]')].filter((e) => !e.closest('.facet-opt').hidden).reduce((a, e) => a + +e.textContent, 0));
 check('B-10 status counts sum to visible', sumStatus === (await vis()), String(sumStatus));
 await click('#sw-deprecated');
-check('B-10 include deprecated', (await vis()) === T - nSup && (await count()).includes(`(${nSup} hidden)`) && p.url().includes('include_deprecated=1'), await count());
+check('B-10 include deprecated', (await vis()) === T - nSup && (await count()) === `${T - nSup} of ${T - nSup} policies` && p.url().includes('include_deprecated=1'), await count());
 check('B-10 Deprecated status option back with its count', await p.evaluate((n) => { const o = document.querySelector('input[data-facet=status][value=deprecated]').closest('.facet-opt'); return !o.hidden && o.querySelector('.count').textContent === String(n); }, nDep));
-check('B-10 label flips', (await p.$eval('#sw-deprecated-lbl', (e) => e.textContent)) === 'Deprecated Policies Included');
+check('B-10 label flips', (await p.$eval('#sw-deprecated-lbl', (e) => e.textContent)) === `Deprecated Policies Included (${nDep})`);
 await click('#sw-superseded'); check('B-10 both included: all shown, no hidden suffix', (await vis()) === T && (await count()) === `${T} of ${T} policies`);
 await click('#sw-deprecated'); await click('#sw-superseded');
 check('B-10 independent, off again', (await vis()) === T - nDep - nSup);
