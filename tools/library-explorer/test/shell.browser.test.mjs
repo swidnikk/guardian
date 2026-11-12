@@ -33,7 +33,7 @@ for (const base of ['/', '/guardian/']) {
     const intro = await p.evaluate(() => document.querySelector('.shell-intro')?.textContent.trim() || '');
     const want = route === '' || route === 'about/';
     ok(want ? intro.length > 40 : intro === '', `${t} intro ${want ? 'present' : 'absent'}`);
-    const nav = await p.evaluate(() => ({ cur: [...document.querySelectorAll('nav [aria-current=page]')].map((a) => a.textContent.trim()), group: document.getElementById('nav-catalog-btn')?.classList.contains('is-current'), dl: !!document.querySelector('nav a[download]') }));
+    const nav = await p.evaluate(() => ({ cur: [...document.querySelectorAll('nav [aria-current=page]')].map((a) => (a.querySelector('.nav-ttl') || a).textContent.trim()), group: document.getElementById('nav-catalog-btn')?.classList.contains('is-current'), dl: !!document.querySelector('nav a[download]') }));
     const exp = { '': ['Catalog'], 'health/': ['Health'], 'advanced/': ['Advanced Search'], 'about/': ['About'] }[route];
     ok(JSON.stringify(nav.cur) === JSON.stringify(exp), `${t} aria-current ${nav.cur}`);
     ok(nav.group === (route !== 'about/'), `${t} trigger active state`);
@@ -46,7 +46,7 @@ for (const base of ['/', '/guardian/']) {
   // keyboard behaviour on the catalogue page
   await p.goto(`http://127.0.0.1:${port}${base}`); await sleep(300);
   await p.focus('#nav-catalog-btn');
-  const st = () => p.evaluate(() => ({ exp: document.getElementById('nav-catalog-btn').getAttribute('aria-expanded'), hid: document.getElementById('nav-catalog-menu').hidden, act: document.activeElement.id || document.activeElement.textContent.trim() }));
+  const st = () => p.evaluate(() => ({ exp: document.getElementById('nav-catalog-btn').getAttribute('aria-expanded'), hid: document.getElementById('nav-catalog-menu').hidden, act: document.activeElement.id || (document.activeElement.querySelector('.nav-ttl') || document.activeElement).textContent.trim() }));
   let s = await st(); ok(s.exp === 'false' && s.hid, `${base} starts closed`);
   await p.keyboard.press('ArrowDown'); s = await st(); ok(s.exp === 'true' && s.act === 'Catalog', `${base} ArrowDown opens, focuses first entry (${s.act})`);
   await p.keyboard.press('ArrowDown'); s = await st(); ok(s.act === 'Health', `${base} ArrowDown moves (${s.act})`);

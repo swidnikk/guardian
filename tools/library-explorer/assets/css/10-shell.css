@@ -1,7 +1,7 @@
 /* Shell: pinned header (brand + nav) and intro, docs look (B-12). Prefixes nav-/shell-. Colors: see the ASSUMED palette note in 00-base.css. */
 html{scroll-padding-top:var(--sticky-top)}[id]{scroll-margin-top:var(--sticky-top)}
 .shell-sticky{position:sticky;top:0;z-index:20;background:var(--surf);border-bottom:1px solid var(--var)}
-.appbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 24px;padding:10px 28px;background:var(--surf);color:var(--fg)}
+.appbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 24px;padding:10px max(28px,calc((100% - 1264px)/2));background:var(--surf);color:var(--fg)}
 .shell-brand{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 auto;font-size:1.25rem;line-height:1.2;font-weight:600;letter-spacing:-.01em}
 .shell-brand a{color:var(--fg);text-decoration:none;border-radius:999px;display:inline-flex;align-items:center;gap:10px;padding:2px 8px;margin:-2px -8px}
 .shell-brand a+.shell-sep{margin-left:-2px}
@@ -12,22 +12,30 @@ html{scroll-padding-top:var(--sticky-top)}[id]{scroll-margin-top:var(--sticky-to
 .nav-primary{flex:0 0 auto;margin-left:auto}
 .nav-list{display:flex;align-items:center;gap:4px;list-style:none;margin:0;padding:0}
 .nav-item{position:relative}
-.nav-link,.nav-trigger{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 16px;border:1px solid transparent;border-radius:999px;background:transparent;color:#4b5563;font:inherit;font-size:.95rem;font-weight:500;text-decoration:none;cursor:pointer}
-.nav-link:hover,.nav-trigger:hover{background:var(--pc);color:var(--on-pc)}
-.nav-link[aria-current=page],.nav-trigger.is-current{background:var(--pc);border-color:#c9daf8;color:var(--p);font-weight:600}
+.nav-link,.nav-trigger{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 12px;border:0;border-radius:0;background:transparent;color:#4b5563;font:inherit;font-size:.95rem;font-weight:500;text-decoration:none;cursor:pointer}
+.nav-link:hover,.nav-trigger:hover{color:var(--fg);text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1.5px}
+.nav-link:focus-visible,.nav-trigger:focus-visible{outline:3px solid var(--ring);outline-offset:1px;border-radius:4px}
+.nav-link[aria-current=page],.nav-trigger.is-current{color:var(--p);font-weight:600}
 .nav-caret{transition:transform .15s}.nav-trigger[aria-expanded=true] .nav-caret{transform:rotate(180deg)}
-.nav-menu{list-style:none;margin:0;padding:6px;background:#fff;border:1px solid var(--var);border-radius:16px;box-shadow:0 8px 24px #1a1b1e26;min-width:200px}
-.nav-menu a{display:block;padding:10px 14px;border-radius:999px;color:var(--fg);text-decoration:none;font-size:.95rem;white-space:nowrap}
-.nav-menu a:hover{background:var(--pc);color:var(--on-pc)}
-.nav-menu a[aria-current=page]{background:var(--pc);color:var(--p);font-weight:600}
+.nav-menu{list-style:none;margin:0;padding:10px;background:#fff;border:1px solid var(--var);border-radius:24px;box-shadow:0 12px 32px #1a1b1e26;width:min(360px,calc(100vw - 28px))}
+.nav-menu a{display:flex;gap:14px;align-items:flex-start;padding:12px 14px;border-radius:16px;color:var(--fg);text-decoration:none}
+.nav-ico{flex:none;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#f1f3f6;color:#374151}
+.nav-txt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.nav-ttl{font-size:1rem;font-weight:500;line-height:1.3}
+.nav-desc{font-size:.88rem;line-height:1.4;color:var(--mut)}
+.nav-menu a:hover .nav-ttl,.nav-menu a:focus-visible .nav-ttl{text-decoration:underline;text-underline-offset:4px}
+.nav-menu a:focus-visible{outline:3px solid var(--ring);outline-offset:-2px}
+.nav-menu a[aria-current=page] .nav-ttl{color:var(--p);font-weight:600}
 /* with JS: menu is a popover under the trigger; without JS it stays a plain inline list (nothing is hidden) */
 html.js .nav-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:30}
 html.js .nav-menu[hidden],html.js .nav-trigger[aria-expanded=false]+.nav-menu{display:none}
 html:not(.js) .nav-dd{display:flex;align-items:center;gap:4px}
 html:not(.js) .nav-trigger,html:not(.js) .nav-caret{display:none}
-html:not(.js) .nav-menu{display:flex;background:transparent;border:0;box-shadow:none;padding:0;min-width:0}
-html:not(.js) .nav-menu a{color:#4b5563;padding:6px 16px;font-weight:500}
-html:not(.js) .nav-menu a[aria-current=page]{background:var(--pc);color:var(--p);font-weight:600}
+html:not(.js) .nav-menu{display:flex;background:transparent;border:0;box-shadow:none;padding:0;min-width:0;width:auto}
+html:not(.js) .nav-menu a{color:#4b5563;padding:6px 12px;font-weight:500;border-radius:0}
+html:not(.js) .nav-menu a:hover .nav-ttl{text-decoration:underline}
+html:not(.js) .nav-ico,html:not(.js) .nav-desc{display:none}
+html:not(.js) .nav-menu a[aria-current=page] .nav-ttl{color:var(--p);font-weight:600}
 html:not(.js) .nav-list{flex-wrap:wrap}
 .shell-intro{display:flex;align-items:baseline;gap:10px;max-width:1320px;margin:0 auto;padding:0 28px 10px;color:var(--mut)}
 .shell-intro p{margin:0;font-size:.92rem;line-height:1.45;flex:1 1 auto;min-width:0}
