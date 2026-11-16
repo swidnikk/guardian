@@ -1,0 +1,14 @@
+<h1>Advanced Search</h1>
+<p class="shell-downloads"><a class="shell-dl" href="{{root}}data/catalog.json" download>Download catalog.json{{#summary.catalogSize}} <span class="shell-size">({{summary.catalogSize}})</span>{{/summary.catalogSize}}</a> <a class="shell-dl" href="{{root}}data/library.sqlite" download>Download library.sqlite{{#summary.sqliteSize}} <span class="shell-size">({{summary.sqliteSize}})</span>{{/summary.sqliteSize}}</a></p>
+<section class="shell-summary" aria-labelledby="tech-h"><h2 id="tech-h">How this site works</h2>
+<ul>
+<li>It is generated at build time from the library's <code>policy.yml</code> manifests: {{summary.found}} found, {{summary.valid}} valid{{#summary.invalid}}, {{summary.invalid}} invalid{{/summary.invalid}}. Built {{summary.builtAt}}{{#summary.sourceCommit}} from commit <code>{{summary.sourceCommit}}</code>{{/summary.sourceCommit}}.</li>
+<li>The data is a SQLite database. It runs in your browser with sql.js (WebAssembly); there is no server and nothing you type is sent anywhere.</li>
+<li>Queries run locally, read-only, against the downloadable <code>library.sqlite</code>.</li>
+</ul></section>
+<p class="note"><strong>file:// limitation:</strong> the search below fetches <code>library.sqlite</code> and loads WebAssembly, which browsers block when the page is opened straight from disk. It works over http (GitHub Pages, or a local web server). The catalog and policy pages do not need it.</p>
+<p id="sqlstatus" role="status">Loading…</p>
+<textarea id="sqlq" rows="5" aria-label="SQL query">select status, count(*) n from policies group by status order by n desc;</textarea>
+<p><button id="run" type="button" class="chip">Run</button></p>
+<div id="sqlout"></div>
+<script src="{{root}}assets/vendor/sql-wasm.js"></script><script src="{{root}}assets/sql-page.js"></script>

@@ -1,0 +1,72 @@
+# Builds the Methodology Library Explorer and deploys it to GitHub Pages.
+# Requires: Settings > Pages > Source = "GitHub Actions".
+name: Library Explorer (Pages)
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch, tag or SHA to read Methodology Library from (blank = the branch the run is started on)'
+        required: false
+        default: 'swid/policy-manifest-backfill'
+  push:
+    branches: [main]            # ASSUMED default branch; change if yours differs
+    paths:
+      - 'Methodology Library/**'
+      - 'tools/library-explorer/**'
+      - '.github/workflows/library-explorer-pages.yml'
+
+# Least privilege: the build job (npm install + build) only reads. Only the deploy job may publish.
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7            # the explorer tooling, from the branch this run started on
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@v7            # the library to publish, from the 'ref' input (push runs: the backfill branch, since main has no manifests)
+        with:
+          ref: ${{ inputs.ref || 'swid/policy-manifest-backfill' }}
+          persist-credentials: false
+          path: _lib
+          sparse-checkout: Methodology Library
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tools/library-explorer/package-lock.json
+      - name: Install
+        working-directory: tools/library-explorer
+        run: npm ci
+      - name: Build site (reads the library, writes only _site)
+        working-directory: tools/library-explorer
+        env:
+          # 'View on Github' card links point at the repo and ref this site is built from (passed via env, never interpolated into the shell)
+          REPO_URL: https://github.com/${{ github.repository }}
+          REPO_BRANCH: ${{ inputs.ref || 'swid/policy-manifest-backfill' }}
+        run: node build.js --lib "$GITHUB_WORKSPACE/_lib/Methodology Library" --out "$GITHUB_WORKSPACE/_site" --label "Methodology Library" --repo-url "$REPO_URL" --repo-branch "$REPO_BRANCH"
+      - name: Drop the build report (not part of the site)
+        run: rm -f _site/build-report.json && touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
