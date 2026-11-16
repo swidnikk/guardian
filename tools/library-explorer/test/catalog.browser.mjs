@@ -70,7 +70,8 @@ await click('#sw-deprecated'); await axe('catalog switch on');
 // B-02 sticky
 await go(); await p.evaluate(() => window.scrollTo(0, 1500)); const top = await p.$eval('#filters', (e) => Math.round(e.getBoundingClientRect().top));
 check('B-02 filter panel stays in view while grid scrolls', top >= 0 && top < 200, `top=${top}`);
-check('B-02 panel fits viewport', await p.$eval('#filters', (e) => e.getBoundingClientRect().bottom <= innerHeight + 1));
+// the panel container (max-height + overflow:auto) fits the viewport and the sticky switches stay reachable; long content scrolls inside it
+check('B-02 panel fits viewport and switches stay reachable', await p.evaluate(() => { const d = document.getElementById('filters-details'), s = document.querySelector('.switches').getBoundingClientRect(); return d.getBoundingClientRect().bottom <= innerHeight + 1 && s.bottom <= innerHeight + 1 && s.top >= 0; }));
 // cards
 check('B-03d github link (new tab, noopener, https)', await p.evaluate(() => [...document.querySelectorAll('.card')].every((c) => { const a = c.querySelector('.card-actions a'); return a && a.target === '_blank' && /noopener/.test(a.rel) && /^https:\/\/github\.com\//.test(a.href); })));
 check('B-03d Import disabled with explanation', await p.evaluate(() => [...document.querySelectorAll('.card button.card-btn')].every((x) => x.disabled && document.getElementById(x.getAttribute('aria-describedby')))));
