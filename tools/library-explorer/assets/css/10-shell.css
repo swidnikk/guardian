@@ -1,6 +1,6 @@
 /* Shell: pinned header (brand + nav) and intro, docs look (B-12). Prefixes nav-/shell-. Colors: see the ASSUMED palette note in 00-base.css. */
 html{scroll-padding-top:var(--sticky-top)}[id]{scroll-margin-top:var(--sticky-top)}
-.shell-sticky{position:sticky;top:0;z-index:20;background:rgb(249 250 251 / .88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--var)}
+.shell-sticky{position:sticky;top:0;z-index:20;background:#fff var(--page-grad) fixed;border-bottom:1px solid var(--var)}
 .appbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 24px;padding:10px max(28px,calc((100% - 1264px)/2));background:transparent;color:var(--fg)}
 .shell-brand{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 auto;font-size:1rem;line-height:1.2;font-weight:600;letter-spacing:-.005em}
 .shell-brand a{color:var(--fg);text-decoration:none;border-radius:999px;display:inline-flex;align-items:center;gap:10px;padding:2px 8px;margin:-2px -8px}

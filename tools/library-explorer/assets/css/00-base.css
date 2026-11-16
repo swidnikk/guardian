@@ -1,9 +1,9 @@
 /* B-12 docs look. Palette sampled from the GitBook docs screenshot (images/8.png); every value is ASSUMED: page bg #f9fbff, accent #346ddb (active-tab underline), pill bg #f1f8ff, header rule #e8eaed.
    Derived (ASSUMED): --p #2a5bc7 is the accent darkened to reach 4.5:1 for text on tinted bg; --pc #eaf1fd is a slightly stronger pill tint (#f1f8ff is too faint to see on #f9fbff); --mut #4b5563 and --fg #1a1b1e are neutral greys. Inter is not bundled (Q-18): system sans stack, no web fonts. */
-:root{--p:#2a5bc7;--acc:#346ddb;--ring:#2a5bc7;--on-p:#fff;--pc:#eaf1fd;--on-pc:#1a3f94;--s:#4b5563;--surf:#f9fbff;--card:#fff;--var:#e8eaed;--ol:#8b95a5;--fg:#1a1b1e;--mut:#4b5563;--warn:#8a4600;--warnbg:#ffeedb;--ok:#0b6b2e;--okbg:#d9f4df;--bad:#ba1a1a;--font:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+:root{--page-grad:linear-gradient(to bottom left,#e9f3ff 0%,#fff 62%);--p:#2a5bc7;--acc:#346ddb;--ring:#2a5bc7;--on-p:#fff;--pc:#eaf1fd;--on-pc:#1a3f94;--s:#4b5563;--surf:#f9fbff;--card:#fff;--var:#e8eaed;--ol:#8b95a5;--fg:#1a1b1e;--mut:#4b5563;--warn:#8a4600;--warnbg:#ffeedb;--ok:#0b6b2e;--okbg:#d9f4df;--bad:#ba1a1a;--font:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 --md-sys-color-primary:var(--p);--md-sys-color-on-primary:#fff;--md-sys-color-surface:var(--surf);--md-sys-color-on-surface:var(--fg);--md-sys-color-on-surface-variant:var(--mut);--md-sys-color-outline:var(--ol);--md-sys-color-secondary-container:var(--pc);--md-sys-color-on-secondary-container:var(--on-pc);--md-sys-color-surface-container-highest:var(--var);--md-sys-color-surface-container:#eef2f8;--md-sys-color-on-secondary:#fff;--md-sys-color-secondary:var(--s);
 --md-ref-typeface-brand:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--md-ref-typeface-plain:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-*{box-sizing:border-box}body{margin:0;font:16px/1.5 var(--font);background:#fff linear-gradient(to bottom left,#f0f2f6 0%,#fff 60%) fixed;color:var(--fg);min-height:100vh}
+*{box-sizing:border-box}body{margin:0;font:16px/1.5 var(--font);background:#fff var(--page-grad) fixed;color:var(--fg);min-height:100vh}
 a{color:var(--p)}a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--ring);outline-offset:2px}
 .skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;padding:6px 10px;z-index:20;border-radius:8px}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -42,3 +42,4 @@ textarea{width:100%;font:13px ui-monospace,monospace;padding:8px;border-radius:8
 
 /* Inter (self-hosted, OFL; assets/fonts) and the docs' subtle page gradient (GitBook: to bottom left, tint-4 #f0f2f6 to white at 60%, fixed). Sizes follow the docs: sidebar/controls ~14px (text-sm). */
 body{font-optical-sizing:auto}
+/* gradient colour sampled from the docs' top edge (user screenshot, 2000px wide): #fcfdff at the left to #e9f3ff at the top-right corner; GitBook uses 'to bottom left', so the blue starts at the top-right and reaches white at 60% */
