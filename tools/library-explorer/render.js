@@ -18,7 +18,7 @@ const T = Object.fromEntries(fs.readdirSync(path.join(here, 'templates')).filter
 const safeUrl = (u) => { try { const x = new URL(u); return /^https?:$/.test(x.protocol) ? x.href : null; } catch { return null; } };
 // B-12: Hedera logo (repo file carbon-atlas/public/hedera-logo.png, 512px, downscaled to 64px with sips) is inlined as a data: URI, so there is no extra request.
 const LOGO_URI = 'data:image/png;base64,' + fs.readFileSync(path.join(here, 'assets/hedera-logo-64.png')).toString('base64');
-const SITE_TITLE = 'Guardian Methodology Library';
+const SITE_TITLE = 'GUARDIAN / Methodology Library';
 const UNSPEC = 'Unspecified';
 const NETS = { mainnet: 'Live on mainnet', testnet: 'Testnet only', none: 'No publication recorded' };
 const netOf = (p) => (p.live_mainnet ? 'mainnet' : p.on_testnet ? 'testnet' : 'none');

@@ -15,7 +15,7 @@ let fail = 0; const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); i
 const b = await puppeteer.launch({ executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: true });
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const axe = async (p, label) => { await p.evaluate(axeSrc); const r = await p.evaluate(() => axe.run()); ok(r.violations.length === 0, `axe 0 violations ${label} ${r.violations.map((v) => v.id + ' x' + v.nodes.length).join(',')}`); };
-const TITLE = 'Guardian Methodology Library';
+const TITLE = 'GUARDIAN / Methodology Library';
 const ROUTES = [['', TITLE], ['health/', TITLE + ' / Health'], ['advanced/', TITLE + ' / Advanced Search'], ['about/', TITLE + ' / About']];
 const detail = (JSON.parse(fs.readFileSync(path.join(dist, 'data/catalog.json'), 'utf8')).policies[0]).id;
 
