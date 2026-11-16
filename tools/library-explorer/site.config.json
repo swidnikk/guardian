@@ -6,6 +6,7 @@
     "_note": "ASSUMED default. Used by the card 'View on Github' link (Catalog team) and the About page GitHub link (Shell team). For the demo the build may override with --repo-url/--repo-branch."
   },
   "links": {
+    "importGuide": "https://guardian.hedera.com/docs/develop/guardian/getting-started/hello-world-tutorial#id-2.-import-a-policy-from-the-methodology-library",
     "platformUpdates": "https://guardian.hedera.com/updates",
     "feedback": "https://tiny.cc/grd-feedback",
     "_note": "Shell team. The GitHub link on the About page is NOT here: it is built from repo.url (Q-10, one setting). tiny.cc is a third-party short-link dependency (user-owned)."

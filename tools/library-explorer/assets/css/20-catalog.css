@@ -91,8 +91,6 @@ a.card-btn:hover{background:#eaf1fd}
 .card-gh{display:block}
 a.card-btn:focus-visible,.card-btn:focus-visible{outline:3px solid var(--ring);outline-offset:2px}
 button.card-btn:disabled,.card-btn[aria-disabled=true]{color:#4b5563;cursor:not-allowed;text-decoration:none}
-.card-import{display:flex;flex-direction:column;align-items:flex-end}
-.card-note{font-size:.72rem;color:#4b5563;margin-top:-6px;padding-right:14px}
 @media(max-width:420px){.grid{grid-template-columns:1fr}.card{min-height:0}}
 @media(forced-colors:active){.switch-track{border:2px solid ButtonText}.switch-input:checked+.switch-track{background:Highlight}.card-scrim{background:Canvas;opacity:.85}}
 @media(prefers-reduced-motion:reduce){.switch-track::after,.facet-toggle::after,.switch-track{transition:none}}
@@ -119,3 +117,4 @@ button.card-btn:disabled,.card-btn[aria-disabled=true]{color:#4b5563;cursor:not-
 .card-body .card-link:hover,.card-body .card-link:focus-visible,.detail-link:hover,.detail-link:focus-visible,a.chip:hover,a.chip:focus-visible,a.chip.card-tag:hover,a.chip.card-tag:focus-visible{background:#d6e4fb;color:#12306f}
 /* an unspecified standards body or sector is omitted from the card, so keep the publication value on the right */
 .card-sub-r{margin-left:auto}
+a.card-import{color:#2a5bc7}
