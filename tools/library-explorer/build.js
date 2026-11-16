@@ -221,6 +221,7 @@ for (const f of ['sql-page.js']) fs.copyFileSync(path.join(here, 'assets', f), p
 for (const f of ['sql-wasm.js', 'sql-wasm.wasm']) fs.copyFileSync(path.join(here, 'node_modules/sql.js/dist', f), path.join(OUT, 'assets/vendor', f));
 esbuild.buildSync({ entryPoints: [path.join(here, 'assets/md-entry.js')], bundle: true, minify: true, format: 'iife', outfile: path.join(OUT, 'assets/vendor/md.js'), logLevel: 'error' });
 // catalog.json is written before the pages so the Advanced Search page can show real file sizes (B-08)
+fs.cpSync(path.join(here, 'assets/fonts'), path.join(OUT, 'assets/fonts'), { recursive: true }); // Inter (SIL OFL), self-hosted; licence file included
 fs.cpSync(path.join(here, 'assets/sector-art'), path.join(OUT, 'assets/sector-art'), { recursive: true }); // shared fallback card art (also embedded once in the catalog page)
 fs.writeFileSync(path.join(OUT, 'data/catalog.json'), JSON.stringify({ schema_version: 1, built_at: meta.built_at,
   policies: valid.map((v) => ({ ...v.doc, _manifest_path: v.path, _publications: v.pubs })) }));

@@ -35,9 +35,9 @@ for (const base of ['/', '/guardian/']) {
   ok(hb.gHref === 'https://guardian.hedera.com' && /noopener/.test(hb.gRel) && /noreferrer/.test(hb.gRel), `${base} "Hedera Guardian" links to guardian.hedera.com with rel noopener noreferrer`);
   ok(hb.lHref === 'index.html', `${base} "Methodology Library" links to the catalog (relative: ${hb.lHref})`);
   ok(hb.text === 'Hedera Guardian / Methodology Library', `${base} title text (${hb.text})`);
-  ok(hb.alt === '' && hb.iw === 32 && hb.logoLeft && hb.src.startsWith('data:image/png'), `${base} logo: empty alt, 32px, left of the text, inlined data URI`);
-  ok(hb.font >= 19 && hb.font <= 21, `${base} title ~20px (${hb.font})`);
-  const fam = await p.evaluate(() => getComputedStyle(document.body).fontFamily); ok(!/inter/i.test(fam) && /system-ui/.test(fam), `${base} system font stack (${fam.slice(0, 40)})`);
+  ok(hb.alt === '' && hb.iw === 28 && hb.logoLeft && hb.src.startsWith('data:image/png'), `${base} logo: empty alt, 28px, left of the text, inlined data URI`);
+  ok(hb.font >= 15 && hb.font <= 17, `${base} title ~16px (docs size) (${hb.font})`);
+  const fam = await p.evaluate(() => getComputedStyle(document.body).fontFamily); ok(/^Inter,/i.test(fam) && /system-ui/.test(fam), `${base} Inter (self-hosted) with system fallback (${fam.slice(0, 40)})`);
   // ---- B-12 sticky at 1280x800
   const before = await p.evaluate(() => document.getElementById('shell-sticky').getBoundingClientRect().height);
   await p.evaluate(() => scrollTo(0, 1800)); await sleep(150);
