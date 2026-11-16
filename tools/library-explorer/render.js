@@ -18,7 +18,7 @@ const T = Object.fromEntries(fs.readdirSync(path.join(here, 'templates')).filter
 const safeUrl = (u) => { try { const x = new URL(u); return /^https?:$/.test(x.protocol) ? x.href : null; } catch { return null; } };
 // B-12: Hedera logo (repo file carbon-atlas/public/hedera-logo.png, 512px, downscaled to 64px with sips) is inlined as a data: URI, so there is no extra request.
 const LOGO_URI = 'data:image/png;base64,' + fs.readFileSync(path.join(here, 'assets/hedera-logo-64.png')).toString('base64');
-const SITE_TITLE = 'GUARDIAN / Methodology Library';
+const SITE_TITLE = 'Methodology Library', SITE_SUFFIX = 'Hedera Guardian'; // tab title: "Methodology Library | Hedera Guardian", "Methodology Library > About | Hedera Guardian"
 const UNSPEC = 'Unspecified';
 const NETS = { mainnet: 'Live on mainnet', testnet: 'Testnet only', none: 'No publication recorded' };
 const netOf = (p) => (p.live_mainnet ? 'mainnet' : p.on_testnet ? 'testnet' : 'none');
@@ -40,7 +40,7 @@ export function renderSite(rows, OUT, meta, resolveThumb, opts = {}) {
   const known = new Set(pols.map((p) => p.id));
   const w = (rel, s) => { const f = path.join(OUT, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, s); };
   // Route titles (B-04): the catalogue is the bare site name, every other page is "<site name> / <page>".
-  const fullTitle = (t) => (t === 'Catalog' ? SITE_TITLE : `${SITE_TITLE} / ${t}`);
+  const fullTitle = (t) => (t === 'Catalog' ? `${SITE_TITLE} | ${SITE_SUFFIX}` : `${SITE_TITLE} > ${t} | ${SITE_SUFFIX}`);
   const page = (title, depth, body, opts = {}) => Mustache.render(T.layout, { title: fullTitle(title), root: '../'.repeat(depth), body, css: CSS, site: SITE, logoUri: LOGO_URI, filterJs: FILTER_JS, navJs: NAV_JS, navCatalogGroup: !!(opts.navCatalog || opts.navHealth || opts.navAdvanced), showIntro: !!(opts.catalogPage || opts.navAbout), builtAt: meta.built_at, library: meta.library_label, valid: meta.valid, invalid: meta.invalid, ...opts });
   const tagsBy = {}, sdgBy = {};
   rows('select policy_id, tag, canonical from tags order by tag').forEach((t) => (tagsBy[t.policy_id] ||= []).push(t));
@@ -119,6 +119,6 @@ export function renderSite(rows, OUT, meta, resolveThumb, opts = {}) {
   const summary = { found: meta.found, valid: meta.valid, invalid: meta.invalid, builtAt: meta.built_at, sourceCommit: meta.source_commit || '', catalogSize: meta.catalog_size || '', sqliteSize: meta.sqlite_size || '' };
   w('advanced/index.html', page('Advanced Search', 1, Mustache.render(T.advanced, { root: '../', summary, ...summary }), { navAdvanced: true }));
   // old URL kept alive (Q-9): tiny redirect page, relative link only
-  w('sql/index.html', `<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n<meta name="robots" content="noindex, nofollow, noarchive, noimageindex">\n<meta http-equiv="refresh" content="0; url=../advanced/index.html">\n<title>${SITE_TITLE} / Advanced Search</title></head><body><p>This page moved to <a href="../advanced/index.html">Advanced Search</a>.</p></body></html>\n`);
+  w('sql/index.html', `<!doctype html>\n<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n<meta name="robots" content="noindex, nofollow, noarchive, noimageindex">\n<meta http-equiv="refresh" content="0; url=../advanced/index.html">\n<title>${SITE_TITLE} &gt; Advanced Search | ${SITE_SUFFIX}</title></head><body><p>This page moved to <a href="../advanced/index.html">Advanced Search</a>.</p></body></html>\n`);
   return { total: pols.length };
 }

@@ -15,8 +15,8 @@ let fail = 0; const ok = (c, m) => { console.log((c ? 'PASS ' : 'FAIL ') + m); i
 const b = await puppeteer.launch({ executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: true });
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const axe = async (p, label) => { await p.evaluate(axeSrc); const r = await p.evaluate(() => axe.run()); ok(r.violations.length === 0, `axe 0 violations ${label} ${r.violations.map((v) => v.id + ' x' + v.nodes.length).join(',')}`); };
-const TITLE = 'GUARDIAN / Methodology Library';
-const ROUTES = [['', TITLE], ['health/', TITLE + ' / Health'], ['advanced/', TITLE + ' / Advanced Search'], ['about/', TITLE + ' / About']];
+const TITLE = 'Methodology Library', SUF = ' | Hedera Guardian';
+const ROUTES = [['', TITLE + SUF], ['health/', TITLE + ' > Health' + SUF], ['advanced/', TITLE + ' > Advanced Search' + SUF], ['about/', TITLE + ' > About' + SUF]];
 const detail = (JSON.parse(fs.readFileSync(path.join(dist, 'data/catalog.json'), 'utf8')).policies[0]).id;
 
 for (const base of ['/', '/guardian/']) {
@@ -83,7 +83,7 @@ for (const base of ['/', '/guardian/']) {
   ok(await p.evaluate(() => !document.querySelector('#sqlout img') && !window.__x), `${base}sql results are text, not HTML`);
   await axe(p, `${base}advanced (after query)`);
   // detail page and sql redirect stub
-  await p.goto(`http://127.0.0.1:${port}${base}p/${detail}/`); ok((await p.title()).startsWith(TITLE + ' / '), `${base}detail title`);
+  await p.goto(`http://127.0.0.1:${port}${base}p/${detail}/`); ok((await p.title()).startsWith(TITLE + ' > ') && (await p.title()).endsWith(SUF), `${base}detail title`);
   await axe(p, `${base}detail`);
   await p.goto(`http://127.0.0.1:${port}${base}sql/`); await sleep(800); ok(p.url().endsWith(`${base}advanced/index.html`), `${base}sql/ redirects to advanced (${p.url()})`);
   ok(errs.length === 0, `${base}no page errors ${errs.join('|')}`);
