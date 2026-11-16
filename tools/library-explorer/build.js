@@ -42,17 +42,38 @@ try {
   }
 } catch { /* taxonomy optional */ }
 
+// ---- release allow-list (--release <file>): only the listed library folders are read, so nothing else can reach any output ----
+// File format: { "version": 1, "include": ["Folder", "Parent/Child", ...] }. An entry covers that folder and everything below it.
+// Fail-safe: a folder that is not listed is never walked; an entry that matches no folder aborts the build (a typo must not silently drop a release).
+const nfc = (x) => x.normalize('NFC');
+let RELEASE = null;
+if (args.release) {
+  let rf; try { rf = readJson(path.resolve(args.release)); } catch (e) { console.error(`--release: cannot read ${args.release}: ${e.message}`); process.exit(2); }
+  const inc = rf && rf.version === 1 && Array.isArray(rf.include) ? rf.include : null;
+  if (!inc || !inc.length || !inc.every((x) => typeof x === 'string' && x.trim() && !path.isAbsolute(x) && !x.split(/[\\/]/).includes('..'))) {
+    console.error('--release: expected {"version":1,"include":[non-empty relative folder paths, no ..]} with at least one entry'); process.exit(2);
+  }
+  RELEASE = inc.map((x) => nfc(x.trim().split(/[\\/]+/).filter(Boolean).join('/')));
+}
+const relPosix = (d) => nfc(path.relative(LIB, d).split(path.sep).join('/'));
+const underIncluded = (r) => !RELEASE || RELEASE.some((e) => r === e || r.startsWith(e + '/'));
+const aboveIncluded = (r) => RELEASE.some((e) => e.startsWith(r + '/'));
+const matchedEntries = new Set();
+
 // ---- walk (no symlink following) ----
 const problems = [];
 const manifests = [], lookalikes = [], otherYaml = [], policyDirs = new Set(), dirsWithManifest = new Set();
 let dirCount = 0;
 (function walk(dir) {
   dirCount++;
+  const inScope = !RELEASE || (dir !== LIB && underIncluded(relPosix(dir)));
+  if (RELEASE && inScope) RELEASE.forEach((e) => { if (relPosix(dir) === e) matchedEntries.add(e); });
   let ents; try { ents = fs.readdirSync(dir, { withFileTypes: true }); } catch (e) { problems.push({ path: rel(dir), kind: 'unreadable-dir', detail: e.message }); return; }
   for (const e of ents) {
     const full = path.join(dir, e.name);
     if (e.isSymbolicLink()) continue;
-    if (e.isDirectory()) { if (!SKIP_DIRS.has(e.name)) walk(full); continue; }
+    if (e.isDirectory()) { if (!SKIP_DIRS.has(e.name) && (!RELEASE || underIncluded(relPosix(full)) || aboveIncluded(relPosix(full)))) walk(full); continue; }
+    if (!inScope) continue; // release mode: files in folders above the allow-list are not part of the release
     if (e.name.endsWith('.policy')) policyDirs.add(dir);
     const m = e.name.match(RE_MANIFEST);
     if (m && dir !== LIB) { manifests.push({ full, dir, file: e.name, slug: m[1] || null }); dirsWithManifest.add(dir); }
@@ -62,6 +83,11 @@ let dirCount = 0;
   }
 })(LIB);
 function rel(p) { return path.relative(LIB, p) || '.'; }
+if (RELEASE) {
+  const missing = RELEASE.filter((e) => !matchedEntries.has(e));
+  if (missing.length) { console.error(`--release: ${missing.length} entr${missing.length === 1 ? 'y matches' : 'ies match'} no folder in the library (typo?): ${missing.join(' | ')}`); process.exit(2); }
+  console.log(`release allow-list: ${RELEASE.length} entr${RELEASE.length === 1 ? 'y' : 'ies'}; ${manifests.length} manifests in scope`);
+}
 manifests.sort((a, b) => a.full.localeCompare(b.full));
 
 // ---- parse + validate ----

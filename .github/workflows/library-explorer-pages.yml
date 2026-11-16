@@ -1,20 +1,16 @@
 # Builds the Methodology Library Explorer and deploys it to GitHub Pages.
+# Only the folders listed in tools/library-explorer/release.json are published (allow-list; see the README).
 # Requires: Settings > Pages > Source = "GitHub Actions".
 name: Library Explorer (Pages)
 
 on:
+  # Manual only (testing phase): Actions > Library Explorer (Pages) > Run workflow, choose this branch.
   workflow_dispatch:
     inputs:
       ref:
-        description: 'Branch, tag or SHA to read Methodology Library from (blank = the branch the run is started on)'
+        description: 'Branch, tag or SHA to read the Methodology Library from (blank = the branch the run is started on)'
         required: false
-        default: 'swid/policy-manifest-backfill'
-  push:
-    branches: [main]            # ASSUMED default branch; change if yours differs
-    paths:
-      - 'Methodology Library/**'
-      - 'tools/library-explorer/**'
-      - '.github/workflows/library-explorer-pages.yml'
+        default: ''
 
 # Least privilege: the build job (npm install + build) only reads. Only the deploy job may publish.
 permissions:
@@ -31,9 +27,9 @@ jobs:
       - uses: actions/checkout@v7            # the explorer tooling, from the branch this run started on
         with:
           persist-credentials: false
-      - uses: actions/checkout@v7            # the library to publish, from the 'ref' input (push runs: the backfill branch, since main has no manifests)
+      - uses: actions/checkout@v7            # the library to publish, from the 'ref' input (blank = same branch)
         with:
-          ref: ${{ inputs.ref || 'swid/policy-manifest-backfill' }}
+          ref: ${{ inputs.ref || github.ref }}
           persist-credentials: false
           path: _lib
           sparse-checkout: Methodology Library
@@ -50,8 +46,8 @@ jobs:
         env:
           # 'View on Github' card links point at the repo and ref this site is built from (passed via env, never interpolated into the shell)
           REPO_URL: https://github.com/${{ github.repository }}
-          REPO_BRANCH: ${{ inputs.ref || 'swid/policy-manifest-backfill' }}
-        run: node build.js --lib "$GITHUB_WORKSPACE/_lib/Methodology Library" --out "$GITHUB_WORKSPACE/_site" --label "Methodology Library" --repo-url "$REPO_URL" --repo-branch "$REPO_BRANCH"
+          REPO_BRANCH: ${{ inputs.ref || github.ref_name }}
+        run: node build.js --lib "$GITHUB_WORKSPACE/_lib/Methodology Library" --out "$GITHUB_WORKSPACE/_site" --label "Methodology Library" --repo-url "$REPO_URL" --repo-branch "$REPO_BRANCH" --release release.json
       - name: Drop the build report (not part of the site)
         run: rm -f _site/build-report.json && touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v5

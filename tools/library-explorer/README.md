@@ -50,3 +50,13 @@ The browser tests run headless Chrome (`/Applications/Google Chrome.app`) agains
 ## Names
 
 The code name "Cairn" no longer appears in published output. The npm package name in `package.json` is internal and unchanged.
+
+## Releasing the library in batches (allow-list)
+
+The Pages deploy publishes only the folders listed in `release.json` (`{"version":1,"include":["Folder","Parent/Child"]}`). An entry covers that folder and everything below it. Folders that are not listed are never read, so they cannot appear in any page, `catalog.json` or `library.sqlite`.
+
+1. Add a batch of manifests (normally merged from `swid/policy-manifest-backfill`).
+2. Add the new folder names to `release.json`, commit.
+3. Actions > "Library Explorer (Pages)" > Run workflow > choose `swid/policy-manifest-backfill-and-library` (leave `ref` blank), or `gh workflow run library-explorer-pages.yml -R swidnikk/guardian --ref swid/policy-manifest-backfill-and-library`.
+
+An entry that matches no folder fails the build (a typo must not silently drop a release). Local builds without `--release` include everything. Test: `node test/release.test.mjs "<Methodology Library>" <scratch dir>`.
