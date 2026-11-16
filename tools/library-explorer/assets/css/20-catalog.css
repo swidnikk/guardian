@@ -149,3 +149,12 @@ a.card-import{color:#2a5bc7}
 .facet-search,.facet-toggle,.facet-opt,.switch-label,.facet-reset{font-size:.84rem}
 .facet-label{font-size:.7rem}
 .facet-chip{font-size:.78rem}
+
+/* Control height and padding match the docs' version dropdown (user, measured: GitBook is ~30px tall: p-1.5 + 1px border + 14px text; px-3 = 12px sides).
+   Min click target stays >= 24px (WCAG 2.5.8). Selected chips grow the control only when needed. */
+.facet-search{min-height:30px;height:30px;padding:0 12px}
+.facet-ctl{min-height:30px;padding:0 12px;gap:4px}
+.facet-toggle{min-height:28px;padding:0}
+.facet-chip{padding:1px 1px 1px 8px;margin:2px 0}
+.facet-chip-x{width:20px;height:20px;font-size:.62rem}
+.facet{margin:0 0 12px}
